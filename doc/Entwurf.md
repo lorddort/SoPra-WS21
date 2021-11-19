@@ -9,7 +9,7 @@
 
 ## System Context Diagram
 
-![System Context Diagram](images/CryptoCurrency_context-diagram.png)
+![System Context Diagram](images/CryptoCorrelation_context-diagram.png)
 
 **TODO:**  externe Entitäten kurz beschreiben (Rollen, externe Systeme, im- oder exportierte Daten)
 
