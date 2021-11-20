@@ -9,9 +9,9 @@
 
 ## System Context Diagram
 
-![System Context Diagram](images/context-diagram.png)
+![System Context Diagram](images/CryptoCorrelation_context-diagram.png)
 
-**TODO:** System Context Diagram der App erstellen und externe Entitäten kurz beschreiben (Rollen, externe Systeme, im- oder exportierte Daten)
+**TODO:**  externe Entitäten kurz beschreiben (Rollen, externe Systeme, im- oder exportierte Daten)
 
 ## Domain Model
 
