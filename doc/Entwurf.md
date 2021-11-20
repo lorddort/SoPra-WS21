@@ -21,7 +21,22 @@
 
 ## Beschreibung der Java-Packages der API
 
-**TODO:** Auflistung der geplanten Java-Packages der API mit kurzer Beschreibung (nur Top-Level-Packages)
+Folgende Top-Level-Packages sind geplant während der Entwicklung zu nutzen:
+```
+api/
+|- RESTController
+|- database
+|- statistic
+|- export
+|- Application.java
+```
+Im Package RESTController befinden sich die Controller der REST-API. Diese beinhaltet z.B. GET.
+Das Package database kommuniziert mit der Datenbank und speichert die Daten, die persistent sein soll.
+Das Package statistic beinhaltet mathematische Gleichungen, wie die Berechnung von Korrelationskoeffizienten.
+Im Package export wird die Exportfunktion implementiert.
+
+Im Falle von weiteren verwendeten Packages, die im Obrigen nicht genannt wurden, wird nach Definition of Done dieser Entwurf aktualisiert und hinzugefügt.
+
 
 ## Beschreibung der Frontend-Views
 
