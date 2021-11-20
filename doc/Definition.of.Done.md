@@ -3,9 +3,9 @@
 - [ ] Alle mit der User Story assoziierten Tests sind erfolgreich durchgelaufen.
 - [ ] Es wird im [Sprint Report](./Sprint.Report.md) beschrieben, ob die User Story für ihre Komplexität oder Relevanz ausreichend getestet wurde, z.B. durch Unit Tests oder manuelle Tests.
 - [ ] Der Entwurf wurde (falls notwendig) aktualisiert.
-- [ ] *TODO zusätzliches Kriterium 1 / [EDIT .gitlab/merge_request_templates/General.md](/.gitlab/merge_request_templates/General.md)*
-- [ ] *TODO zusätzliches Kriterium 2 / [EDIT .gitlab/merge_request_templates/General.md](/.gitlab/merge_request_templates/General.md)*
-- [ ] *TODO zusätzliches Kriterium 3 / [EDIT .gitlab/merge_request_templates/General.md](/.gitlab/merge_request_templates/General.md)*
+- [ ] Vereinbarte Coding Guidelines und Standard sind eingehalten und werden bei Code Review überprüft.
+- [ ] Die Dokumentation ist immer auf dem neusten Stand.
+- [ ] Es wurden exploratives Tests durchgeführt.
 
 ## Merge Request Template
 
