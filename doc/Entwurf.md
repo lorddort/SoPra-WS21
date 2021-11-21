@@ -11,7 +11,10 @@
 
 ![System Context Diagram](images/CryptoCorrelation_context-diagram.png)
 
-**TODO:**  externe Entitäten kurz beschreiben (Rollen, externe Systeme, im- oder exportierte Daten)
+Investor/ Krypto Enthusiast: Kunde, der die App zur Informationbeschaffung über Kryptowährungen nutzt.
+REST API Krypto Preis Informationen: Quelle der historischen Daten für Kryptowährungen.
+DB Markt Indizes: Quelle der historischen Daten für Marktindizes.
+Settings Folder: Speicherort für Benutzereinstellungen.
 
 ## Domain Model
 
