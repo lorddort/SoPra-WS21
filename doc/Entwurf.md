@@ -46,16 +46,33 @@ Im Falle von weiteren verwendeten Packages, die im Obrigen nicht genannt wurden,
 
 ## Beschreibung der Frontend-Views
 
-**TODO:** Auflistung der geplanten Frontend-Views mit kurzer Beschreibung
+## GUI Beschreibung
+
+### Hauptansicht
+- Beim Starten der Software ist ein Diagramm von Bitcoin und Etherium geladen
+- Über "Währungen" in der Sidebar kann man aus allen verfügbaren Währungen auswählen, welche die Website laden soll
+- Sidebar hat ein Diagramm-Settings Dropdown:
+    - Einstellen des Betrachteten Zeitraums
+    - Einstellen der Angezeigten Währungen
+    - Einstellen ob EUR oder USD angezeigt wird
+- Export Button erlaubt das Herunterladen des aktuell ausgewählten Diagramms
+- Rechte Sidebar erlaubt, weitere Diagramme hinzuzufügen, Miniaturvorschau der Diagramme verfügbar
+    - Einklappbar
+- Über den "Korrelationskoeffizientenansicht" Button unten links kommt man in die Detailansicht der Korrelationskoeffizienten
+  
+### Korrelationsansicht
+- Über "Währungen" lassen sich auch hier die geladenen Währungen auswählen
+- In Settings findet man:
+    - Auswählen der angezeigten Währungen
+    - Auswählen des betrachteten Zeitraums
+- Export erlaubt, die aktuell konfigurierte Tabelle runterzuladen
+- Andere Ideen:
+    - Hinzufügen und entfernen von Zeilen und Spalten direkt in Tabelle, ohne Settings in der Sidebar.
 
 ## GUI-Skizze: Home-View
 
 ![GUI Sketch Home View](sketches/gui-sketch-home-view.jpg)
 
-**TODO:** Eigene möglichst handschriftliche GUI-Skizze erstellen und beschreiben
-
-## GUI-Skizze: Ausgewählte wichtige Detail-View
+## GUI-Skizze: Korrelationskoeffizientenansicht
 
 ![GUI Sketch Detail View](sketches/gui-sketch-detail-view.jpg)
-
-**TODO:** Eigene möglichst handschriftliche GUI-Skizze erstellen und beschreiben

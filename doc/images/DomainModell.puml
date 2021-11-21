@@ -1,0 +1,43 @@
+@startuml
+
+package dataCollecting{
+    interface WebDataCollector{
+        - url: String
+        --
+        + getCurrencyData(String currency): returns JSON
+    }
+}
+
+package dataAnalysis{
+    class Analyzer{
+        --
+        {static} getCorrelationCoefficient(Currency currencyA, Currency currencyB): returns float
+    }
+}
+
+package dataHandling{
+    class Storage{
+        - currencies: List<Currency>
+    }
+
+    class Currency{
+        - name: String
+        - tag: String
+        - course: ToBeConsidered
+        - logoUrl: String
+        --
+
+    }
+}
+
+package instance{
+    class Instance{
+        - port: String
+        --
+        + startWebApp(): returns None 
+    }
+}
+
+Instance "1 : Data" -|> Storage
+
+@enduml
