@@ -17,7 +17,7 @@ einer Kryptowährung über einen bestimmten Zeitraum.
   - Es werden immer die neusten Daten einer Kryptowährung zur Verfügung gestellt.
   - Beliebte Kryptowährungen werden priorisiert beim Abrufen.
 
-### Feature 2.1 *Verfügbarkeit der Daten über weitere Indizes*
+### Feature 1.2 *Verfügbarkeit der Daten über weitere Indizes*
 >Als *Benutzer* möchte ich weitere *Daten über andere Indizes* habe, um diese mit den *Daten von Kryptowährungen zu vergleichen*.
 - Aufwandsschätzung: M
 - Akzeptanztest:
