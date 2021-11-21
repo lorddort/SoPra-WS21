@@ -22,9 +22,9 @@ Settings Folder: Speicherort für Benutzereinstellungen.
 
 ## Domain Model
 
-![Domain Model](images/domain-model.png)
+![Domain Model](images/domain-modelv1.png)
 
-**TODO:** Domain Model der zentralen Entitäten und deren Beziehungen erstellen
+
 
 ## Beschreibung der Java-Packages der API
 
