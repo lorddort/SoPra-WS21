@@ -8,7 +8,7 @@ Hier werden **alle** Anforderungen in Form von **User Stories** geordnet aufgeli
 Es werden über Börsen-API Daten abgerufen. Diese Daten enthalten z.B. den Wert einer Kryptowährung oder das Wachstum 
 einer Kryptowährung über einen bestimmten Zeitraum.
 
-### Feature 1.1 *Verfügbarkeit der Daten*
+### Feature 1.1 *Verfügbarkeit der Daten von Kryptowährungen*
 >Als *Benutzer* möchte ich bei Bedarf die *Daten einer Kryptowährung einsehen*, damit ich *Informationen über eine Kryptowährung habe*.
 
 - Aufwandsschätzung: M
@@ -17,8 +17,11 @@ einer Kryptowährung über einen bestimmten Zeitraum.
   - Es werden immer die neusten Daten einer Kryptowährung zur Verfügung gestellt.
   - Beliebte Kryptowährungen werden priorisiert beim Abrufen.
 
-
-
+### Feature 1.2 *Verfügbarkeit der Daten über weitere Indizes*
+>Als *Benutzer* möchte ich weitere *Daten über andere Indizes* habe, um diese mit den *Daten von Kryptowährungen zu vergleichen*.
+- Aufwandsschätzung: M
+- Akzeptanztest:
+  - Es wird mindestens Index abgerufen
 
 
 ## Epic 2 *Statistik*
@@ -88,7 +91,7 @@ hauptsächlich für die Korrelationskoeffizienten genutzt, damit man verschieden
 Visualisierung werden in Form von Diagrammen und Tabellen dargestellt. Sie dienen dem Vergleich von ausgewählten Kryptowährungen über einen bestimmten Zeitraumes.
 Es hilft den Benutzer die geforderten Daten zu veranschaulichen.
 
-### Feature 3.1 *Tabellen und Diagramme für Korrelationskoeffizienten*
+### Feature 3.1 *Tabellen und Diagramme*
 >Als *Benutzer* möchte ich für *einen besseren Überblick* *Tabellen und Diagramme* sehen.
 
 - Aufwandsschätzung: L
