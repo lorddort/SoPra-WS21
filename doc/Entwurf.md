@@ -79,10 +79,10 @@ Im Falle von weiteren verwendeten Packages, die im Obrigen nicht genannt wurden,
 
 ![GUI Sketch Home View](sketches/gui-sketch-home-view.jpg)
 
-**TODO:** Eigene möglichst handschriftliche GUI-Skizze erstellen und beschreiben
+
 
 ## GUI-Skizze: Ausgewählte wichtige Detail-View
 
 ![GUI Sketch Detail View](sketches/gui-sketch-detail-view.jpg)
 
-**TODO:** Eigene möglichst handschriftliche GUI-Skizze erstellen und beschreiben
+
