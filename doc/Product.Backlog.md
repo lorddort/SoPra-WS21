@@ -17,12 +17,75 @@ einer Kryptowährung über einen bestimmten Zeitraum.
   - Es werden immer die neusten Daten einer Kryptowährung zur Verfügung gestellt.
   - Beliebte Kryptowährungen werden priorisiert beim Abrufen.
 
+#### Story 1.1.1 *Daten von Krypto-API bekommen*
+>Als *Benutzer* möchte ich die *Daten einer Krypto-API laden*, damit ich *Informationen über eine Kryptowährung habe*.
+
+- Aufwandsschätzung: 3SP
+- Akzeptanztests: 
+  - Die App verbindet sich mit einer Krypto-API
+  - Historische Daten einer ausgewählten Kryptowährung wurden geladen (Preis)
+  - Historische Daten einer ausgewählten Kryptowährung wurden geladen (Volumen)
+  - Historische Daten einer ausgewählten Kryptowährung wurden geladen (Marktkapitalisierung)
+
+##### Task 1.1.1.1 *URL und Zugang für Krypto-API bereitstellen*
+- Aufwandsschätzung: 15min
+
+##### Task 1.1.1.2 *GET-Request an Krypto-API stellen*
+- Aufwandsschätzung: 30min
+
+#### Story 1.1.2 *Daten von Kryptos speichern*
+>Als *Benutzer* möchte ich die *Daten einer geladenen Kryptowährung speichern*, damit ich *Informationen über eine Kryptowährung nutzen kann. ohne erneut laden zu müssen*.
+
+- Aufwandsschätzung: 3SP
+- Akzeptanztests: 
+  - Die geladenen Daten einer Kryptowährung sind mind. während der Laufzeit verfügbar
+  - Das zugehörige Objekt hat historische Daten über Preis, Volumen und Marktkapitalisierung
+
+##### Task 1.1.2.1 *Preisdaten aus GET-Request in richtiges Format bringen*
+- Aufwandsschätzung: 15min
+
+##### Task 1.1.2.2 *Volumendaten aus GET-Request in richtiges Format bringen*
+- Aufwandsschätzung: 15min
+
+##### Task 1.1.2.3 *Marktkapitalisierungsdaten aus GET-Request in richtiges Format bringen*
+- Aufwandsschätzung: 15min
+
+##### Task 1.1.2.4 *Alle Daten aus GET-Request dem Krypto-objekt hinzufügen*
+- Aufwandsschätzung: 10min
+
 ### Feature 1.2 *Verfügbarkeit der Daten über weitere Indizes*
 >Als *Benutzer* möchte ich weitere *Daten über andere Indizes* habe, um diese mit den *Daten von Kryptowährungen zu vergleichen*.
 - Aufwandsschätzung: M
 - Akzeptanztest:
   - Es wird mindestens Index abgerufen
 
+#### Story 1.2.1 *Daten von Index-API bekommen*
+>Als *Benutzer* möchte ich die *Daten einer Index-API laden*, damit ich *Informationen über einen Index habe um ihn mit einer Kryptowährung zu vergleichen*.
+
+- Aufwandsschätzung: 3SP
+- Akzeptanztests: 
+  - Die App verbindet sich mit einer Index-API
+  - Historische Daten eines ausgewählten Indizes wurden geladen (Preis)
+
+##### Task 1.2.1.1 *URL und Zugang für Index-API bereitstellen*
+- Aufwandsschätzung: 15min
+
+##### Task 1.2.1.2 *GET-Request an Index-API stellen*
+- Aufwandsschätzung: 30min
+
+#### Story 1.2.2 *Daten von Indizes speichern*
+>Als *Benutzer* möchte ich die *Daten eines geladenen Indizes speichern*, damit ich *Informationen über einen Index nutzen kann, ohne erneut laden zu müssen*.
+
+- Aufwandsschätzung: 3SP
+- Akzeptanztests: 
+  - Die geladenen Daten eines Index sind mind. während der Laufzeit verfügbar
+  - Das zugehörige Objekt hat historische Daten über Preis
+
+##### Task 1.2.2.1 *Preisdaten aus GET-Request in richtiges Format bringen*
+- Aufwandsschätzung: 15min
+
+##### Task 1.2.2.2 *Alle Daten aus GET-Request dem Krypto-objekt hinzufügen*
+- Aufwandsschätzung: 10min
 
 ## Epic 2 *Statistik*
 >Als *Benutzer* möchte ich, dass es *Daten über Kryptowährungen* gibt, damit *mittels Statistik ausgewertet* werden. 
