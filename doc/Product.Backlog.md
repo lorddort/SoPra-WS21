@@ -136,7 +136,32 @@ hauptsächlich für die Korrelationskoeffizienten genutzt, damit man verschieden
 
 - Aufwandschätzung: 2
 
-### Feature 2.2 *Weitere Korrelationsmaße*
+### Feature 2.2 *Datenaufbereitung*
+>Als *Benutzer* möchte ich, dass die *Daten zu Kryptowährung oder Index sinnvoll aufbereitet/gefiltert* werden, um *korrekte Zeiträume untersuchen* zu können und Vergleichbarkeit herzustellen.
+
+- Aufwandsschätzung: L
+- Akzeptanztests:
+  - Daten werden nach gegebenen Zeitraum gefiltert
+  - Daten sind in einer Form, sodass sie von Korrelationrechner verwertet werden können
+
+#### Story 2.2.1 *Zeitraum filtern*
+>Als *Benutzer* möchte ich, dass alle *Daten über den korrekten Zeitraum* handeln, um das *anzuzeigen/auszurechen nachdem gesucht* ist.
+
+- Aufwandsschätzung: 9SP
+- Akzeptanztests:
+  - Daten werden nach gegebenen Zeitraum gefiltert
+  - mindestens 2 Datenpunkte sind noch vorhanden
+
+#### Story 2.2.2 *Daten vergleichbar machen*
+>Als *Benutzer* möchte ich, dass alle *Daten aus verschiedenen Quellen gleich aussehen*, um *Berechnungen unabhängig von der Quelle der Daten* auzuführen.
+
+- Aufwandsschätzung: 9SP
+- Akzeptanztests:
+  - alle Datensätze haben die gleiche Form
+  - mindestens 2 Datenpunkte sind noch vorhanden
+
+
+### Feature 2.3 *Weitere Korrelationsmaße*
 >Als *Benutzer* möchte ich, dass die *Berechnung der Korrelation für andere Maße* als den Wechselkurs unterstützt wird, um *genauere Zusammenhänge erforschen* zu können.
 
 - Aufwandsschätzung: L
