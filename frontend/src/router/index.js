@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Graphs from "../views/Graphs.vue";
 import Cats from "../views/Cats.vue";
+import GraphCard from "../components/GraphCard.vue";
 
 Vue.use(VueRouter);
 
@@ -26,7 +27,10 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  components: {
+    GraphCard
+  }
 });
 
 export default router;
