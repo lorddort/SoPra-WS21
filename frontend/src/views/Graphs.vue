@@ -15,8 +15,20 @@
                 </b-container>
             </b-col>
             <b-col cols="10">
-                <graph-card></graph-card>
+                <GraphCard />
             </b-col>
         </b-row>
     </div>
 </template>
+
+<script>
+import GraphCard from "@/components/GraphCard.vue";
+
+export default {
+    name: "Graphs",
+    components: {
+        GraphCard
+    }
+}
+
+</script>
