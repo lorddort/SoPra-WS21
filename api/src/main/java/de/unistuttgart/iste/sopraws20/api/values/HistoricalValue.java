@@ -10,21 +10,22 @@ public class HistoricalValue {
 	@Size(min = 1)
 	private String name;
 	@NotNull
-	private MarketChart standardPriceChart;
+	private MarketChart standardMarketChart;
 	@NotNull
 	private String description;
 
 	public HistoricalValue(String name, String description) {
 		this.name = name;
 		this.description = description;
+		this.standardMarketChart = new MarketChart();
 	}
 
 	public MarketChart getStandardPriceChart() {
-		return standardPriceChart;
+		return standardMarketChart;
 	}
 
 	public void setStandardPriceChart(MarketChart standardPriceChart) {
-		this.standardPriceChart = standardPriceChart;
+		this.standardMarketChart = standardPriceChart;
 	}
 
 	public String getDescription() {
