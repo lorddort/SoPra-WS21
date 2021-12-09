@@ -6,6 +6,7 @@
       <b-navbar-nav>
         <b-nav-item to="/graphs">Graphs</b-nav-item>
         <b-nav-item to="/diagrams">Diagrams</b-nav-item>
+        <b-nav-item to="/tables">Tables</b-nav-item>
       </b-navbar-nav>
     </b-navbar>
 
