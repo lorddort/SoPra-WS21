@@ -17,8 +17,8 @@ public class CryptoCurrency extends HistoricalValue {
 	@NotNull
 	private String logoUrl;
 
-	public CryptoCurrency(String name, String description) {
-		super(name, description);
+	public CryptoCurrency(String id) {
+		super(id);
 		logoUrl = "";
 		minutelyChart = new MarketChart();
 		hourlyChart = new MarketChart();

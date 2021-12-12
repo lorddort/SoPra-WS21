@@ -8,16 +8,28 @@ import com.litesoftwares.coingecko.domain.Coins.MarketChart;
 public class HistoricalValue {
 	@NotNull
 	@Size(min = 1)
+	private String id;
+	@NotNull
+	@Size(min = 1)
 	private String name;
 	@NotNull
 	private MarketChart standardMarketChart;
 	@NotNull
 	private String description;
 
-	public HistoricalValue(String name, String description) {
-		this.name = name;
-		this.description = description;
+	public HistoricalValue(String id) {
+		this.id = id;
+		this.name = "btc";
+		this.description = "btc";
 		this.standardMarketChart = new MarketChart();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public MarketChart getStandardPriceChart() {
@@ -36,8 +48,8 @@ public class HistoricalValue {
 		this.description = description;
 	}
 
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 
 }
