@@ -1,15 +1,19 @@
 package de.unistuttgart.iste.sopraws20.api.RESTController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.litesoftwares.coingecko.exception.CoinGeckoApiException;
@@ -22,14 +26,17 @@ import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
 @RestController
 public class CryptoCurrencyController {
 
-	private List<CryptoCurrency> cryptoCurrencies;
+	private Map<String, CryptoCurrency> cryptoCurrencies;
 	// list of name and ID of cc
 	private List<CryptoIdName> cryptoCurrencyNames;
+	private List<CryptoIdName> loadedIdAndNames;
 
+	// executed after startup
 	@PostConstruct
 	public void init() {
-		cryptoCurrencies = new ArrayList<CryptoCurrency>();
+		cryptoCurrencies = new HashMap<String, CryptoCurrency>();
 		cryptoCurrencyNames = new ArrayList<CryptoIdName>();
+		loadedIdAndNames = new ArrayList<CryptoIdName>();
 		CryptoCurrency bitcoin = new CryptoCurrency("bitcoin");
 		CoinGeckoApiClientImpl coinGeckoApiClient = new CoinGeckoApiClientImpl();
 		try {
@@ -50,6 +57,7 @@ public class CryptoCurrencyController {
 
 	}
 
+	// get an number of crypto ID and name in order market cap descending
 	@GetMapping("/cryptos/list/{amount}")
 	public List<CryptoIdName> getCryptoCurrencyNames(@Valid int amount) {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
@@ -58,40 +66,47 @@ public class CryptoCurrencyController {
 
 	}
 
-	// adds cc with ID, autofills information
+	// adds cc with ID, autofills information from coingecko
 	@PostMapping("/cryptos/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
 	public CryptoCurrency addCryptoCurrency(@PathVariable String id) {
 		CryptoCurrency newCrypto = Importer.loadCrypto(id);
-		cryptoCurrencies.add(newCrypto);
+		cryptoCurrencies.put(newCrypto.getId(), newCrypto);
+		CryptoIdName IdAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
+		loadedIdAndNames.add(IdAndName);
 		return newCrypto;
 
 	}
 
+	// get cc by id
 	@GetMapping("cryptos/{id}")
 	public CryptoCurrency getCryptoCurrencyByName(@PathVariable("id") String id) {
-		// TODO
-		return null;
+		return cryptoCurrencies.get(id);
 
 	}
 
+	// get id and name of all loaded cc
 	@GetMapping("cryptos/loaded")
-	public List<CryptoCurrency> getLoadedCryptoCurrencies() {
-		return cryptoCurrencies;
-		// TODO
+	public List<CryptoIdName> getLoadedCryptoCurrencies() {
+		return loadedIdAndNames;
 
 	}
 
-	@PostMapping("cryptos/{id}/{logourl}")
-	public String setLogoUrl(@PathVariable("id") String id, @PathVariable("logourl") String logoUrl) {
-		// TODO
-		return logoUrl;
+	// get logo url for crypto
+	@GetMapping("cryptos/{id}/logourl")
+	public String setLogoUrl(@PathVariable("id") String id) {
+		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
+		return currCrypto.getLogoUrl();
 
 	}
 
-	@PutMapping("cryptos/{id}/{logourl}")
-	public String editLogoUrl(@PathVariable("id") String id, @PathVariable("logourl") String logoUrl) {
-		// TODO
-		return logoUrl;
+	// update logo url for crypto
+	@PutMapping("cryptos/{id}/logourl")
+	public String editLogoUrl(@PathVariable("id") String id, String newLogoUrl) {
+		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
+		currCrypto.setLogoUrl(newLogoUrl);
+
+		return newLogoUrl;
 
 	}
 
