@@ -8,7 +8,7 @@ Hier werden **alle** Anforderungen in Form von **User Stories** geordnet aufgeli
 Es werden über Börsen-API Daten abgerufen. Diese Daten enthalten z.B. den Wert einer Kryptowährung oder das Wachstum 
 einer Kryptowährung über einen bestimmten Zeitraum.
 
-### Feature 1.1 *Verfügbarkeit der Daten*
+### Feature 1.1 *Verfügbarkeit der Daten von Kryptowährungen*
 >Als *Benutzer* möchte ich bei Bedarf die *Daten einer Kryptowährung einsehen*, damit ich *Informationen über eine Kryptowährung habe*.
 
 - Aufwandsschätzung: M
@@ -17,9 +17,74 @@ einer Kryptowährung über einen bestimmten Zeitraum.
   - Es werden immer die neusten Daten einer Kryptowährung zur Verfügung gestellt.
   - Beliebte Kryptowährungen werden priorisiert beim Abrufen.
 
+#### Story 1.1.1 *Daten von Krypto-API bekommen*
+>Als *Benutzer* möchte ich die *Daten einer Krypto-API laden*, damit ich *Informationen über eine Kryptowährung habe*.
+
+- Aufwandsschätzung: 12SP
+- Akzeptanztests: 
+  - Die App verbindet sich mit einer Krypto-API
+  - Historische Daten einer ausgewählten Kryptowährung wurden geladen (Preis)
+  - Historische Daten einer ausgewählten Kryptowährung wurden geladen (Volumen)
+  - Historische Daten einer ausgewählten Kryptowährung wurden geladen (Marktkapitalisierung)
+
+##### Task 1.1.1.1 *URL und Zugang für Krypto-API bereitstellen*
+- Aufwandsschätzung: 0,5h
+
+##### Task 1.1.1.2 *GET-Request an Krypto-API stellen*
+- Aufwandsschätzung: 1h
+
+#### Story 1.1.2 *Daten von Kryptos speichern*
+>Als *Benutzer* möchte ich die *Daten einer geladenen Kryptowährung speichern*, damit ich *Informationen über eine Kryptowährung nutzen kann. ohne erneut laden zu müssen*.
+
+- Aufwandsschätzung: 3SP
+- Akzeptanztests: 
+  - Die geladenen Daten einer Kryptowährung sind mind. während der Laufzeit verfügbar
+  - Das zugehörige Objekt hat historische Daten über Preis, Volumen und Marktkapitalisierung
+
+##### Task 1.1.2.1 *Preisdaten aus GET-Request in Objekt speichern*
+- Aufwandsschätzung: 0,25h
+
+##### Task 1.1.2.2 *Volumendaten aus GET-Request in Objekt speichern*
+- Aufwandsschätzung: 0,25h
+
+##### Task 1.1.2.3 *Marktkapitalisierungsdaten aus GET-Request in Objekt speichern*
+- Aufwandsschätzung: 0,25h
 
 
 
+### Feature 1.2 *Verfügbarkeit der Daten über weitere Indizes*
+>Als *Benutzer* möchte ich weitere *Daten über andere Indizes* habe, um diese mit den *Daten von Kryptowährungen zu vergleichen*.
+- Aufwandsschätzung: M
+- Akzeptanztest:
+  - Es wird mindestens Index abgerufen
+
+#### Story 1.2.1 *Daten von Index-API bekommen*
+>Als *Benutzer* möchte ich die *Daten einer Index-API laden*, damit ich *Informationen über einen Index habe um ihn mit einer Kryptowährung zu vergleichen*.
+
+- Aufwandsschätzung: 6SP
+- Akzeptanztests: 
+  - Die App verbindet sich mit einer Index-API
+  - Historische Daten eines ausgewählten Indizes wurden geladen (Preis)
+
+##### Task 1.2.1.1 *URL und Zugang für Index-API bereitstellen*
+- Aufwandsschätzung: 0,5h
+
+##### Task 1.2.1.2 *GET-Request an Index-API stellen*
+- Aufwandsschätzung: 1h
+
+#### Story 1.2.2 *Daten von Indizes speichern*
+>Als *Benutzer* möchte ich die *Daten eines geladenen Indizes speichern*, damit ich *Informationen über einen Index nutzen kann, ohne erneut laden zu müssen*.
+
+- Aufwandsschätzung: 6SP
+- Akzeptanztests: 
+  - Die geladenen Daten eines Index sind mind. während der Laufzeit verfügbar
+  - Das zugehörige Objekt hat historische Daten über Preis
+
+##### Task 1.2.2.1 *Preisdaten aus GET-Request in richtiges Format bringen*
+- Aufwandsschätzung: 0,25
+
+##### Task 1.2.2.2 *Alle Daten aus GET-Request dem Krypto-objekt hinzufügen*
+- Aufwandsschätzung: 0,75h
 
 ## Epic 2 *Statistik*
 >Als *Benutzer* möchte ich, dass es *Daten über Kryptowährungen* gibt, damit *mittels Statistik ausgewertet* werden. 
@@ -39,47 +104,121 @@ hauptsächlich für die Korrelationskoeffizienten genutzt, damit man verschieden
 #### Story 2.1.1 *Korrelationskoeffizienten berechnen*
 >Als *Benutzer* möchte ich den *Korrelationskoeffizienten berechnet* bekommen, damit ich *Kryptowährungen vergleichen* kann.
 
-- Aufwandsschätzung: 5
+- Aufwandsschätzung: 12SP
 - Akzeptanztests: 
   - Der berechnete Korrelationskoeffizienten ist korrekt programmiert
   
 ##### Task 2.1.1.1 *Korrelationskoeffizient programmieren*
 
-- Aufwandsschätzung: 6 Stunden
+- Aufwandsschätzung: 6h
 
+TODO: behalten?
 #### Story 2.1.2 *Korrelationskoeffizienten aktualisieren*
 >Als *Benutzer* möchte ich den *Korrelationskoeffizienten* berechnet haben lassen für verschiedensten Umständen, damit ich die *Veränderung des Korrelationskoeffizienten* sehe.
 
-- Aufwandsschätzung: 4
+- Aufwandsschätzung: 4SP
 - Akzeptanztests: 
   - Der Korrelationskoeffizient wird neu berechnet beim Verändern des Datumsbereiches
   - Der Korrelationskoeffizient wird new berechnet beim Verändern der Kryptowährung
 
 ##### Task 2.1.2.1 *Korrelationskoeffizienten neu berechnen*
 
-- Aufwandschätzung: 2
+- Aufwandschätzung: 1h
 
 #### Story 2.1.3 *Korrelationskoeffizienten beschreiben*
 >Als *Benutzer* möchte ich, dass der Korrelationskoeffizient mit einem *lesbaren Text angezeigt* wird für eine *deutliche Verständlichkeit* über den Vergleich der ausgewählten Kryptowährungen.
 
-- Aufwandsschätzung: 2
+- Aufwandsschätzung: 2SP
 - Aktzeptanztests:
   - Es steht mindestens einen Satz, der den Korrelationskoeffizienten zur gegebenen Kryptowährung beschreibt
 
 ##### Task 2.1.3.1 *Korrelationskoeffizienten beschriften für bestimmten Größen*
 
-- Aufwandschätzung: 2
+- Aufwandschätzung: 0,5h
 
-### Feature 2.2 *Weitere Korrelationsmaße*
+### Feature 2.2 *Datenaufbereitung*
+>Als *Benutzer* möchte ich, dass die *Daten zu Kryptowährung oder Index sinnvoll aufbereitet/gefiltert* werden, um *korrekte Zeiträume untersuchen* zu können und Vergleichbarkeit herzustellen.
+
+- Aufwandsschätzung: L
+- Akzeptanztests:
+  - Daten werden nach gegebenen Zeitraum gefiltert
+  - Daten sind in einer Form, sodass sie von Korrelationrechner verwertet werden können
+
+#### Story 2.2.1 *Zeitraum filtern*
+>Als *Benutzer* möchte ich, dass alle *Daten über den korrekten Zeitraum* handeln, um das *anzuzeigen/auszurechen nachdem gesucht* ist.
+
+- Aufwandsschätzung: 9SP
+- Akzeptanztests:
+  - Daten werden nach gegebenen Zeitraum gefiltert
+  - mindestens 2 Datenpunkte sind noch vorhanden
+
+##### Task 2.2.1.1 *Startpunkt der Daten finden*
+
+Aufwandsschätzung: 0,25h
+
+##### Task 2.2.1.2 *Endpunkt der Daten finden*
+
+Aufwandsschätzung: 0,25h
+
+##### Task 2.2.1.3 *Daten aus angegebenem Zeitraum ausgeben*
+
+Aufwandsschätzung: 0,5h
+
+#### Story 2.2.2 *Daten vergleichbar machen*
+>Als *Benutzer* möchte ich, dass alle *Daten aus verschiedenen Quellen gleich aussehen*, um *Berechnungen unabhängig von der Quelle der Daten* auzuführen.
+
+- Aufwandsschätzung: 9SP
+- Akzeptanztests:
+  - alle Datensätze haben die gleiche Form
+  - mindestens 2 Datenpunkte sind noch vorhanden
+
+##### Task 2.2.2.x *(Für jede Datenquelle) Daten in gleiche Form bringen*
+
+Aufwandsschätzung: 1h*x
+
+### Feature 2.3 *Weitere Korrelationsmaße*
 >Als *Benutzer* möchte ich, dass die *Berechnung der Korrelation für andere Maße* als den Wechselkurs unterstützt wird, um *genauere Zusammenhänge erforschen* zu können.
 
 - Aufwandsschätzung: L
 - Akzeptanztests:
   - Es wird ein Korrelationskoeffizient für das Handelsvolumen berechnet
   - Es wird ein Korrelationskoeffizient für relative Hoch- und Tiefpunkte berechnet (zeitliche Korrelation sowie Korrelation der Wertänderung).
+  - Es wird ein Korrelationskoeffizient für die Marktkapitalisierung berechnet
 
+#### Story 2.3.1 *Korrelationskoeffizienten berechnen*
+>Als *Benutzer* möchte ich den *Korrelationskoeffizienten berechnet* bekommen, damit ich *Kryptowährungen vergleichen* kann.
 
+- Aufwandsschätzung: 5SP
+- Akzeptanztests: 
+  - Der berechnete Korrelationskoeffizienten ist korrekt programmiert
+  
+##### Task 2.3.1.1 *Korrelationskoeffizient kompatibel machen*
 
+- Aufwandsschätzung: 2h
+
+TODO: behalten?
+#### Story 2.3.2 *Korrelationskoeffizienten aktualisieren*
+>Als *Benutzer* möchte ich den *Korrelationskoeffizienten* berechnet haben lassen für verschiedensten Umständen, damit ich die *Veränderung des Korrelationskoeffizienten* sehe.
+
+- Aufwandsschätzung: 4SP
+- Akzeptanztests: 
+  - Der Korrelationskoeffizient wird neu berechnet beim Verändern des Datumsbereiches
+  - Der Korrelationskoeffizient wird new berechnet beim Verändern der Kryptowährung
+
+##### Task 2.3.2.1 *Korrelationskoeffizienten neu berechnen*
+
+- Aufwandschätzung: 0,5h
+
+#### Story 2.3.3 *Korrelationskoeffizienten beschreiben*
+>Als *Benutzer* möchte ich, dass der Korrelationskoeffizient mit einem *lesbaren Text angezeigt* wird für eine *deutliche Verständlichkeit* über den Vergleich der ausgewählten Kryptowährungen.
+
+- Aufwandsschätzung: 2SP
+- Aktzeptanztests:
+  - Es steht mindestens einen Satz, der den Korrelationskoeffizienten zur gegebenen Kryptowährung beschreibt
+
+##### Task 2.3.3.1 *Korrelationskoeffizienten beschriften für bestimmten Größen*
+
+- Aufwandschätzung: 0,5h
 
 
 ## Epic 3 *Visualisierung*
@@ -88,7 +227,7 @@ hauptsächlich für die Korrelationskoeffizienten genutzt, damit man verschieden
 Visualisierung werden in Form von Diagrammen und Tabellen dargestellt. Sie dienen dem Vergleich von ausgewählten Kryptowährungen über einen bestimmten Zeitraumes.
 Es hilft den Benutzer die geforderten Daten zu veranschaulichen.
 
-### Feature 3.1 *Tabellen und Diagramme für Korrelationskoeffizienten*
+### Feature 3.1 *Tabellen und Diagramme*
 >Als *Benutzer* möchte ich für *einen besseren Überblick* *Tabellen und Diagramme* sehen.
 
 - Aufwandsschätzung: L
