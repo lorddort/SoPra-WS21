@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.sopraws20.api.RESTController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.litesoftwares.coingecko.exception.CoinGeckoApiException;
@@ -28,6 +28,8 @@ public class CryptoCurrencyController {
 
 	@PostConstruct
 	public void init() {
+		cryptoCurrencies = new ArrayList<CryptoCurrency>();
+		cryptoCurrencyNames = new ArrayList<CryptoIdName>();
 		CryptoCurrency bitcoin = new CryptoCurrency("bitcoin");
 		CoinGeckoApiClientImpl coinGeckoApiClient = new CoinGeckoApiClientImpl();
 		try {
@@ -45,7 +47,7 @@ public class CryptoCurrencyController {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds();
 
 		return cryptoCurrencyNames;
-		// TODO
+
 	}
 
 	@GetMapping("/cryptos/list/{amount}")
@@ -53,14 +55,15 @@ public class CryptoCurrencyController {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
 
 		return cryptoCurrencyNames;
-		// TODO
+
 	}
 
-	// adds cc with name, autofills information
-	@PostMapping("/cryptos")
-	public CryptoCurrency addCryptoCurrency(@Valid @RequestBody String id) {
-		// TODO
-		return null;
+	// adds cc with ID, autofills information
+	@PostMapping("/cryptos/{id}")
+	public CryptoCurrency addCryptoCurrency(@PathVariable String id) {
+		CryptoCurrency newCrypto = Importer.loadCrypto(id);
+		cryptoCurrencies.add(newCrypto);
+		return newCrypto;
 
 	}
 
