@@ -1,16 +1,18 @@
 package de.unistuttgart.iste.sopraws20.api.values;
 
+import javax.validation.constraints.NotNull;
+
 import com.litesoftwares.coingecko.domain.Coins.MarketChart;
 
 public class CryptoCurrency extends HistoricalValue {
 
-	// @NotNull
+	@NotNull
 	private String logoUrl;
-	// @NotNull
+	@NotNull
 	private MarketChart minutelyChart;
-	// @NotNull
+	@NotNull
 	private MarketChart hourlyChart;
-	// @NotNull
+	@NotNull
 	private MarketChart dailyChart;
 
 	public CryptoCurrency(String id) {
