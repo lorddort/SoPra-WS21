@@ -14,7 +14,33 @@ export default {
         apexcharts: VueApexCharts,
     },
     props: {
-      currencies: []
+      currencies: Array
+    },
+    watch: {
+      currencies: function(val, oldVal){
+        this.currencies = val;
+        let first = true;
+        let update = {
+          xaxis: {
+            categories: []
+          },
+          series : [{
+            name: String,
+            data: Array
+          }]
+        }
+        for (let key in this.currencies){
+          if (first){
+            update.xaxis.categories = this.currencies[key].x;
+            first = false;
+          }
+          update.series.push({
+            name: this.currencies[key].name,
+            data: this.currencies[key].y
+          })
+        }
+        this.apexcharts.updateOptions(update);
+      }
     },
     data: function() {
       return {
@@ -24,19 +50,11 @@ export default {
             id: 'basic-bar'
           },
           xaxis: {
-            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+            categories: []
           }
         },
-        series: [{
-          name: 'series-1',
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
-        },
-        { name: 's2',
-          data: [60, 60, 56, 50, 40, 20, 25, 30]}]
+        series: []
       }
-    },
-    created: function(){
-      
     }
 }
 </script>

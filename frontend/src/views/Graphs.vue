@@ -18,7 +18,7 @@
                 </b-container>
             </b-col>
             <b-col cols="8">
-                <GraphCard data="selected"/>
+                <GraphCard :currencies="this.selection"/>
             </b-col>
             <b-col>
                 <div>
@@ -92,7 +92,6 @@ export default {
             
             //TODO, fix below threshold of 20 seconds                              _here_
             if (this.selectedTimeFrame.from > currentTime - this.toUnixTime(1, 0, 0, 20)){
-                console.log("minutes");
                 for (let key in selectedCurrency.minutelyChart.prices){
                     let tuple = selectedCurrency.minutelyChart.prices[key];
                     xValues.push(tuple[0]);
