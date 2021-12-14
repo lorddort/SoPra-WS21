@@ -42,7 +42,7 @@ public final class Importer {
 
 	public static List<CryptoIdName> getCryptoCurrencyNamesAndIds(@Size(max = 250) int amount) {
 		// load list of coins
-		if (coinNames.isEmpty()) {
+		if (!(coinNames.size() == amount)) {
 			List<CoinMarkets> coinMarkets = client.getCoinMarkets("eur", "", "market_cap_desc", amount, 1, false,
 					"24h");
 			coinNames = new LinkedList<CryptoIdName>();

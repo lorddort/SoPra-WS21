@@ -37,7 +37,7 @@ public class CryptoCurrencyController {
 		cryptoCurrencies = new HashMap<String, CryptoCurrency>();
 		cryptoCurrencyNames = new ArrayList<CryptoIdName>();
 		loadedIdAndNames = new ArrayList<CryptoIdName>();
-		CryptoCurrency bitcoin = new CryptoCurrency("bitcoin");
+		// CryptoCurrency bitcoin = new CryptoCurrency("bitcoin");
 		CoinGeckoApiClientImpl coinGeckoApiClient = new CoinGeckoApiClientImpl();
 		try {
 			coinGeckoApiClient.ping();
@@ -59,7 +59,7 @@ public class CryptoCurrencyController {
 
 	// get an number of crypto ID and name in order market cap descending
 	@GetMapping("/cryptos/list/{amount}")
-	public List<CryptoIdName> getCryptoCurrencyNames(@Valid int amount) {
+	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable @Valid int amount) {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
 
 		return cryptoCurrencyNames;
