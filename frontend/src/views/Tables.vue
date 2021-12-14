@@ -5,17 +5,27 @@
                 <b-container>
                     <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1">
                         <b-dropdown-item>Time Frame</b-dropdown-item>
-                        <b-dropdown-item>Currency</b-dropdown-item>
                     </b-dropdown><br>
                     <label class="typo__label">Courses</label>
                     <multiselect    v-model="value" 
                                     label="name" 
                                     track-by="name" 
-                                    :options="options" 
+                                    :options="cryptoCurrencies" 
                                     :multiple="true" 
                                     :taggable="false" 
                                     @tag="searchTag">
-                    </multiselect>
+                    </multiselect><br>
+                    <b-form-group   label="Currency"
+                                    v-slot="{ ariaDescribedby }">
+                        <b-form-radio-group id="btn-radios-2"
+                                            v-model="selected"
+                                            :options="currencies"
+                                            :aria-describedby="ariaDescribedby"
+                                            button-variant="outline-primary"
+                                            name="radio-btn-outline"
+                                            buttons>
+                        </b-form-radio-group>
+                    </b-form-group><br>
                     <b-button block>Export</b-button>
                 </b-container>
             </b-col>
@@ -39,23 +49,28 @@ export default {
   data () {
     return {
       value: null,
-      options: [
-            { id: "bitcoin", name: "Bitcoin"},
-            { id: "ethereum", name : "Ethereum"},
-            { id: "binancecoin", name: "Binance Coin"},
-            { id: "tether", name: "Tether"},
-            { id: "solana", name: "Solana"},
-            { id: "usd-coin", name: "USD Coin"},
-            { id: "cardano", name: "Cardano"},
-            { id: "ripple", name: "XRP"},
-            { id: "polkadot", name: "Polkadot"},
-            { id: "terra-luna", name: "Terra"}
-      ]
+        cryptoCurrencies: [
+                { id: "bitcoin", name: "Bitcoin"},
+                { id: "ethereum", name : "Ethereum"},
+                { id: "binancecoin", name: "Binance Coin"},
+                { id: "tether", name: "Tether"},
+                { id: "solana", name: "Solana"},
+                { id: "usd-coin", name: "USD Coin"},
+                { id: "cardano", name: "Cardano"},
+                { id: "ripple", name: "XRP"},
+                { id: "polkadot", name: "Polkadot"},
+                { id: "terra-luna", name: "Terra"}
+        ],
+        selected: "EUR",
+        currencies:[
+            { text: "Euro", value: "EUR" },
+            { text: "US Dollar", value: "USD" }
+        ]
     }
   },
   methods: {
     searchTag ({ name }) {
-      return `${name}`
+        return `${name}`
     }
   }
 }
