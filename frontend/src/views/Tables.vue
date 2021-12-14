@@ -3,9 +3,11 @@
         <b-row>
             <b-col >
                 <b-container>
-                    <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1">
-                        <b-dropdown-item>Time Frame</b-dropdown-item>
-                    </b-dropdown><br>
+                    <label class="typo__label">Period</label><br>
+                    <label class="typo__label">From</label>
+                    <b-form-datepicker v-model="minValue" :min="min" locale="en"></b-form-datepicker><br>
+                    <label class="typo__label">till</label>
+                    <b-form-datepicker v-model="maxValue" :max="max" locale="en"></b-form-datepicker><br>
                     <label class="typo__label">Courses</label>
                     <multiselect    v-model="value" 
                                     label="name" 
@@ -26,7 +28,6 @@
                                             buttons>
                         </b-form-radio-group>
                     </b-form-group><br>
-                    <b-button block>Export</b-button>
                 </b-container>
             </b-col>
             <b-col cols="10">
@@ -44,11 +45,22 @@ export default {
     name: "Tables",
     components: {
         Table,
-        Multiselect
+        Multiselect,
     },
   data () {
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    // 15th two months prior
+    const minDate = new Date(now)
+    //minDate.setMonth(minDate.getMonth() - 2)
+    //minDate.setDate(15)
+    // 15th in two months
+    const maxDate = new Date(today)
+    //maxDate.setMonth(maxDate.getMonth() + 2)
+    //maxDate.setDate(15)
+
     return {
-      value: null,
+        value: null,
         cryptoCurrencies: [
                 { id: "bitcoin", name: "Bitcoin"},
                 { id: "ethereum", name : "Ethereum"},
@@ -65,7 +77,11 @@ export default {
         currencies:[
             { text: "Euro", value: "EUR" },
             { text: "US Dollar", value: "USD" }
-        ]
+        ],
+        minValue: '',
+        maxValue: '',
+        min: minDate,
+        max: maxDate
     }
   },
   methods: {

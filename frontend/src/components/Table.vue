@@ -6,10 +6,12 @@
 
 <script>
 import VueApexCharts from 'vue-apexcharts'
+import Tables from '@/views/Tables.vue'
 
 export default {
     name: 'HeatMap',
     components: {
+        Tables,
         apexcharts: VueApexCharts
     },
     data: function() {
@@ -144,6 +146,9 @@ export default {
                 i++;
             }
             return series;
+            },
+            addSeries() {
+
             }
         }
 }
