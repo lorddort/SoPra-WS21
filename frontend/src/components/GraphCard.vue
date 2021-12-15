@@ -25,11 +25,8 @@ export default {
       return {
         graphName: 'Graph',
         chartOptions: {
-          chart: {
-            id: 'basic-bar'
-          },
           xaxis: {
-            categories: []
+            type: "datetime"
           }
         },
         series: []
@@ -38,21 +35,21 @@ export default {
     methods: {
       updateChart() {
         console.log("updating..."); //DEBUG
-        let first = true;
         let series = [];
-        let categories = [];
         for (let key in this.currencies){
-          if (first){
-            categories = this.currencies[key].x;
-            first = false;
+          let newData = [];
+          let x = this.currencies[key].x;
+          let y = this.currencies[key].y;
+          for (let i in x){
+            newData.push([x[i], y[i]]);
           }
           series.push({
             name: this.currencies[key].name,
-            data: this.currencies[key].y
-          })
+            data: newData
+          });
         }
-        this.chartOptions.xaxis.categories = categories;
         this.series = series;
+        console.log(this.series);
       }
     }
 }

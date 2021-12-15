@@ -4,7 +4,7 @@
             <b-col cols="2" class="fixedDiv h-100">
                 <b-container>
                     <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1" menu-class="w-100">
-                        <b-dropdown-item v-b-modal.timeFrameModal>Time Frame</b-dropdown-item>
+                        <b-dropdown-item v-b-modal.timeFrameModal title="Time Frame">Time Frame:{{this.timeFrame}}</b-dropdown-item>
                         <b-dropdown-item>Currency</b-dropdown-item>
                     </b-dropdown>
                     <b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
@@ -29,13 +29,22 @@
             </b-col>
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
-            <b-dropdown id="timeFrame" text="Time Frame" style="min-width: 100%" menu-class="w-100">
+            <b-dropdown id="timeFrame" :text="this.timeFrame" style="min-width: 100%" menu-class="w-100">
                 <b-dropdown-item @click="setTimeFrame(frames.day)">Last Day</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
-                <b-dropdown-item>Custom</b-dropdown-item> <!--TODO-->
+                <b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item> 
             </b-dropdown>
+        </b-modal>
+        <b-modal id="customTimeFrameModal" title="Select Time Frame">
+            <b-form @submit="setTimeFrame(frames.custom)">
+                <!--TODO-->
+                <b-form-datepicker id="customTimeFrameDatePickerFrom" v-model="customTimeFrameFrom">
+                </b-form-datepicker>
+                <b-form-datepicker id="customTimeFrameDatePickerTo" v-model="customTimeFrameTo">
+                </b-form-datepicker>
+            </b-form>
         </b-modal>
     </div>
     
@@ -61,8 +70,10 @@ export default {
                 day: 1,
                 week: 2,
                 month: 3,
-                year: 4
-            }
+                year: 4,
+                custom: 5
+            },
+            timeFrame: "Select Time Frame"
         }
     },
     methods: {
@@ -119,7 +130,30 @@ export default {
             });
         },
         setTimeFrame: function(frame){
-
+            this.selectedTimeFrame.to = Math.floor(Date.now() / 1000);
+            let now = this.selectedTimeFrame.to;
+            switch (frame){
+                case this.frames.day:
+                    this.selectedTimeFrame.from = now - this.toUnixTime(1, 0, 0, 0);
+                    this.timeFrame = "Last Day";
+                    break;
+                case this.frames.week: 
+                    this.selectedTimeFrame.from = now - this.toUnixTime(7, 0, 0, 0);
+                    this.timeFrame = "Last Week";
+                    break;
+                case this.frames.month:
+                    this.selectedTimeFrame.from = now - this.toUnixTime(30, 0, 0, 0);
+                    this.timeFrame = "Last Month";
+                    break;
+                case this.frames.year:
+                    this.selectedTimeFrame.form = now - this.toUnixTime(360, 0, 0, 0);
+                    this.timeFrame = "Last Year";
+                    break;
+                case this.frames.custom:
+                    // TODO
+                    this.timeFrame = "Custom"
+                    break;
+            }
         },
         //converts human readable time to unixTime
         toUnixTime: function(days, hours, minutes, seconds){
