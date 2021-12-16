@@ -41,7 +41,7 @@ export default {
           let x = this.currencies[key].x;
           let y = this.currencies[key].y;
           for (let i in x){
-            newData.push([x[i], y[i]]);
+            newData.push([parseInt(x[i]), parseInt(y[i])]);
           }
           series.push({
             name: this.currencies[key].name,

@@ -1,11 +1,11 @@
 <template>
     <div>
         <b-row>
-            <b-col cols="2" class="fixedDiv h-100">
+            <b-col cols="2" >
                 <b-container>
                     <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1" menu-class="w-100">
                         <b-dropdown-item v-b-modal.timeFrameModal title="Time Frame">Time Frame:{{this.timeFrame}}</b-dropdown-item>
-                        <b-dropdown-item>Currency</b-dropdown-item>
+                        <!--<b-dropdown-item>Currency</b-dropdown-item>TODO whats that? -->
                     </b-dropdown>
                     <b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
                         <b-dropdown-item 
@@ -13,6 +13,10 @@
                             @click="addToSelection(curr.id)"    
                             >{{curr.name}}
                         </b-dropdown-item>
+                    </b-dropdown>
+                    <b-dropdown text="Currency" class="mb-1 w-100">
+                        <b-dropdown-item @click="setCurrency(currency.EUR)">EUR</b-dropdown-item>
+                        <b-dropdown-item @click="setCurrency(currency.USD)">USD</b-dropdown-item>
                     </b-dropdown>
                     <b-button block class="mb-1" @click="loadData()">Load Data</b-button>
                 </b-container>
@@ -34,11 +38,11 @@
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
-                <b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item> 
+                <!--<b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>-->
             </b-dropdown>
         </b-modal>
         <b-modal id="customTimeFrameModal" title="Select Time Frame">
-            <b-form @submit="setTimeFrame(frames.custom)">
+            <b-form inline>
                 <!--TODO-->
                 <b-form-datepicker id="customTimeFrameDatePickerFrom" v-model="customTimeFrameFrom">
                 </b-form-datepicker>
@@ -73,7 +77,19 @@ export default {
                 year: 4,
                 custom: 5
             },
-            timeFrame: "Select Time Frame"
+            timeFrame: "Select Time Frame",
+            customTimeFrameFrom: 0,
+            customTimeFrameTo: 0,
+            currency: {
+                EUR: "EUR",
+                USD: "USD"
+            },
+            selectedCurrency: this.currency
+        }
+    },
+    watch: {
+        selectedCurrency: function(){
+            this.calculateExchange();
         }
     },
     methods: {
@@ -154,6 +170,12 @@ export default {
                     this.timeFrame = "Custom"
                     break;
             }
+
+            let oldSelection = this.selection;
+                this.selection = [];
+                for (let key in oldSelection){
+                    this.addToSelection(oldSelection[key]);
+                }
         },
         //converts human readable time to unixTime
         toUnixTime: function(days, hours, minutes, seconds){
@@ -161,12 +183,20 @@ export default {
                 hours * 60 * 60 +
                 minutes * 60 +
                 seconds;
+        },
+        setCurrency: function(currency){
+            this.selectedCurrency = currency;
+            console.log(this.selectedCurrency);
+        },
+        //calculate exchange course
+        calculateExchange: function(){
+            //TODO
         }
     },
     created: function(){
-        // Set default time frame to last 24 hours
-        this.selectedTimeFrame.to = Math.floor(Date.now() / 1000);
-        this.selectedTimeFrame.from = this.selectedTimeFrame.to - this.toUnixTime(1, 0, 0, 0);
+        this.setTimeFrame(this.frames.day);
+        this.selectedCurrency = this.currency.EUR;
+        console.log("Currency set to: " + this.selectedCurrency);
     }
 }
 
