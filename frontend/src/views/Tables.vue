@@ -8,8 +8,8 @@
                     <b-form-datepicker v-model="minValue" :min="min" locale="en"></b-form-datepicker><br>
                     <label class="typo__label">till</label>
                     <b-form-datepicker v-model="maxValue" :max="max" locale="en"></b-form-datepicker><br>
-                    <label class="typo__label">Courses</label>
-                    <multiselect    v-model="value" 
+                    <label class="typo__label">Cryptocurrencies</label>
+                    <multiselect    v-model="taggedValue"
                                     label="name" 
                                     track-by="name" 
                                     :options="cryptoCurrencies" 
@@ -20,7 +20,7 @@
                     <b-form-group   label="Currency"
                                     v-slot="{ ariaDescribedby }">
                         <b-form-radio-group id="btn-radios-2"
-                                            v-model="selected"
+                                            v-model="selectedCurrencies"
                                             :options="currencies"
                                             :aria-describedby="ariaDescribedby"
                                             button-variant="outline-primary"
@@ -31,7 +31,7 @@
                 </b-container>
             </b-col>
             <b-col cols="10">
-                <Table />
+                <Table :taggedValue="this.taggedValue" />
             </b-col>
         </b-row>
     </div>
@@ -48,7 +48,7 @@ export default {
         Multiselect,
     },
   data () {
-    const now = new Date()
+    const now = new Date()                                                                      //TODO Date Constraints
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     // 15th two months prior
     const minDate = new Date(now)
@@ -60,7 +60,7 @@ export default {
     //maxDate.setDate(15)
 
     return {
-        value: null,
+        taggedValue: [{ id: "bitcoin", name: "Bitcoin"}, { id: "ethereum", name : "Ethereum"}],
         cryptoCurrencies: [
                 { id: "bitcoin", name: "Bitcoin"},
                 { id: "ethereum", name : "Ethereum"},
@@ -73,7 +73,7 @@ export default {
                 { id: "polkadot", name: "Polkadot"},
                 { id: "terra-luna", name: "Terra"}
         ],
-        selected: "EUR",
+        selectedCurrencies: "EUR",
         currencies:[
             { text: "Euro", value: "EUR" },
             { text: "US Dollar", value: "USD" }

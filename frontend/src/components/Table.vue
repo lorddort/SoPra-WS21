@@ -1,96 +1,38 @@
 <template>
     <div id="chart">
+        <li>Under</li>
+        <li>{{taggedValue}}</li>
+        <li>{{series}}</li>
+        <li>Above</li>
         <apexcharts type="heatmap" height="350" :options="chartOptions" :series="series"></apexcharts>
     </div>
+    
 </template>
 
 <script>
 import VueApexCharts from 'vue-apexcharts'
-import Tables from '@/views/Tables.vue'
 
 export default {
     name: 'HeatMap',
     components: {
-        Tables,
         apexcharts: VueApexCharts
     },
+    props: { taggedValue: Array },
     data: function() {
-          return{
-            series: [{
-              name: 'Jan',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Feb',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Mar',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Apr',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'May',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Jun',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Jul',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Aug',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            },
-            {
-              name: 'Sep',
-              data: this.generateData(20, {
-                min: -30,
-                max: 55
-              })
-            }
-          ],
-            chartOptions: {
-                chart: {
+        return{
+          data: [],
+          series: [],
+          chartOptions: {
+              chart: {
                 height: 350,
                 type: 'heatmap',
-                },
-                plotOptions: {
+              },
+              plotOptions: {
                 heatmap: {
-                    shadeIntensity: 0.5,
-                    radius: 0,
-                    useFillColorAsStroke: true,
-                    colorScale: {
+                  shadeIntensity: 0.5,
+                  radius: 0,
+                  useFillColorAsStroke: true,
+                  colorScale: {
                     ranges: [{
                         from: -30,
                         to: 5,
@@ -114,42 +56,48 @@ export default {
                         to: 55,
                         name: 'extreme',
                         color: '#FF0000'
-                        }
-                    ]
+                        }]
                     }
-                }
+                  }
                 },
-                dataLabels: {
+              dataLabels: {
                 enabled: false
-                },
-                stroke: {
+              },
+              stroke: {
                 width: 1
-                },
-                title: {
-                text: 'HeatMap Chart with Color Range'
-                },
-            },
-          }
-          
-        },
-        methods: {
-            generateData(count, yrange) {
-            var i = 0;
-            var series = [];
-            while (i < count) {
-                var x = (i + 1).toString();
-                var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-                series.push({
-                x: x,
-                y: y
-                });
-                i++;
-            }
-            return series;
-            },
-            addSeries() {
-
-            }
+              },
+              title: {
+                text: 'Korrelation Table'
+              },
+          },
         }
+    },
+    watch: {
+      taggedValue: function(){
+        this.updateMap();
+      }
+    },
+    methods: {
+        updateMap() {
+          var series = [];
+          for(var i = 0; i < this.taggedValue.length; i++){
+            var dataArray = [];
+            for(let j = 0; j<this.taggedValue.length; j++){
+              dataArray.push({
+                x: this.taggedValue[j].name,
+                y: Math.floor(Math.random()*30)             //TODO get Korrelation from backend
+              })
+            }
+            series.push({
+              name: this.taggedValue[i].name,
+              data: dataArray
+            });
+          }
+          this.series = series;
+        }
+    },
+    created: function(){
+      this.updateMap();
+    }
 }
 </script>
