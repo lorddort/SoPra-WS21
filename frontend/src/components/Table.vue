@@ -1,12 +1,10 @@
 <template>
-    <div id="chart">
-        <li>Under</li>
-        <li>{{taggedValue}}</li>
-        <li>{{series}}</li>
-        <li>Above</li>
-        <apexcharts type="heatmap" height="350" :options="chartOptions" :series="series"></apexcharts>
+    <div id="chart" v-if="chartHasData">
+      <apexcharts type="heatmap" height="350" :options="chartOptions" :series="series"></apexcharts>
     </div>
-    
+    <div v-else>
+      <h1>Non data to show</h1>
+    </div>
 </template>
 
 <script>
@@ -22,6 +20,7 @@ export default {
         return{
           data: [],
           series: [],
+          chartHasData: true,
           chartOptions: {
               chart: {
                 height: 350,
@@ -92,6 +91,11 @@ export default {
               name: this.taggedValue[i].name,
               data: dataArray
             });
+          }
+          if(series.length == 0){
+            this.chartHasData = false;
+          } else {
+            this.chartHasData = true;
           }
           this.series = series;
         }
