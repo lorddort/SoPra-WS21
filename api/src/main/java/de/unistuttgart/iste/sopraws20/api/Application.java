@@ -11,11 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class Application {
 
 	public static void main(String[] args) {
-		// CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
-		// load list of coins
-		// List<CoinList> coinList = client.getCoinList();
-		// private Marketclient.getCoinMarketChartById("bitcoin", "eur", 1);
-		// System.out.println(coinList);
 		SpringApplication.run(Application.class, args);
 	}
 
@@ -25,9 +20,9 @@ public class Application {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				// allow CORS requests for all resources and HTTP methods from the frontend
-				// origin
-				registry.addMapping("/**").allowedMethods("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE")
+				// allow CORS requests for all resources and HTTP methods from the frontend origin
+				registry.addMapping("/**")
+						.allowedMethods("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE")
 						.allowedOrigins("http://localhost:8000");
 			}
 		};

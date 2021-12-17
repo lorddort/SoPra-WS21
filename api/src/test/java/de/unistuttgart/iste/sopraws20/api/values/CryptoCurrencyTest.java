@@ -16,11 +16,9 @@ class CryptoCurrencyTest {
 	@BeforeAll
 	public static void init() {
 		testChart = new MarketChart();
-
 		testChart.setMarketCaps(getChart());
 		testChart.setPrices(getChart());
 		testChart.setTotalVolumes(getChart());
-
 	}
 
 	private static List<List<String>> getChart() {
@@ -30,7 +28,6 @@ class CryptoCurrencyTest {
 			price.add(i + "");
 			price.add((1 + i) + "");
 			chart.add(price);
-
 		}
 		return chart;
 	}
