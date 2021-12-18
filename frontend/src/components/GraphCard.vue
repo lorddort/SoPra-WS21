@@ -1,7 +1,7 @@
 <template>
     <div class="graphCard">
       <h1>{{graphName}}</h1>
-        <apexcharts type="area" height="350" :options="chartOptions" :series="series"></apexcharts>
+        <apexcharts type="area" height="500" :options="chartOptions" :series="series"></apexcharts>
     </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
       updateChart() {
-        console.log("updating..."); //DEBUG
+        console.log("updating...");
         let series = [];
         for (let key in this.currencies){
           let newData = [];
@@ -49,7 +49,6 @@ export default {
           });
         }
         this.series = series;
-        console.log(this.series);
       }
     }
 }

@@ -59,7 +59,7 @@ public class CryptoCurrencyController {
 
 	// get an number of crypto ID and name in order market cap descending
 	@GetMapping("/cryptos/list/{amount}")
-	public List<CryptoIdName> getCryptoCurrencyNames(@Valid int amount) {
+	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable int amount) {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
 
 		return cryptoCurrencyNames;
@@ -80,7 +80,7 @@ public class CryptoCurrencyController {
 
 	// get cc by id
 	@GetMapping("cryptos/{id}")
-	public CryptoCurrency getCryptoCurrencyByName(@PathVariable("id") String id) {
+	public CryptoCurrency getCryptoCurrencyByName(@PathVariable String id) {
 		return cryptoCurrencies.get(id);
 
 	}
