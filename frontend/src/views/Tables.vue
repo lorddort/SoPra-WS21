@@ -3,11 +3,10 @@
         <b-row>
             <b-col >
                 <b-container>
-                    <label class="typo__label">Period</label><br>
                     <label class="typo__label">From</label>
-                    <b-form-datepicker v-model="minValue" :min="min" locale="en"></b-form-datepicker><br>
+                    <b-form-datepicker v-model="dayOne" :max="maxDate" locale="en"></b-form-datepicker><br>
                     <label class="typo__label">till</label>
-                    <b-form-datepicker v-model="maxValue" :max="max" locale="en"></b-form-datepicker><br>
+                    <b-form-datepicker v-model="dayTwo" :min="dayOne" :max="maxDate" locale="en"></b-form-datepicker><br>
                     <label class="typo__label">Cryptocurrencies</label>
                     <multiselect    v-model="taggedValue"
                                     label="name" 
@@ -48,17 +47,8 @@ export default {
         Multiselect,
     },
   data () {
-    const now = new Date()                                                                      //TODO Date Constraints
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    // 15th two months prior
-    const minDate = new Date(now)
-    //minDate.setMonth(minDate.getMonth() - 2)
-    //minDate.setDate(15)
-    // 15th in two months
-    const maxDate = new Date(today)
-    //maxDate.setMonth(maxDate.getMonth() + 2)
-    //maxDate.setDate(15)
-
+    const now = new Date()
+    const maxDate = new Date(now)
     return {
         taggedValue: [{ id: "bitcoin", name: "Bitcoin"}, { id: "ethereum", name : "Ethereum"}],
         cryptoCurrencies: [
@@ -78,10 +68,10 @@ export default {
             { text: "Euro", value: "EUR" },
             { text: "US Dollar", value: "USD" }
         ],
-        minValue: '',
-        maxValue: '',
-        min: minDate,
-        max: maxDate
+        dayOne: null,
+        dayTwo: null,
+        minDate: this.dayOne,
+        maxDate: maxDate
     }
   },
   methods: {
