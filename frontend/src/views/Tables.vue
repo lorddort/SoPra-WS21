@@ -27,9 +27,18 @@
                                             buttons>
                         </b-form-radio-group>
                     </b-form-group><br>
+                    <label for="sb-inline">Threshold</label>
+                    <b-row align-v="start">
+                        <b-col>
+                            <b-form-spinbutton id="sb-inline" v-model="threshold" placeholder="--" min="0" max="1" step="0.05" inline></b-form-spinbutton>
+                        </b-col>
+                        <b-col cols="8">
+                            <b-form-input v-model="threshold" placeholder="Enter threshold <= 1"></b-form-input>
+                        </b-col>
+                    </b-row>
                 </b-container>
             </b-col>
-            <b-col cols="10">
+            <b-col cols="9">
                 <Table :taggedValue="this.taggedValue" />
             </b-col>
         </b-row>
@@ -71,7 +80,8 @@ export default {
         dayOne: null,
         dayTwo: null,
         minDate: this.dayOne,
-        maxDate: maxDate
+        maxDate: maxDate,
+        threshold: null
     }
   },
   methods: {
