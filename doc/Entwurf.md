@@ -18,7 +18,7 @@ Settings Folder: Speicherort für Benutzereinstellungen.
 
 ## Domain Model
 
-![Domain Model](images/domain-modelv1.png)
+![Domain Model](images/domain-modelv2.png)
 
 HistoricalValue/Index/CryptoCurrency: Kryptowährungen und Indizes. Kryptowährungen haben zusäthliche Attribute wie Handelsvolumen.
 
