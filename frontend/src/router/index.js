@@ -1,8 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import About from "../views/About.vue";
-import Cats from "../views/Cats.vue";
+import Graphs from "../views/Graphs.vue";
+import Tables from "../views/Tables.vue";
+import GraphCard from "../components/GraphCard.vue";
+import Table from "../components/Table.vue";
 
 Vue.use(VueRouter);
 
@@ -10,23 +11,22 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "Graphs",
+    component: Graphs
   },
   {
-    path: "/about",
-    name: "About",
-    component: About
-  },
-  {
-    path: "/cats",
-    name: "Cats",
-    component: Cats
+    path: "/tables",
+    name: "Tables",
+    component: Tables
   }
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  components: {
+    GraphCard,
+    Table
+  }
 });
 
 export default router;

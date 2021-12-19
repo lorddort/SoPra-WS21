@@ -5,11 +5,14 @@ import App from "./App.vue";
 import router from "./router";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import VueApexCharts from "vue-apexcharts";
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
 // BootstrapVue for UI components and icons
 Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons)
+Vue.use(BootstrapVueIcons);
+
+Vue.use(VueApexCharts);
 
 Vue.config.productionTip = false;
 
