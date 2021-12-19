@@ -1,12 +1,13 @@
-# Sprint Report [1 || 2]
+# Sprint Report [1]
 
-*TODO: Datei kopieren / Dateiname anpassen --> X wird 1 oder 2*
+In diesem Sprint wurden die bis zum [Meilenstein 2](meilenstein-url) erledigten User Stories abgearbeitet.
 
-In diesem Sprint wurden die bis zum [Meilenstein X](meilenstein-url) erledigten User Stories abgearbeitet.
+TODO
 
 ## Verbesserte Dokumente [optional]
 
-*TODO: Dokumente aufführen, die verbessert wurden.*
+- Domain-Model
+
 
 ## Beschreibung der wichtigsten implementierten Features
 
