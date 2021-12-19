@@ -10,7 +10,7 @@
                     <b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
                         <b-dropdown-item 
                             v-for="curr in currencyMap" :key="curr.id"
-                            @click="addToSelection(curr.id)"    
+                            @click="addAndUpdate(curr.id)"    
                             >{{curr.name}}
                         </b-dropdown-item>
                     </b-dropdown>
@@ -21,7 +21,7 @@
                 </b-container>
             </b-col>
             <b-col cols="8">
-                <GraphCard :currencies="this.selection"/>
+                <GraphCard :currencies="this.chartData"/>
             </b-col>
             <!--<b-col>
                 <div>
@@ -32,12 +32,13 @@
             </b-col>-->
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
-            <b-dropdown id="timeFrame" :text="this.timeFrameString      " style="min-width: 100%" menu-class="w-100">
+            <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100"
+                @ok="this.updateChart()">
                 <b-dropdown-item @click="setTimeFrame(frames.day)">Last Day</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
-                <!--<b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>-->
+                <b-dropdown-item disabled v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>
             </b-dropdown>
         </b-modal>
         <b-modal id="customTimeFrameModal" title="Select Time Frame">
@@ -68,6 +69,7 @@ export default {
             currencyMap: [],
             rawData: [],
             selection: [],
+            chartData: [],
             selectedTimeFrame: {
                 from: 0,
                 to: 0
@@ -116,42 +118,49 @@ export default {
             axios.post(`${config.apiBaseUrl}/cryptos/${id}`).then((response) => {
                 selectedCC = response.data;
 
-            if (this.timeFrame == this.frames.day){
-                for (let key in selectedCC.minutelyChart.prices){
-                    let tuple = selectedCC.minutelyChart.prices[key];
-                    xValues.push(tuple[0]);
-                    yValues.push(tuple[1]);
-                }
-            } else if (this.timeFrame == this.frames.week){
-                for (let key in selectedCC.hourlyChart.prices){
-                    let tuple = selectedCC.hourlyChart.prices[key];
-                    if (this.selectedTimeFrame.from <= parseInt(tuple[0]) && parseInt(tuple[0]) <= this.selectedTimeFrame.to){
+                if (this.timeFrame == this.frames.day){
+                    for (let key in selectedCC.minutelyChart.prices){
+                        let tuple = selectedCC.minutelyChart.prices[key];
+                        xValues.push(tuple[0]);
+                        yValues.push(tuple[1]);
+                    }
+                } else if (this.timeFrame == this.frames.week){
+                    for (let key in selectedCC.hourlyChart.prices){
+                        let tuple = selectedCC.hourlyChart.prices[key];
+                        if (this.selectedTimeFrame.from <= parseInt(tuple[0]) && parseInt(tuple[0]) <= this.selectedTimeFrame.to){
+                            xValues.push(tuple[0]);
+                            yValues.push(tuple[1]);
+                        }
+                    }
+                } else if (this.timeFrame == this.frames.month){
+                    for (let key in selectedCC.hourlyChart.prices){
+                        let tuple = selectedCC.hourlyChart.prices[key];
+                        xValues.push(tuple[0]);
+                        yValues.push(tuple[1]);
+                    }
+                } else {
+                    for (let key in selectedCC.dailyChart.prices){
+                        let tuple = selectedCC.dailyChart.prices[key];
                         xValues.push(tuple[0]);
                         yValues.push(tuple[1]);
                     }
                 }
-            } else if (this.timeFrame == this.frames.month){
-                for (let key in selectedCC.hourlyChart.prices){
-                    let tuple = selectedCC.hourlyChart.prices[key];
-                    xValues.push(tuple[0]);
-                    yValues.push(tuple[1]);
-                }
-            } else {
-                for (let key in selectedCC.dailyChart.prices){
-                    let tuple = selectedCC.dailyChart.prices[key];
-                    xValues.push(tuple[0]);
-                    yValues.push(tuple[1]);
-                }
-            }
-            
-            this.selection.push({
-                id: id,
-                name: selectedCC.name,
-                x: xValues,
-                y: yValues
-            });
+
+                this.selection.push({
+                    id: id,
+                    name: selectedCC.name,
+                    x: xValues,
+                    y: yValues
+                });
 
             });
+        },
+        updateChart: function(){
+            this.chartData = this.selection;
+        },
+        addAndUpdate: function(id){
+            this.addToSelection(id);
+            this.updateChart();
         },
         setTimeFrame: function(frame){
             this.selectedTimeFrame.to = Math.floor(Date.now());
@@ -182,7 +191,6 @@ export default {
                     this.timeFrame = this.frames.custom;
                     break;
             }
-            console.log("from: " + this.selectedTimeFrame.from + "; to: " + this.selectedTimeFrame.to);
 
             for (let key in this.selection){
                 this.addToSelection(this.selection[key].id);
@@ -209,6 +217,7 @@ export default {
         this.loadCurrencyMap();
         this.addToSelection("bitcoin");
         this.addToSelection("ethereum");
+        this.updateChart();
     }
 }
 
