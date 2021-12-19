@@ -69,8 +69,8 @@ public class CryptoCurrencyController {
 	public CryptoCurrency addCryptoCurrency(@PathVariable String id) {
 		CryptoCurrency newCrypto = Importer.loadCrypto(id);
 		cryptoCurrencies.put(newCrypto.getId(), newCrypto);
-		CryptoIdName IdAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
-		loadedIdAndNames.add(IdAndName);
+		CryptoIdName idAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
+		loadedIdAndNames.add(idAndName);
 		return newCrypto;
 
 	}

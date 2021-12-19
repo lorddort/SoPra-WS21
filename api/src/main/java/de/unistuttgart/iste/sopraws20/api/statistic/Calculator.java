@@ -54,6 +54,7 @@ public final class Calculator {
 		return simpleCorrelationCoefficient(newXArray, newYArray);
 	}
 
+	// helper method to make crypto data to array for calculator
 	public static float[] cryptoDataToArray(List<List<String>> coinList) {
 		int length = coinList.size();
 		float[] coinArray = new float[length];
