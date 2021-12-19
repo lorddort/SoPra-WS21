@@ -9,11 +9,14 @@ In einer weiteren Ansicht kann der Nutzer die Korrelationskoeffizienten der einz
 
 ## System Context Diagram
 
-![System Context Diagram](images/CryptoCorrelation_context-diagramv1.1.png)
+![System Context Diagram](images/CryptoCorrelation_context-diagramv1.2.png)
 
 Investor/ Krypto Enthusiast: Kunde, der die App zur Informationbeschaffung über Kryptowährungen nutzt.
+
 REST API Krypto Preis Informationen: Quelle der historischen Daten für Kryptowährungen.
+
 DB Markt Indizes: Quelle der historischen Daten für Marktindizes.
+
 Settings Folder: Speicherort für Benutzereinstellungen.
 
 ## Domain Model
