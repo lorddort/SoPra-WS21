@@ -21,9 +21,11 @@ import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
  */
 public final class Importer {
 
+	//make client to communicate to coingecko
 	static CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
 	static List<CryptoIdName> coinNames = new LinkedList<CryptoIdName>();
 
+	// gets coinNames or loads all crypto Names and IDs if empty
 	public static List<CryptoIdName> getCryptoCurrencyNamesAndIds() {
 		// load list of coins
 		if (coinNames.isEmpty()) {
@@ -40,9 +42,10 @@ public final class Importer {
 		return coinNames;
 	}
 
+	//gets specified amount of crypto by market cap. loads new if amount asked is different to amount that is saved
 	public static List<CryptoIdName> getCryptoCurrencyNamesAndIds(@Size(max = 250) int amount) {
 		// load list of coins
-		if (coinNames.isEmpty()) {
+		if (!(coinNames.size() == amount)) {
 			List<CoinMarkets> coinMarkets = client.getCoinMarkets("eur", "", "market_cap_desc", amount, 1, false,
 					"24h");
 			coinNames = new LinkedList<CryptoIdName>();
@@ -57,6 +60,7 @@ public final class Importer {
 		return coinNames;
 	}
 
+	// loads all data to fill a CryptoCurrency object from coingecko by id
 	public static CryptoCurrency loadCrypto(@Valid String id) {
 
 		CoinFullData cryptoBroadData = client.getCoinById(id);

@@ -6,6 +6,8 @@
 - [ ] Vereinbarte Coding Guidelines und Standard sind eingehalten und werden bei Code Review überprüft.
 - [ ] Die Dokumentation ist immer auf dem neusten Stand.
 - [ ] Es wurden exploratives Tests durchgeführt.
+- [ ] Die Pipeline ist erfolgreich durchgelaufen.
+- [ ] Der Merge Request wurde von mindestens einem anderen Teammitglied durchgeschaut.
 
 ## Merge Request Template
 
