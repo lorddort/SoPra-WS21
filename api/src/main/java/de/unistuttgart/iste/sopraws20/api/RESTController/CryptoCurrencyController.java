@@ -67,6 +67,12 @@ public class CryptoCurrencyController {
 	@PostMapping("/cryptos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public CryptoCurrency addCryptoCurrency(@PathVariable String id) {
+		// check if crypto is already loaded
+		for (CryptoIdName loaded : loadedIdAndNames) {
+			if (loaded.getId().equals(id)) {
+				return cryptoCurrencies.get(id);
+			}
+		}
 		CryptoCurrency newCrypto = Importer.loadCrypto(id);
 		cryptoCurrencies.put(newCrypto.getId(), newCrypto);
 		CryptoIdName idAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
