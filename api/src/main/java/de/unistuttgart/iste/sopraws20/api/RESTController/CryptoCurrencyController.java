@@ -56,7 +56,7 @@ public class CryptoCurrencyController {
 
 	// get a number of crypto ID and name in order market cap descending
 	@GetMapping("/cryptos/list/{amount}")
-	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable @Valid int amount) {
+	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable("amount") @Valid int amount) {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
 
 		return cryptoCurrencyNames;
@@ -66,7 +66,7 @@ public class CryptoCurrencyController {
 	// adds cc with ID, autofills information from coingecko
 	@PostMapping("/cryptos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public CryptoCurrency addCryptoCurrency(@PathVariable String id) {
+	public CryptoCurrency addCryptoCurrency(@PathVariable("id") String id) {
 		// check if crypto is already loaded
 		for (CryptoIdName loaded : loadedIdAndNames) {
 			if (loaded.getId().equals(id)) {
