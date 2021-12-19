@@ -26,7 +26,7 @@ import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
 @RestController
 public class CryptoCurrencyController {
 
-	private Map<String, CryptoCurrency> cryptoCurrencies;
+	private static Map<String, CryptoCurrency> cryptoCurrencies;
 	// list of name and ID of cc
 	private List<CryptoIdName> cryptoCurrencyNames;
 	private List<CryptoIdName> loadedIdAndNames;
@@ -69,15 +69,15 @@ public class CryptoCurrencyController {
 	public CryptoCurrency addCryptoCurrency(@PathVariable String id) {
 		CryptoCurrency newCrypto = Importer.loadCrypto(id);
 		cryptoCurrencies.put(newCrypto.getId(), newCrypto);
-		CryptoIdName IdAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
-		loadedIdAndNames.add(IdAndName);
+		CryptoIdName idAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
+		loadedIdAndNames.add(idAndName);
 		return newCrypto;
 
 	}
 
 	// get cc by id
 	@GetMapping("cryptos/{id}")
-	public CryptoCurrency getCryptoCurrencyByName(@PathVariable("id") String id) {
+	public static CryptoCurrency getCryptoCurrencyByName(@PathVariable("id") String id) {
 		return cryptoCurrencies.get(id);
 
 	}
