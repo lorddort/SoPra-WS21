@@ -76,7 +76,13 @@ export default {
     }
   },
   methods: {
+    postCCForCorrelation: function(array){
+        for(var i = 0; i < array.length; i++){
+            axios.post(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
+        }
+    },
     loadCryptoCurrency: function(){
+        console.log("Load 20 here")
         axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
             this.cryptoCurrencies = response.data;
             if(this.cryptoCurrencies.length > 2){
@@ -85,6 +91,7 @@ export default {
                 }
             }
             console.log(this.cryptoCurrencies)
+            this.postCCForCorrelation(this.cryptoCurrencies)
         })
     },
     searchTag ({ name }) {
