@@ -18,7 +18,6 @@
                         <b-dropdown-item @click="setCurrency(currency.EUR)">EUR</b-dropdown-item>
                         <b-dropdown-item disabled @click="setCurrency(currency.USD)">USD</b-dropdown-item>
                     </b-dropdown>
-                    <b-button block class="mb-1" @click="loadCurrencyMap()">Get Available Currencies</b-button>
                 </b-container>
             </b-col>
             <b-col cols="8">
@@ -207,6 +206,9 @@ export default {
     created: function(){
         this.setTimeFrame(this.frames.day);
         this.selectedCurrency = this.currency.EUR;
+        this.loadCurrencyMap();
+        this.addToSelection("bitcoin");
+        this.addToSelection("ethereum");
     }
 }
 
