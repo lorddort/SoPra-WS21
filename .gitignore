@@ -49,4 +49,9 @@ pnpm-debug.log*
 *.ntvs*
 *.njsproj
 *.sln
+<<<<<<< HEAD
 *.sw?
+=======
+*.sw?
+
+>>>>>>> origin/Table

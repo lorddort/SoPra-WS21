@@ -3,7 +3,9 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Graphs from "../views/Graphs.vue";
 import Cats from "../views/Cats.vue";
+import Tables from "../views/Tables.vue";
 import GraphCard from "../components/GraphCard.vue";
+import Table from "../components/Table.vue";
 
 Vue.use(VueRouter);
 
@@ -23,13 +25,19 @@ const routes = [
     path: "/cats",
     name: "Cats",
     component: Cats
+  },
+  {
+    path: "/tables",
+    name: "Tables",
+    component: Tables
   }
 ];
 
 const router = new VueRouter({
   routes,
   components: {
-    GraphCard
+    GraphCard,
+    Table
   }
 });
 
