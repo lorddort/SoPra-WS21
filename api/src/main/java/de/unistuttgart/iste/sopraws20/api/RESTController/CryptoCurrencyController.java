@@ -56,11 +56,7 @@ public class CryptoCurrencyController {
 
 	// get a number of crypto ID and name in order market cap descending
 	@GetMapping("/cryptos/list/{amount}")
-<<<<<<< HEAD
-	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable int amount) {
-=======
 	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable @Valid int amount) {
->>>>>>> master
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
 
 		return cryptoCurrencyNames;
