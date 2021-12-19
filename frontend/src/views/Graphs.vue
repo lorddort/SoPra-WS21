@@ -4,7 +4,7 @@
             <b-col cols="2" >
                 <b-container>
                     <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1" menu-class="w-100">
-                        <b-dropdown-item v-b-modal.timeFrameModal title="Time Frame">Time Frame:{{this.timeFrameString}}</b-dropdown-item>
+                        <b-dropdown-item v-b-modal.timeFrameModal title="Time Frame">Time Frame: {{this.timeFrameString}}</b-dropdown-item>
                         <!--<b-dropdown-item>Currency</b-dropdown-item>TODO whats that? -->
                     </b-dropdown>
                     <b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
@@ -104,8 +104,11 @@ export default {
         },
         //add loaded data to graph selection
         addToSelection: function(id){
-            //early escape if already in selection
-            if (this.selection.some(curr => curr.id === id)) return;
+            for (let i in this.selection){
+                if (this.selection[i].id == id){
+                    this.selection.splice(i, 1);
+                }
+            }
 
             let xValues = [];
             let yValues = [];
@@ -114,13 +117,21 @@ export default {
             axios.post(`${config.apiBaseUrl}/cryptos/${id}`).then((response) => {
                 selectedCC = response.data;
 
-            if (this.selectedTimeFrame == this.frames.day){
+            if (this.timeFrame == this.frames.day){
                 for (let key in selectedCC.minutelyChart.prices){
                     let tuple = selectedCC.minutelyChart.prices[key];
                     xValues.push(tuple[0]);
                     yValues.push(tuple[1]);
                 }
-            } else if (this.selectedTimeFrame == this.frames.week || this.selectedTimeFrame == this.frames.month){
+            } else if (this.timeFrame == this.frames.week){
+                for (let key in selectedCC.hourlyChart.prices){
+                    let tuple = selectedCC.hourlyChart.prices[key];
+                    if (this.selectedTimeFrame.from <= parseInt(tuple[0]) && parseInt(tuple[0]) <= this.selectedTimeFrame.to){
+                        xValues.push(tuple[0]);
+                        yValues.push(tuple[1]);
+                    }
+                }
+            } else if (this.timeFrame == this.frames.month){
                 for (let key in selectedCC.hourlyChart.prices){
                     let tuple = selectedCC.hourlyChart.prices[key];
                     xValues.push(tuple[0]);
@@ -144,7 +155,7 @@ export default {
             });
         },
         setTimeFrame: function(frame){
-            this.selectedTimeFrame.to = Math.floor(Date.now() / 1000);
+            this.selectedTimeFrame.to = Math.floor(Date.now());
             let now = this.selectedTimeFrame.to;
             switch (frame){
                 case this.frames.day:
@@ -163,7 +174,7 @@ export default {
                     this.timeFrameString = "Last Month";
                     break;
                 case this.frames.year:
-                    this.selectedTimeFrame.form = now - this.toUnixTime(360, 0, 0, 0);
+                    this.selectedTimeFrame.from = now - this.toUnixTime(360, 0, 0, 0);
                     this.timeFrame = this.frames.year;
                     this.timeFrameString = "Last Year";
                     break;
@@ -172,6 +183,7 @@ export default {
                     this.timeFrame = this.frames.custom;
                     break;
             }
+            console.log("from: " + this.selectedTimeFrame.from + "; to: " + this.selectedTimeFrame.to);
 
             for (let key in this.selection){
                 this.addToSelection(this.selection[key].id);
@@ -179,9 +191,9 @@ export default {
         },
         //converts human readable time to unixTime
         toUnixTime: function(days, hours, minutes, seconds){
-            return  days * 24 * 60 * 60 +
-                hours * 60 * 60 +
-                minutes * 60 +
+            return  days * 24 * 60 * 60 * 1000 +
+                hours * 60 * 60 * 1000+
+                minutes * 60 * 1000+
                 seconds;
         },
         setCurrency: function(currency){

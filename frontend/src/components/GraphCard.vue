@@ -34,7 +34,6 @@ export default {
     },
     methods: {
       updateChart() {
-        console.log("updating...");
         let series = [];
         for (let key in this.currencies){
           let newData = [];
