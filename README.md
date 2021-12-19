@@ -7,6 +7,7 @@
 
 Assuming all prerequisites are fulfilled, you can follow these instructions to get to know the application:
 - Start the API by navigating into its folder and executing `./mvnw spring-boot:run`.
+- Open http://localhost:8080/api/v1/swagger-ui in your browser. It will enable you to interact with the API.
 
 - Now start the frontend by navigating into its folder and executing `npm install` and then `npm run serve`.
 - It will host the UI at http://localhost:8000, which you can now also open in your browser.

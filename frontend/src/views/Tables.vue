@@ -48,6 +48,8 @@
 <script>
 import Table from "@/components/Table.vue"
 import Multiselect from 'vue-multiselect'
+import axios from "axios"
+import config from "@/config"
 
 export default {
     name: "Tables",
@@ -59,19 +61,8 @@ export default {
     const now = new Date()
     const maxDate = new Date(now)
     return {
-        taggedValue: [{ id: "bitcoin", name: "Bitcoin"}, { id: "ethereum", name : "Ethereum"}],
-        cryptoCurrencies: [
-                { id: "bitcoin", name: "Bitcoin"},
-                { id: "ethereum", name : "Ethereum"},
-                { id: "binancecoin", name: "Binance Coin"},
-                { id: "tether", name: "Tether"},
-                { id: "solana", name: "Solana"},
-                { id: "usd-coin", name: "USD Coin"},
-                { id: "cardano", name: "Cardano"},
-                { id: "ripple", name: "XRP"},
-                { id: "polkadot", name: "Polkadot"},
-                { id: "terra-luna", name: "Terra"}
-        ],
+        taggedValue: [/*{ id: "bitcoin", name: "Bitcoin"}, { id: "ethereum", name : "Ethereum"}*/],
+        cryptoCurrencies: [],
         selectedCurrencies: "EUR",
         currencies:[
             { text: "Euro", value: "EUR" },
@@ -85,9 +76,30 @@ export default {
     }
   },
   methods: {
+    postCCForCorrelation: function(array){
+        for(var i = 0; i < array.length; i++){
+            axios.post(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
+        }
+    },
+    loadCryptoCurrency: function(){
+        console.log("Load 20 here")
+        axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
+            this.cryptoCurrencies = response.data;
+            if(this.cryptoCurrencies.length > 2){
+                for(var i = 0; i < 2; i++){
+                    this.taggedValue.push(this.cryptoCurrencies[i])
+                }
+            }
+            console.log(this.cryptoCurrencies)
+            this.postCCForCorrelation(this.cryptoCurrencies)
+        })
+    },
     searchTag ({ name }) {
         return `${name}`
     }
+  },
+  created: function(){
+        this.loadCryptoCurrency();
   }
 }
 

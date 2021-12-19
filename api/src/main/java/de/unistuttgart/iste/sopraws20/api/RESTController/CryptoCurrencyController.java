@@ -83,7 +83,7 @@ public class CryptoCurrencyController {
 
 	// get cc by id
 	@GetMapping("cryptos/{id}")
-	public static CryptoCurrency getCryptoCurrencyByName(@PathVariable("id") String id) {
+	public static CryptoCurrency getCryptoCurrencyByName(@PathVariable String id) {
 		return cryptoCurrencies.get(id);
 
 	}
