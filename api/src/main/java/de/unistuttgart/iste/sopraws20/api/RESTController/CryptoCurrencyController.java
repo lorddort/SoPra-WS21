@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
+import de.unistuttgart.iste.sopraws20.api.services.CryptoCurrencyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,41 +27,19 @@ import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
 
 @RestController
 public class CryptoCurrencyController {
-
-	private static Map<String, CryptoCurrency> cryptoCurrencies;
-	// list of name and ID of cc
-	private List<CryptoIdName> cryptoCurrencyNames;
-	private List<CryptoIdName> loadedIdAndNames;
-
-	// executed after startup
-	@PostConstruct
-	public void init() {
-		cryptoCurrencies = new HashMap<String, CryptoCurrency>();
-		cryptoCurrencyNames = new ArrayList<CryptoIdName>();
-		loadedIdAndNames = new ArrayList<CryptoIdName>();
-		CoinGeckoApiClientImpl coinGeckoApiClient = new CoinGeckoApiClientImpl();
-		try {
-			coinGeckoApiClient.ping();
-		} catch (CoinGeckoApiException e) {
-			// TODO
-		}
-	}
+	@Autowired
+	private CryptoCurrencyService cryptoCurrencyService;
 
 	// gets list of Strings with crypto IDs and their names
 	@GetMapping("/cryptos/list")
 	public List<CryptoIdName> getCryptoCurrencyNames() {
-		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds();
-
-		return cryptoCurrencyNames;
-
+		return cryptoCurrencyService.getCryptoCurrencyNames();
 	}
 
 	// get a number of crypto ID and name in order market cap descending
 	@GetMapping("/cryptos/list/{amount}")
 	public List<CryptoIdName> getCryptoCurrencyNames(@PathVariable("amount") @Valid int amount) {
-		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
-
-		return cryptoCurrencyNames;
+		return cryptoCurrencyService.getCryptoCurrencyNames(amount);
 
 	}
 
@@ -67,50 +47,32 @@ public class CryptoCurrencyController {
 	@PostMapping("/cryptos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public CryptoCurrency addCryptoCurrency(@PathVariable("id") String id) {
-		// check if crypto is already loaded
-		for (CryptoIdName loaded : loadedIdAndNames) {
-			if (loaded.getId().equals(id)) {
-				return cryptoCurrencies.get(id);
-			}
-		}
-		CryptoCurrency newCrypto = Importer.loadCrypto(id);
-		cryptoCurrencies.put(newCrypto.getId(), newCrypto);
-		CryptoIdName idAndName = new CryptoIdName(newCrypto.getId(), newCrypto.getName());
-		loadedIdAndNames.add(idAndName);
-		return newCrypto;
-
+		return cryptoCurrencyService.addCryptoCurrency(id);
 	}
 
-	// get cc by id
+	// get cc by id and is static ergo not yet in Service
 	@GetMapping("cryptos/{id}")
 	public static CryptoCurrency getCryptoCurrencyByName(@PathVariable String id) {
-		return cryptoCurrencies.get(id);
+		return CryptoCurrencyService.getCryptoCurrencyByName(id);
 
 	}
 
 	// get id and name of all loaded cc
 	@GetMapping("cryptos/loaded")
 	public List<CryptoIdName> getLoadedCryptoCurrencies() {
-		return loadedIdAndNames;
-
+		return cryptoCurrencyService.getLoadedCryptoCurrencies();
 	}
 
 	// get logo url for crypto
 	@GetMapping("cryptos/{id}/logourl")
 	public String setLogoUrl(@PathVariable("id") String id) {
-		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
-		return currCrypto.getLogoUrl();
-
+		return cryptoCurrencyService.setLogoUrl(id);
 	}
 
 	// update logo url for crypto
 	@PutMapping("cryptos/{id}/logourl")
 	public String editLogoUrl(@PathVariable("id") String id, String newLogoUrl) {
-		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
-		currCrypto.setLogoUrl(newLogoUrl);
-
-		return newLogoUrl;
-
+		return cryptoCurrencyService.editLogoUrl(id, newLogoUrl);
 	}
 
 }

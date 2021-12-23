@@ -48,7 +48,7 @@ class CryptoCurrencyControllerTest {
 	@BeforeAll
 	public static void init() {
 		controller = new CryptoCurrencyController();
-		controller.init();
+		//controller.init();
 		crypto = new CryptoCurrency("bitcoin");
 		crypto.setName("Bitcoin");
 
