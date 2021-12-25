@@ -4,7 +4,9 @@ import de.unistuttgart.iste.sopraws20.api.RESTController.CryptoCurrencyControlle
 import de.unistuttgart.iste.sopraws20.api.statistic.Calculator;
 import de.unistuttgart.iste.sopraws20.api.values.CorrelationCoefficient;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CalculatorService {
 
 	/*
