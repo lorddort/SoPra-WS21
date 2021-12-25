@@ -2,6 +2,7 @@ package de.unistuttgart.iste.sopraws20.api.services;
 
 import de.unistuttgart.iste.sopraws20.api.RESTController.CryptoCurrencyController;
 import de.unistuttgart.iste.sopraws20.api.statistic.Calculator;
+import de.unistuttgart.iste.sopraws20.api.values.CorrelationCoefficient;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
 
 public class CalculatorService {
@@ -17,7 +18,7 @@ public class CalculatorService {
 	 *
 	 * @param id2 use id of loaded crypto, otherwise -2 will be returned
 	 */
-	public float getCryptoCorrelationCoefficient(String type, String id1, String id2) {
+	public CorrelationCoefficient getCryptoCorrelationCoefficient(String type, String id1, String id2) {
 		CryptoCurrency crypto1;
 		CryptoCurrency crypto2;
 		try {
@@ -35,9 +36,9 @@ public class CalculatorService {
 				crypto1Arr = Calculator.cryptoDataToArray(crypto1.getDailyChart().getPrices());
 				crypto2Arr = Calculator.cryptoDataToArray(crypto2.getDailyChart().getPrices());
 			}
-			return Calculator.cutInputCorrelationCoefficient(crypto1Arr, crypto2Arr);
+			return  new CorrelationCoefficient(Calculator.cutInputCorrelationCoefficient(crypto1Arr, crypto2Arr));
 		} catch (NullPointerException e) {
-			return -2;
+			return new CorrelationCoefficient(-2);
 		}
 	}
 }
