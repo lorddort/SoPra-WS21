@@ -61,7 +61,7 @@ export default {
     const now = new Date()
     const maxDate = new Date(now)
     return {
-        taggedValue: [/*{ id: "bitcoin", name: "Bitcoin"}, { id: "ethereum", name : "Ethereum"}*/],
+        taggedValue: [/*{ id: "bitcoin", name: "Bitcoin"}...*/],
         cryptoCurrencies: [],
         selectedCurrencies: "EUR",
         currencies:[
@@ -82,7 +82,6 @@ export default {
         }
     },
     loadCryptoCurrency: function(){
-        console.log("Load 20 here")
         axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
             this.cryptoCurrencies = response.data;
             if(this.cryptoCurrencies.length > 2){
@@ -90,7 +89,6 @@ export default {
                     this.taggedValue.push(this.cryptoCurrencies[i])
                 }
             }
-            console.log(this.cryptoCurrencies)
             this.postCCForCorrelation(this.cryptoCurrencies)
         })
     },
