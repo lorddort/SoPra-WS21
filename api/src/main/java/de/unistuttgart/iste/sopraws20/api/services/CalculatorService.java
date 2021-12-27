@@ -6,11 +6,14 @@ import de.unistuttgart.iste.sopraws20.api.values.CorrelationCoefficient;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
 import org.springframework.stereotype.Service;
 
+/**
+ * Class with Services for Calculator
+ */
 @Service
 public class CalculatorService {
 
-	/*
-	 * gets correlation coefficient of last year of specified crypto by id. For
+	/**
+	 * Gets correlation coefficient of last year of specified crypto by id. For
 	 * correlation of at least one non crypto asset, use different method
 	 *
 	 * @param type use volume or marketcap, otherwise price correlation will be
@@ -19,6 +22,7 @@ public class CalculatorService {
 	 * @param id1 use id of loaded crypto, otherwise -2 will be returned
 	 *
 	 * @param id2 use id of loaded crypto, otherwise -2 will be returned
+	 * @return correlation coefficient or -2 for invalid ids
 	 */
 	public CorrelationCoefficient getCryptoCorrelationCoefficient(String type, String id1, String id2) {
 		CryptoCurrency crypto1;

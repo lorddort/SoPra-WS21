@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class with Services for CryptoCurrency(cc)
+ */
 @Service
 public class CryptoCurrencyService {
 	private static Map<String, CryptoCurrency> cryptoCurrencies;
@@ -20,7 +23,9 @@ public class CryptoCurrencyService {
 	private List<CryptoIdName> cryptoCurrencyNames;
 	private List<CryptoIdName> loadedIdAndNames;
 
-	// executed after startup
+	/**
+	 * Executed after startup
+	 */
 	@PostConstruct
 	public void init() {
 		cryptoCurrencies = new HashMap<String, CryptoCurrency>();
@@ -34,16 +39,63 @@ public class CryptoCurrencyService {
 		}
 	}
 
+	/**
+	 * Gets list of Strings with crypto IDs and their names
+	 *
+	 * @return crypto list
+	 */
 	public List<CryptoIdName> getCryptoCurrencyNames(){
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds();
 		return cryptoCurrencyNames;
 	}
 
+	/**
+	 * Get a number of crypto ID and name in descending order from market cap
+	 *
+	 * @param amount number of cryptos
+	 * @return crypto list
+	 */
 	public List<CryptoIdName> getCryptoCurrencyNames(int amount) {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds(amount);
 		return cryptoCurrencyNames;
 	}
 
+	/**
+	 * Get cc by id
+	 *
+	 * @param id crypto ID
+	 * @return crypto information
+	 */
+	public static CryptoCurrency getCryptoCurrencyByName(String id) {
+		return cryptoCurrencies.get(id);
+	}
+
+	/**
+	 * Get id and name of all loaded cc
+	 *
+	 * @return
+	 */
+	public List<CryptoIdName> getLoadedCryptoCurrencies() {
+		return loadedIdAndNames;
+	}
+
+	/**
+	 * Get logo url for crypto
+	 *
+	 * @param id crypto ID
+	 * @return crypto logo
+	 */
+	public String setLogoUrl(String id) {
+		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
+		return currCrypto.getLogoUrl();
+	}
+
+	/**
+	 * Adds cc with ID to preloading list and autofills information from coingecko
+	 *
+	 * @param id crypto ID
+	 * @return crypto information
+	 */
 	public CryptoCurrency addCryptoCurrency(String id) {
 		// check if crypto is already loaded
 		for (CryptoIdName loaded : loadedIdAndNames) {
@@ -59,19 +111,13 @@ public class CryptoCurrencyService {
 		return newCrypto;
 	}
 
-	public static CryptoCurrency getCryptoCurrencyByName(String id) {
-		return cryptoCurrencies.get(id);
-	}
-
-	public List<CryptoIdName> getLoadedCryptoCurrencies() {
-		return loadedIdAndNames;
-	}
-
-	public String setLogoUrl(String id) {
-		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
-		return currCrypto.getLogoUrl();
-	}
-
+	/**
+	 * Update logo url for crypto
+	 *
+	 * @param id crypto ID
+	 * @param newLogoUrl new logo url
+	 * @return
+	 */
 	public String editLogoUrl(String id, String newLogoUrl) {
 		CryptoCurrency currCrypto = cryptoCurrencies.get(id);
 		currCrypto.setLogoUrl(newLogoUrl);
