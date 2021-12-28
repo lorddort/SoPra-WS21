@@ -22,8 +22,8 @@
             </b-col>
             <b-col cols="8">
                 <GraphCard
-                    :rawData="this.chartData"
-                    :timeFrame="this.timeFrame"
+                    :rawData="chartData"
+                    :timeFrame="timeFrame"
                 />
             </b-col>
             <!--<b-col>
@@ -73,10 +73,6 @@ export default {
             rawData: [],
             selection: [],
             chartData: [],
-            selectedTimeFrame: {
-                from: 0,
-                to: 0
-            },
             frames: {
                 day: 0,
                 week: 1,
@@ -129,27 +125,31 @@ export default {
             this.updateChart();
         },
         setTimeFrame: function(frame){
-            this.timeFrame.to = Math.floor(Date.now());
-            let now = this.selectedTimeFrame.to;
+            let newFrame = {
+                to: Math.floor(Date.now()),
+                from: 0,
+                frameType: 0
+            }
+            let now = newFrame.to;
             switch (frame){
                 case this.frames.day:
-                    this.timeFrame.from = now - this.toUnixTime(1, 0, 0, 0);
-                    this.timeFrame.frameType = this.frames.day;
+                    newFrame.from = now - this.toUnixTime(1, 0, 0, 0);
+                    newFrame.frameType = this.frames.day;
                     this.timeFrameString = "Last Day";
                     break;
                 case this.frames.week: 
-                    this.timeFrame.from = now - this.toUnixTime(7, 0, 0, 0);
-                    this.timeFrame.frameType = this.frames.week;
+                    newFrame.from = now - this.toUnixTime(7, 0, 0, 0);
+                    newFrame.frameType = this.frames.week;
                     this.timeFrameString = "Last Week";
                     break;
                 case this.frames.month:
-                    this.timeFrame.from = now - this.toUnixTime(30, 0, 0, 0);
-                    this.timeFrame.frameType = this.frames.month;
+                    newFrame.from = now - this.toUnixTime(30, 0, 0, 0);
+                    newFrame.frameType = this.frames.month;
                     this.timeFrameString = "Last Month";
                     break;
                 case this.frames.year:
-                    this.timeFrame.from = now - this.toUnixTime(360, 0, 0, 0);
-                    this.timeFrame.frameType = this.frames.year;
+                    newFrame.from = now - this.toUnixTime(360, 0, 0, 0);
+                    newFrame.frameType = this.frames.year;
                     this.timeFrameString = "Last Year";
                     break;
                 case this.frames.custom:
@@ -157,7 +157,7 @@ export default {
                     this.timeFrame.frameType = this.frames.custom;
                     break;
             }
-            console.log(this.selectedTimeFrame);
+            this.timeFrame = newFrame;
         },
         //converts human readable time to unixTime
         toUnixTime: function(days, hours, minutes, seconds){
