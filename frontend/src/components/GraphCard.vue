@@ -23,8 +23,9 @@ export default {
       },
       timeFrame: function(){
         this.chartOptions.xaxis.min = timeFrame.from;
-        this.chartOptions.xaxix.max = timeFrame.to; 
-        updateSeriesData();
+        this.chartOptions.xaxis.max = timeFrame.to; 
+        this.updateTimeFrameChartType();
+        this.updateSeriesData();
       }
     },
     data: function() {
@@ -60,6 +61,13 @@ export default {
           minutelyChart: 0,
           hourlyChart: 1,
           dailyChart: 2
+        },
+        frames: {
+            day: 0,
+            week: 1,
+            month: 2,
+            year: 3,
+            custom: 4
         }
       }
     },
@@ -90,7 +98,51 @@ export default {
         }
       },
       updateSeriesData() {
-        //update on time frame change
+        let newSeries = []
+        for (let i in this.series){
+          let seriesObj = this.series[i];
+          for (let j in this.rawData){
+            let dataObj = this.rawData[j];
+            if (dataObj.name == seriesObj.name){
+              seriesObj.data = this.getPriceChartFromRawDataObj(dataObj);
+              newSeries.push(seriesObj);
+            }
+          }
+        }
+        this.series = newSeries;
+      },
+      getPriceChartFromRawDataObj(rawDataObj){
+        switch (this.loadedChartType){
+          case this.charts.minutelyChart:
+            return this.copyDateTable(rawDataObj.minutelyChart.prices);
+          case this.charts.hourlyChart:
+            return this.copyDateTable(rawDataObj.hourlyChart.prices);
+          case this.charts.dailyChart:
+            return this.copyDateTable(rawDataObj.dailyChart.prices);
+          default:
+            console.log("Surprise, code failed");
+            break;
+            //TODO doesn't go into right case
+        }
+      },
+      updateTimeFrameChartType(){
+        switch (this.timeFrame.frameType){
+          case this.frames.day:
+            this.loadedChartType = this.charts.minutelyChart;
+            break;
+          case this.frames.week:
+            this.loadedChartType = this.hourlyChart;
+            break;
+          case this.frames.month:
+            this.loadedChartType = this.dailyChart;
+            break;
+          case this.frames.year:
+            this.loadedChartType = this.dailyChart;
+            break;
+          default:
+            console.log("Code broke somehow");
+            break;
+        }
       },
       copyDateTable(copyFrom){
         let copyTo = [];
