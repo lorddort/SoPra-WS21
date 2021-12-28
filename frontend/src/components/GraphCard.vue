@@ -35,6 +35,23 @@ export default {
             type: "datetime",
             min: undefined,
             max: undefined
+          },
+          yaxis: {
+            labels: {
+              formatter: function (value){
+                return value.toFixed(2);
+              }
+            }
+          },
+          dataLabels: {
+            enabled: false,
+            formatter: function(value){
+              if (value > 0.00){
+                return value.toFixed(2);
+              } else {
+                return value.toFixed(4);
+              }
+            }
           }
         },
         series: [],
