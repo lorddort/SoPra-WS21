@@ -2,6 +2,9 @@ package de.unistuttgart.iste.sopraws20.api.values;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class for crypto models with ids and names
+ */
 public class CryptoIdName {
 
 	@NotNull
