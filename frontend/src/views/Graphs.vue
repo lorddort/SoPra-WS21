@@ -21,7 +21,7 @@
                 </b-container>
             </b-col>
             <b-col cols="8">
-                <GraphCard :currencies="this.chartData"/>
+                <GraphCard :rawData="this.chartData" :timeFrame="this.selectedTimeFrame"/>
             </b-col>
             <!--<b-col>
                 <div>
@@ -103,60 +103,19 @@ export default {
                 this.currencyMap = response.data;
             })
         },
-        //add loaded data to graph selection
-        addToSelection: function(id){
-            for (let i in this.selection){
-                if (this.selection[i].id == id){
-                    this.selection.splice(i, 1);
-                }
-            }
-
-            let xValues = [];
-            let yValues = [];
-            let selectedCC;
-
-            axios.post(`${config.apiBaseUrl}/cryptos/${id}`).then((response) => {
-                selectedCC = response.data;
-
-                if (this.timeFrame == this.frames.day){
-                    for (let key in selectedCC.minutelyChart.prices){
-                        let tuple = selectedCC.minutelyChart.prices[key];
-                        xValues.push(tuple[0]);
-                        yValues.push(tuple[1]);
-                    }
-                } else if (this.timeFrame == this.frames.week){
-                    for (let key in selectedCC.hourlyChart.prices){
-                        let tuple = selectedCC.hourlyChart.prices[key];
-                        if (this.selectedTimeFrame.from <= parseInt(tuple[0]) && parseInt(tuple[0]) <= this.selectedTimeFrame.to){
-                            xValues.push(tuple[0]);
-                            yValues.push(tuple[1]);
-                        }
-                    }
-                } else if (this.timeFrame == this.frames.month){
-                    for (let key in selectedCC.hourlyChart.prices){
-                        let tuple = selectedCC.hourlyChart.prices[key];
-                        xValues.push(tuple[0]);
-                        yValues.push(tuple[1]);
-                    }
-                } else {
-                    for (let key in selectedCC.dailyChart.prices){
-                        let tuple = selectedCC.dailyChart.prices[key];
-                        xValues.push(tuple[0]);
-                        yValues.push(tuple[1]);
-                    }
-                }
-
-                this.selection.push({
-                    id: id,
-                    name: selectedCC.name,
-                    x: xValues,
-                    y: yValues
-                });
-
+        async addToSelection(id){
+            if (this.chartData.some(curr => curr.id == id))return;
+            
+            await axios.post(`${config.apiBaseUrl}/cryptos/${id}`).then((response) => {
+                this.chartData.push(response.data);
             });
         },
         updateChart: function(){
-            this.chartData = this.selection;
+            for (let i in this.selection){
+                if (!this.chartData.some(obj => obj.id == this.selection[i].id)){
+                    this.chartData.push(this.selection[i]);
+                }
+            }
         },
         addAndUpdate: function(id){
             this.addToSelection(id);

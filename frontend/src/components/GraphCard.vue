@@ -14,11 +14,17 @@ export default {
         apexcharts: VueApexCharts,
     },
     props: {
-      currencies: Array
+      rawData: Array,
+      timeFrame: {}
     },
     watch: {
-      currencies: function(){
-        this.updateChart();
+      rawData: function(){
+        this.loadData();
+      },
+      timeFrame: function(){
+        this.chartOptions.xaxis.min = timeFrame.from;
+        this.chartOptions.xaxix.max = timeFrame.to; 
+        updateSeriesData();
       }
     },
     data: function() {
@@ -26,29 +32,62 @@ export default {
         graphName: 'Graph',
         chartOptions: {
           xaxis: {
-            type: "datetime"
+            type: "datetime",
+            min: undefined,
+            max: undefined
           }
         },
-        series: []
+        series: [],
+        loadedChartType: undefined,
+        charts: {
+          minutelyChart: 0,
+          hourlyChart: 1,
+          dailyChart: 2
+        }
       }
     },
     methods: {
-      updateChart() {
-        let series = [];
-        for (let key in this.currencies){
-          let newData = [];
-          let x = this.currencies[key].x;
-          let y = this.currencies[key].y;
-          for (let i in x){
-            newData.push([parseInt(x[i]), parseInt(y[i])]);
+      loadData() {
+        for (let i in this.rawData){
+          if (!this.series.some(obj => obj.name == this.rawData[i].name)){
+            let dataObj = {
+              name: this.rawData[i].name,
+              data: []
+            }
+            switch (this.loadedChartType){
+              case this.charts.minutelyChart:
+                dataObj.data = this.copyDateTable(this.rawData[i].minutelyChart.prices);
+                break;
+              case this.charts.hourlyChart:
+                dataObj.data = this.copyDateTable(this.rawData[i].hourlyChart.prices);
+                break;
+              case this.charts.dailyChart:
+                dataObj.data = this.copyDateTable(this.rawData[i].dailyChart.prices);
+                break;
+              default:
+                console.log("Surprise, code failed");
+                break;
+            }
+            this.series.push(dataObj);
           }
-          series.push({
-            name: this.currencies[key].name,
-            data: newData
-          });
         }
-        this.series = series;
+      },
+      updateSeriesData() {
+        //update on time frame change
+      },
+      copyDateTable(copyFrom){
+        let copyTo = [];
+        for (let i in copyFrom){
+          let tuple = copyFrom[i];
+          copyTo.push([parseFloat(tuple[0]), parseFloat(tuple[1])]);
+        }
+        return copyTo;
       }
+    },
+    mounted(){
+      this.loadedChartType = this.charts.minutelyChart;
+      this.chartOptions.min = this.timeFrame.from;
+      this.chartOptions.max = this.timeFrame.to;
     }
 }
 </script>
