@@ -1,12 +1,10 @@
 <template>
-    <div id="chart" v-if="chartHasData">
-      <apexcharts type="heatmap" height="350" :options="chartOptions" :series="series"></apexcharts>
-      <button type="button" class="btn btn-primary" @click="updateMap()">Update Table</button>
-    </div>
-    <div v-else>
-      <h1>No data to show</h1>
-      <button type="button" class="btn btn-primary" @click="updateMap()">Update Table</button>
-    </div>
+  <div id="chart" v-if="chartHasData">
+    <apexcharts type="heatmap" height="350" :options="chartOptions" :series="series"></apexcharts>
+  </div>
+  <div v-else>
+    <h1>No data to show</h1>
+  </div>
 </template>
 
 <script>
@@ -24,8 +22,7 @@ export default {
         return{
           data: [],
           series: [],
-          getnumber: 0.0,
-          correlationData: [],
+          correlation: [{ correlationCoefficient: null }],
           chartHasData: true,
           chartOptions: {
               chart: {
@@ -39,28 +36,40 @@ export default {
                   useFillColorAsStroke: true,
                   colorScale: {
                     ranges: [{
-                        from: 0,
-                        to: 0.33,
-                        name: 'low',
-                        color: '#00A100'
+                          from: 0,
+                          to: 0.199999,
+                          color: '#FBEFEF'
                         },
                         {
-                        from: 0.34,
-                        to: 0.66,
-                        name: 'high',
-                        color: '#FFB200'
+                          from: 0.2,
+                          to: 0.399999,
+                          color: '#F6CECE'
                         },
                         {
-                        from: 0.67,
-                        to: 1,
-                        name: 'extreme',
-                        color: '#FF0000'
+                          from: 0.4,
+                          to: 0.599999,
+                          color: '#F78181'
+                        },
+                        {
+                          from: 0.6,
+                          to: 0.799999,
+                          color: '#FA5858'
+                        },
+                        {
+                          from: 0.8,
+                          to: 0.999999,
+                          color: '#FF0000'
+                        },
+                        {
+                          from: 1,
+                          to: 1,
+                          color: '#000000'
                         }]
                     }
                   }
                 },
               dataLabels: {
-                enabled: false
+                enabled: true
               },
               stroke: {
                 width: 1
@@ -71,31 +80,29 @@ export default {
           },
         }
     },
-    /*watch: {
+    watch: {
       taggedValue: function(){
         this.updateMap();
       }
-    },*/
+    },
     methods: {
-        loadCorrelation: function(type, id1, id2){
+        loadCorrelation(type, id1, id2){
             const params = new URLSearchParams([['type', type], ['id1', id1], ['id2', id2]])
-            axios.get(`${config.apiBaseUrl}/calculator/crypto/corr/year`, { params }).then((response) => {
-                console.log(typeof response.data)
-                this.getnumber = response.data
+            return axios.get(`${config.apiBaseUrl}/calculator/crypto/corr/year`, { params }).then(response => {
+              return response.data
             })
-            return this.getnumber
         },
-        updateMap() {
+        async updateMap() {
           var series = [];
           for(var i = 0; i < this.taggedValue.length; i++){
             var dataArray = [];
             for(let j = 0; j < this.taggedValue.length; j++){
+              this.correlation = await this.loadCorrelation("price", this.taggedValue[i].id, this.taggedValue[j].id)
               dataArray.push({
                 x: this.taggedValue[j].name,
-                y: Math.random() //this.loadCorrelation("price", this.taggedValue[i].id, this.taggedValue[j].id)    //TODO get Korrelation from backend(promise)
+                y: this.correlation.correlationCoefficient //TODO get Korrelation from backend(promise)
               })
             }
-            //console.log(dataArray)
             series.push({
               name: this.taggedValue[i].name,
               data: dataArray

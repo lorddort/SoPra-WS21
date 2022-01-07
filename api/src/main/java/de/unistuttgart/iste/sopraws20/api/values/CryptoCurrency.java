@@ -4,6 +4,9 @@ import javax.validation.constraints.NotNull;
 
 import com.litesoftwares.coingecko.domain.Coins.MarketChart;
 
+/**
+ * Class for Crypto currency model
+ */
 public class CryptoCurrency extends HistoricalValue {
 
 	@NotNull
@@ -15,6 +18,11 @@ public class CryptoCurrency extends HistoricalValue {
 	@NotNull
 	private MarketChart dailyChart;
 
+	/**
+	 * Constructor
+	 *
+	 * @param id
+	 */
 	public CryptoCurrency(String id) {
 		super(id);
 		logoUrl = "";

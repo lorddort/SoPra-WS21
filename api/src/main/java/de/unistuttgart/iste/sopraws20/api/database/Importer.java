@@ -19,13 +19,21 @@ import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
  * will be implemented further if more than one API is being used
  * Standard format for Crypto-Data will be same as CoinGecko-API
  */
+
+/**
+ * Class for import of crypto data
+ */
 public final class Importer {
 
 	//make client to communicate to coingecko
 	static CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
 	static List<CryptoIdName> coinNames = new LinkedList<CryptoIdName>();
 
-	// gets coinNames or loads all crypto Names and IDs if empty
+	/**
+	 * Gets coinNames or loads all crypto Names and IDs if empty
+	 *
+	 * @return crypto list
+	 */
 	public static List<CryptoIdName> getCryptoCurrencyNamesAndIds() {
 		// load list of coins
 		if (coinNames.isEmpty()) {
@@ -42,7 +50,12 @@ public final class Importer {
 		return coinNames;
 	}
 
-	//gets specified amount of crypto by market cap. loads new if amount asked is different to amount that is saved
+	/**
+	 * Gets specified amount of crypto by market cap. Loads new if amount asked is different to amount that is saved
+	 *
+	 * @param amount
+	 * @return
+	 */
 	public static List<CryptoIdName> getCryptoCurrencyNamesAndIds(@Size(max = 250) int amount) {
 		// load list of coins
 		if (!(coinNames.size() == amount)) {
@@ -60,7 +73,12 @@ public final class Importer {
 		return coinNames;
 	}
 
-	// loads all data to fill a CryptoCurrency object from coingecko by id
+	/**
+	 * Loads all data to fill a CryptoCurrency object from coingecko by id
+	 *
+	 * @param id
+	 * @return
+	 */
 	public static CryptoCurrency loadCrypto(@Valid String id) {
 
 		CoinFullData cryptoBroadData = client.getCoinById(id);

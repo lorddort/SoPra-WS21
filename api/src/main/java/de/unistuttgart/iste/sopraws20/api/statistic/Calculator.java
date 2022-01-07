@@ -3,7 +3,13 @@ package de.unistuttgart.iste.sopraws20.api.statistic;
 import java.util.List;
 
 public final class Calculator {
-	// function that returns correlation coefficient.
+	/**
+	 * Function that calculate a simple correlation coefficient.
+	 *
+	 * @param xArray
+	 * @param yArray
+	 * @return correlation coefficient
+	 */
 	public static float simpleCorrelationCoefficient(float xArray[], float yArray[]) {
 		// check if array are same length
 		if (!(xArray.length == yArray.length)) {
@@ -37,8 +43,13 @@ public final class Calculator {
 				/ (float) (Math.sqrt((length * squareSum_X - sum_X * sum_X) * (length * squareSum_Y - sum_Y * sum_Y)));
 	}
 
-	// cut longer array off before cumputing corr
-	// if spacing or starting off data is different use different method
+	/**
+	 * Cut longer array off before computing correlation coefficient. If spacing or starting off data is different use different method.
+	 *
+	 * @param xArray
+	 * @param yArray
+	 * @return
+	 */
 	public static float cutInputCorrelationCoefficient(float xArray[], float yArray[]) {
 		int length = yArray.length;
 		if (xArray.length == yArray.length) {
@@ -54,7 +65,12 @@ public final class Calculator {
 		return simpleCorrelationCoefficient(newXArray, newYArray);
 	}
 
-	// helper method to make crypto data to array for calculator
+	/**
+	 * Helper method to make crypto data to array for calculator
+	 *
+	 * @param coinList
+	 * @return
+	 */
 	public static float[] cryptoDataToArray(List<List<String>> coinList) {
 		int length = coinList.size();
 		float[] coinArray = new float[length];

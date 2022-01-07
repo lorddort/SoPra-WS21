@@ -5,6 +5,9 @@ import javax.validation.constraints.Size;
 
 import com.litesoftwares.coingecko.domain.Coins.MarketChart;
 
+/**
+ * Class for historical value model
+ */
 public class HistoricalValue {
 	@NotNull
 	@Size(min = 1)
