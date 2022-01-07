@@ -72,6 +72,8 @@ export default {
       }
     },
     methods: {
+      // load data from rawData into graph dependend on selected time frame
+      // used for currencies that arent yet shown in the graph
       loadData() {
         for (let i in this.rawData){
           if (!this.series.some(obj => obj.name == this.rawData[i].name)){
@@ -97,6 +99,7 @@ export default {
           }
         }
       },
+      // update series data depending on selected time frame
       updateSeriesData() {
         let newSeries = []
         for (let i in this.series){
@@ -111,6 +114,7 @@ export default {
         }
         this.series = newSeries;
       },
+      // returns specified price chart from rawData object depending on selection
       getPriceChartFromRawDataObj(rawDataObj){
         switch (this.loadedChartType){
           case this.charts.minutelyChart:
@@ -122,9 +126,9 @@ export default {
           default:
             console.log("Surprise, code failed");
             break;
-            //TODO doesn't go into right case
         }
       },
+      // set new time frame
       updateTimeFrameChartType(){
         switch (this.timeFrame.frameType){
           case this.frames.day:
@@ -143,8 +147,9 @@ export default {
             console.log("Code broke somehow");
             break;
         }
-        console.log("TimeFrame set to: " + this.timeFrame.frameType);
       },
+      // helper function to create a new array from a given one as it is needed to trigger 
+      // apexcharts update function
       copyDateTable(copyFrom){
         let copyTo = [];
         for (let i in copyFrom){
