@@ -131,18 +131,19 @@ export default {
             this.loadedChartType = this.charts.minutelyChart;
             break;
           case this.frames.week:
-            this.loadedChartType = this.hourlyChart;
+            this.loadedChartType = this.charts.hourlyChart;
             break;
           case this.frames.month:
-            this.loadedChartType = this.dailyChart;
+            this.loadedChartType = this.charts.dailyChart;
             break;
           case this.frames.year:
-            this.loadedChartType = this.dailyChart;
+            this.loadedChartType = this.charts.dailyChart;
             break;
           default:
             console.log("Code broke somehow");
             break;
         }
+        console.log("TimeFrame set to: " + this.timeFrame.frameType);
       },
       copyDateTable(copyFrom){
         let copyTo = [];
