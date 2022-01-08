@@ -5,9 +5,22 @@
                 <b-container>
                     <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1" menu-class="w-100">
                         <b-dropdown-item v-b-modal.timeFrameModal title="Time Frame">Time Frame: {{this.timeFrameString}}</b-dropdown-item>
-                        <!--<b-dropdown-item>Currency</b-dropdown-item>TODO whats that? -->
                     </b-dropdown>
-                    <b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
+                    <!-- Refactor -->
+                    <br>
+                    <label class="typo_label">Crypto Currencies</label>
+                    <multiselect :options="currencyMap"
+                        v-model="multiselectMap"
+                        :multiple="true" 
+                        :taggable="false"
+                        label="name"
+                        track-by="name">
+
+                    </multiselect>
+
+                    <!-- Refactor End -->
+
+                    <!--<b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
                         <b-dropdown-item 
                             v-for="curr in currencyMap" :key="curr.id"
                             @click="addAndUpdate(curr.id)"    
@@ -17,7 +30,7 @@
                     <b-dropdown :text="this.selectedCurrency" class="mb-1 w-100">
                         <b-dropdown-item @click="setCurrency(currency.EUR)">EUR</b-dropdown-item>
                         <b-dropdown-item disabled @click="setCurrency(currency.USD)">USD</b-dropdown-item>
-                    </b-dropdown>
+                    </b-dropdown>-->
                 </b-container>
             </b-col>
             <b-col cols="8">
@@ -59,19 +72,22 @@
 
 <script>
 import GraphCard from "@/components/GraphCard.vue";
+import Multiselect from "vue-multiselect"
 import config from "@/config";
 import axios from "axios";
 
 export default {
     name: "Graphs",
     components: {
-        GraphCard
+        GraphCard,
+        Multiselect
     },
     data() {
         return {
             currencyMap: [],
             rawData: [],
             selection: [],
+            multiselectMap: [],
             chartData: [],
             frames: {
                 day: 0,
@@ -98,6 +114,21 @@ export default {
     watch: {
         selectedCurrency: function(){
             this.calculateExchange();
+        },
+        multiselectMap: function() {
+            // add data to graph if new in selection
+            for (let i in this.multiselectMap){
+                if (!this.chartData.some(obj => obj.id == this.multiselectMap[i].id)){
+                    this.loadRawData(this.multiselectMap[i].id);
+                }
+            }
+
+            // remove data from graph if removed from selection
+            for (let i in this.chartData){
+                if (!this.multiselectMap.some(obj => obj.id == this.chartData[i].id)){
+                    this.removeRawData(this.chartData[i].id);
+                }
+            }
         }
     },
     methods: {
@@ -106,12 +137,21 @@ export default {
                 this.currencyMap = response.data;
             })
         },
-        async addToSelection(id){
+        async loadRawData(id){
             if (this.chartData.some(curr => curr.id == id))return;
             
             await axios.post(`${config.apiBaseUrl}/cryptos/${id}`).then((response) => {
                 this.chartData.push(response.data);
             });
+        },
+        removeRawData: function(id){
+            let index;
+            for (index = 0; index < this.chartData.length; index++){
+                if (this.chartData[index].id == id){
+                    break;
+                }
+            }
+            this.chartData.splice(index, 1);
         },
         updateChart: function(){
             for (let i in this.selection){
@@ -119,10 +159,6 @@ export default {
                     this.chartData.push(this.selection[i]);
                 }
             }
-        },
-        addAndUpdate: function(id){
-            this.addToSelection(id);
-            this.updateChart();
         },
         setTimeFrame: function(frame){
             let newFrame = {
@@ -178,15 +214,15 @@ export default {
         this.setTimeFrame(this.frames.day);
         this.selectedCurrency = this.currency.EUR;
         this.loadCurrencyMap();
-        this.addToSelection("bitcoin");
-        this.addToSelection("ethereum");
+        this.multiselectMap.push({id:"bitcoin", name:"Bitcoin"});
+        this.multiselectMap.push({id:"ethereum", name:"Ethereum"});
         this.updateChart();
     }
 }
 
 </script>
 
-<style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css">
 .fixedDiv {
     border: 1px solid darkgray;
 }

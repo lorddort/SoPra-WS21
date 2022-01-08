@@ -22,8 +22,8 @@ export default {
         this.loadData();
       },
       timeFrame: function(){
-        this.chartOptions.xaxis.min = timeFrame.from;
-        this.chartOptions.xaxis.max = timeFrame.to; 
+        this.chartOptions.xaxis.min = this.timeFrame.from;
+        this.chartOptions.xaxis.max = this.timeFrame.to; 
         this.updateTimeFrameChartType();
         this.updateSeriesData();
       }
@@ -75,6 +75,7 @@ export default {
       // load data from rawData into graph dependend on selected time frame
       // used for currencies that arent yet shown in the graph
       loadData() {
+        this.series = [];
         for (let i in this.rawData){
           if (!this.series.some(obj => obj.name == this.rawData[i].name)){
             let dataObj = {
