@@ -3,10 +3,7 @@
         <b-row>
             <b-col cols="2" >
                 <b-container>
-                    <b-dropdown block size="md" id="graph-settings" text="Settings" class="pt-1" menu-class="w-100">
-                        <b-dropdown-item v-b-modal.timeFrameModal title="Time Frame">Time Frame: {{this.timeFrameString}}</b-dropdown-item>
-                    </b-dropdown>
-                    <!-- Refactor -->
+                    <b-button v-b-modal.timeFrameModal title="Time Frame" style="min-width: 100%">Time Frame: {{this.timeFrameString}}</b-button>
                     <br>
                     <label class="typo_label">Crypto Currencies</label>
                     <multiselect :options="currencyMap"
@@ -15,22 +12,7 @@
                         :taggable="false"
                         label="name"
                         track-by="name">
-
                     </multiselect>
-
-                    <!-- Refactor End -->
-
-                    <!--<b-dropdown block id="Courses" text="Courses" class="py-1" menu-class="w-100">
-                        <b-dropdown-item 
-                            v-for="curr in currencyMap" :key="curr.id"
-                            @click="addAndUpdate(curr.id)"    
-                            >{{curr.name}}
-                        </b-dropdown-item>
-                    </b-dropdown>
-                    <b-dropdown :text="this.selectedCurrency" class="mb-1 w-100">
-                        <b-dropdown-item @click="setCurrency(currency.EUR)">EUR</b-dropdown-item>
-                        <b-dropdown-item disabled @click="setCurrency(currency.USD)">USD</b-dropdown-item>
-                    </b-dropdown>-->
                 </b-container>
             </b-col>
             <b-col cols="8">
@@ -39,13 +21,6 @@
                     :timeFrame="timeFrame"
                 />
             </b-col>
-            <!--<b-col>
-                <div>
-                    <b-card v-for="n in 4" :key="n" style="min-height: 150px">
-                        Graph Thumbnail TODO
-                    </b-card>
-                </div>
-            </b-col>-->
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
             <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100"
@@ -153,13 +128,6 @@ export default {
             }
             this.chartData.splice(index, 1);
         },
-        updateChart: function(){
-            for (let i in this.selection){
-                if (!this.chartData.some(obj => obj.id == this.selection[i].id)){
-                    this.chartData.push(this.selection[i]);
-                }
-            }
-        },
         setTimeFrame: function(frame){
             let newFrame = {
                 to: Math.floor(Date.now()),
@@ -216,7 +184,6 @@ export default {
         this.loadCurrencyMap();
         this.multiselectMap.push({id:"bitcoin", name:"Bitcoin"});
         this.multiselectMap.push({id:"ethereum", name:"Ethereum"});
-        this.updateChart();
     }
 }
 
