@@ -1,10 +1,14 @@
 <template>
-  <div class="list">
-    <!--<li>{{cryptoCurrencies}}</li>-->
+  <div>
     <h1>Geladene Kryptowährungen</h1>
-    <b-list-group class="list-group">
-      <b-list-group-item v-for="cryptoCurrency in cryptoCurrencies" v-bind:key="cryptoCurrency.id">{{cryptoCurrency.name}}</b-list-group-item>
-    </b-list-group>
+    <div class="list">
+      <b-list-group class="list-group" v-if="listHasData">
+        <b-list-group-item v-for="cryptoCurrency in cryptoCurrencies" v-bind:key="cryptoCurrency.id">{{cryptoCurrency.name}}</b-list-group-item>
+      </b-list-group>
+      <b-list-group class="list-group" v-else>
+        <b-spinner label="Loading..."></b-spinner>
+      </b-list-group>
+    </div>
   </div>
 </template>
 
@@ -15,6 +19,7 @@ import config from "@/config"
 export default {
   data(){
     return {
+      listHasData: false,
       cryptoCurrencies: []
     }
   },
@@ -22,6 +27,9 @@ export default {
     loadCryptoCurrency: function(){
         axios.get(`${config.apiBaseUrl}/cryptos/list`).then((response) => {
             this.cryptoCurrencies = response.data;
+            if(this.cryptoCurrencies.length != 0){
+              this.listHasData = true;
+            }
         })
     },
   },
