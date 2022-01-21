@@ -3,7 +3,14 @@
         <b-row>
             <b-col cols="2" >
                 <b-container>
-                    <b-button v-b-modal.timeFrameModal title="Time Frame" style="min-width: 100%">Time Frame: {{this.timeFrameString}}</b-button>
+                    <label class="typo_label">Time Frame</label>
+                    <b-button 
+                        v-b-modal.timeFrameModal 
+                        style="min-width: 100%"
+                        variant="outline-dark">
+                        {{this.timeFrameString}}
+                    </b-button>
+                    <br>
                     <br>
                     <label class="typo_label">Crypto Currencies</label>
                     <multiselect :options="currencyMap"
@@ -23,21 +30,32 @@
             </b-col>
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
-            <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100"
-                @ok="this.updateChart()">
+            <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100">
                 <b-dropdown-item @click="setTimeFrame(frames.day)">Last Day</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
-                <b-dropdown-item disabled v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>
+                <b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>
             </b-dropdown>
         </b-modal>
         <b-modal id="customTimeFrameModal" title="Select Time Frame">
             <b-form inline>
-                <!--TODO-->
-                <b-form-datepicker id="customTimeFrameDatePickerFrom" v-model="customTimeFrameFrom">
+                <b-form-datepicker
+                    id="customTimeFrameDatePickerFrom" 
+                    v-model="customTimeFrameFrom"
+                    style="min-width: 100%"
+                    class="my-2"
+                    :min="selectDateMin"
+                    :max="selectDateComputedMax"
+                    >
                 </b-form-datepicker>
-                <b-form-datepicker id="customTimeFrameDatePickerTo" v-model="customTimeFrameTo">
+                <b-form-datepicker 
+                    id="customTimeFrameDatePickerTo"
+                    v-model="customTimeFrameTo"
+                    style="min-width: 100%"
+                    class="my-2"
+                    :min="selectDateComputedMin"
+                    :max="selectDateMax">
                 </b-form-datepicker>
             </b-form>
         </b-modal>
@@ -77,19 +95,19 @@ export default {
                 to: 0
             },
             timeFrameString: "Last Day",
-            customTimeFrameFrom: 0,
-            customTimeFrameTo: 0,
+            customTimeFrameFrom: typeof(Date),
+            customTimeFrameTo: typeof(Date),
+            selectDateMax: new Date(Date.now()),
+            selectDateMin: new Date(Date.now() - this.toUnixTime(365, 0, 0, 0)),
+            selectDateComputedMin: new Date(Date.now() - this.toUnixTime(365, 0, 0, 0)),
+            selectDateComputedMax: new Date(Date.now()), //TODO: fix computed min and max values
             currency: {
                 EUR: "EUR",
                 USD: "USD"
             },
-            selectedCurrency: this.currency
         }
     },
     watch: {
-        selectedCurrency: function(){
-            this.calculateExchange();
-        },
         multiselectMap: function() {
             // add data to graph if new in selection
             for (let i in this.multiselectMap){
@@ -104,6 +122,12 @@ export default {
                     this.removeRawData(this.chartData[i].id);
                 }
             }
+        },
+        customTimeFrameFrom: function(){
+            //TODO customtimeframefrom is string -> to unix time
+        },
+        customTimeFrameTo: function(){
+            //TODO customtimeframeto is string -> to unix time
         }
     },
     methods: {
