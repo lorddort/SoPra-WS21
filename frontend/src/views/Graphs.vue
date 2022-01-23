@@ -38,20 +38,23 @@
                 <b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>
             </b-dropdown>
         </b-modal>
-        <b-modal id="customTimeFrameModal" title="Select Time Frame">
+        <b-modal id="customTimeFrameModal" title="Select Time Frame" @ok="lockInCustomTimeFrame">
             <b-form inline>
+                <label>From</label>
                 <b-form-datepicker
                     id="customTimeFrameDatePickerFrom" 
-                    v-model="customTimeFrameFrom"
+                    v-model="selectTimeFrameFrom"
                     style="min-width: 100%"
                     class="my-2"
                     :min="selectDateMin"
                     :max="selectDateComputedMax"
                     >
                 </b-form-datepicker>
+                <br><br>
+                <label>To</label>
                 <b-form-datepicker 
                     id="customTimeFrameDatePickerTo"
-                    v-model="customTimeFrameTo"
+                    v-model="selectTimeFrameTo"
                     style="min-width: 100%"
                     class="my-2"
                     :min="selectDateComputedMin"
@@ -95,12 +98,12 @@ export default {
                 to: 0
             },
             timeFrameString: "Last Day",
-            customTimeFrameFrom: typeof(Date),
-            customTimeFrameTo: typeof(Date),
+            selectTimeFrameFrom: typeof(Date),
+            selectTimeFrameTo: typeof(Date),
             selectDateMax: new Date(Date.now()),
             selectDateMin: new Date(Date.now() - this.toUnixTime(365, 0, 0, 0)),
             selectDateComputedMin: new Date(Date.now() - this.toUnixTime(365, 0, 0, 0)),
-            selectDateComputedMax: new Date(Date.now()), //TODO: fix computed min and max values
+            selectDateComputedMax: new Date(Date.now()),
             currency: {
                 EUR: "EUR",
                 USD: "USD"
@@ -123,14 +126,24 @@ export default {
                 }
             }
         },
-        customTimeFrameFrom: function(){
-            //TODO customtimeframefrom is string -> to unix time
+        selectTimeFrameFrom: function(){
+            this.selectDateComputedMin = this.selectTimeFrameFrom;
         },
-        customTimeFrameTo: function(){
-            //TODO customtimeframeto is string -> to unix time
+        selectTimeFrameTo: function(){
+            this.selectDateComputedMax = this.selectTimeFrameTo;
         }
     },
     methods: {
+        lockInCustomTimeFrame: function(){
+            let newFrame = {
+                to: 0,
+                from: 0,
+                frameType: this.frames.custom
+            };
+            newFrame.to = Math.floor(this.selectDateTo);
+            newFrame.to = Math.floor(this.selectDateFrom);
+            this.timeFrame = newFrame;
+        },
         loadCurrencyMap: function(){
             axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
                 this.currencyMap = response.data;

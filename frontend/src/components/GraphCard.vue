@@ -144,6 +144,19 @@ export default {
           case this.frames.year:
             this.loadedChartType = this.charts.dailyChart;
             break;
+          case this.frames.custom:
+            var currentDateUnix = Math.floor(Date.now());
+
+            if (this.timeFrame.from < (currentDateUnix - this.toUnixTime(0, 24, 0, 0))){
+              this.loadedChartType = this.charts.minutelyChart;
+            } else if (this.timeFrame.from < (currentDateUnix - this.toUnixTime(7, 0, 0, 0))){
+              this.loadedChartType = this.charts.hourlyChart;
+            } else if (this.timeFrame.from < (currentDateUnix - this.toUnixTime(31, 0, 0, 0))){
+              this.loadedChartType = this.charts.dailyChart;
+            }
+            this.chartOptions.xaxis.min = this.timeFrame.from;
+            this.chartOptions.xaxis.max = this.timeFrame.to;
+            break;
           default:
             console.log("Code broke somehow");
             break;
@@ -158,7 +171,14 @@ export default {
           copyTo.push([parseFloat(tuple[0]), parseFloat(tuple[1])]);
         }
         return copyTo;
-      }
+      },
+      //converts human readable time to unixTime
+        toUnixTime: function(days, hours, minutes, seconds){
+            return  days * 24 * 60 * 60 * 1000 +
+                hours * 60 * 60 * 1000+
+                minutes * 60 * 1000+
+                seconds;
+        }
     },
     mounted(){
       this.loadedChartType = this.charts.minutelyChart;
