@@ -30,6 +30,7 @@ export default {
     },
     data: function() {
       return {
+        //apex charts config =========
         graphName: 'Graph',
         chartOptions: {
           xaxis: {
@@ -56,6 +57,7 @@ export default {
           }
         },
         series: [],
+        //end of apex charts config==========
         loadedChartType: undefined,
         charts: {
           minutelyChart: 0,

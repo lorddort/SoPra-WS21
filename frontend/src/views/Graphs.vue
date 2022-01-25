@@ -35,10 +35,10 @@
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
-                <b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>
+                <!--<b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>-->
             </b-dropdown>
         </b-modal>
-        <b-modal id="customTimeFrameModal" title="Select Time Frame" @ok="lockInCustomTimeFrame">
+        <!--<b-modal id="customTimeFrameModal" title="Select Time Frame" @ok="lockInCustomTimeFrame">
             <b-form inline>
                 <label>From</label>
                 <b-form-datepicker
@@ -61,7 +61,7 @@
                     :max="selectDateMax">
                 </b-form-datepicker>
             </b-form>
-        </b-modal>
+        </b-modal>-->
     </div>
     
 </template>
