@@ -1,12 +1,22 @@
 <template>
   <div>
     <h1>Geladene Kryptowährungen</h1>
+    <br />
+    <div>
+      <b-card-group>
+        <b-card v-for="cryptoCurrency in loadedCryptoCurrencies" v-bind:key="cryptoCurrency.id" :title="cryptoCurrency.name" :img-src="cryptoCurrency.logo" img-alt="Image" img-top></b-card>
+      </b-card-group>
+    </div>
+    <br />
     <div class="list">
       <b-list-group class="list-group" v-if="listHasData">
-        <b-list-group-item v-for="cryptoCurrency in cryptoCurrencies" v-bind:key="cryptoCurrency.id">{{cryptoCurrency.name}}</b-list-group-item>
+        <b-list-group-item v-for="cryptoCurrency in cryptoCurrencies" v-bind:key="cryptoCurrency.id">
+          {{cryptoCurrency.name}}
+          <!--<b-button variant="primary"><b-icon class="buttons" icon="info"></b-icon></b-button>-->
+        </b-list-group-item>
       </b-list-group>
-      <b-list-group class="list-group" v-else>
-        <b-spinner label="Loading..."></b-spinner>
+      <b-list-group class="text-center" v-else>
+        <b-spinner variant="primary" label="Text Centered"></b-spinner>
       </b-list-group>
     </div>
   </div>
@@ -20,18 +30,36 @@ export default {
   data(){
     return {
       listHasData: false,
-      cryptoCurrencies: []
+      cryptoCurrencies: [],
+      loadedCryptoCurrencies: []
     }
   },
   methods: {
-    loadCryptoCurrency: function(){
-        axios.get(`${config.apiBaseUrl}/cryptos/list`).then((response) => {
-            this.cryptoCurrencies = response.data;
-            if(this.cryptoCurrencies.length != 0){
-              this.listHasData = true;
-            }
-        })
+    async postCCForCorrelation(array){
+        for(var i = 0; i < array.length; i++){
+            await axios.post(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
+            this.loadedCryptoCurrencies.push({
+              id: this.cryptoCurrencies[i].id,
+              name: this.cryptoCurrencies[i].name,
+              logo: await this.getLogo(array[i].id)
+            })
+        }
+        console.log(this.loadedCryptoCurrencies)
     },
+    loadCryptoCurrency: function(){
+      axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
+        this.cryptoCurrencies = response.data;
+        if(this.cryptoCurrencies.length != 0){
+          this.listHasData = true;
+        }
+        this.postCCForCorrelation(this.cryptoCurrencies)
+      })
+    },
+    getLogo: function(id){
+      return axios.get(`${config.apiBaseUrl}/cryptos/${id}/logourl`).then((response) => {
+        return response.data
+      })
+    }
   },
   created: function(){
         this.loadCryptoCurrency();
@@ -41,10 +69,20 @@ export default {
 
 <style scoped>
 .list-group{
-  max-width: 600px;
+  max-width: 700px;
   max-height: 400px;
   margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
   overflow:scroll;
   -webkit-overflow-scrolling: touch;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.buttons{
+  margin: 2px 1px;
 }
 </style>
