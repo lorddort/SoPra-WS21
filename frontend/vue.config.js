@@ -5,5 +5,13 @@ module.exports = {
     port: 8000
   },
   // display eslint errors as warnings --> build does not fail on linting issues
-  lintOnSave: true
+  lintOnSave: true,
+  //sass for styling
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `@import "@/styles/_variables.scss";`
+      }
+    }
+  }
 };
