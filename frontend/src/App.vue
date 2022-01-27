@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <!-- this navigation will appear on every route -->
+    <!-- this navigation will appear on every route #84db00-->
 
-    <b-navbar variant="primary" type="dark">
+    <b-navbar class="bg-primary" type="dark">
       <b-navbar-brand to="/"><img src="./assets/icconsultlogo.svg" class="logo"></b-navbar-brand>
       <b-navbar-nav class="bar" align="center">
         <b-nav-item to="/">Home</b-nav-item>

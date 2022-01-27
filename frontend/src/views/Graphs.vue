@@ -203,9 +203,9 @@ export default {
         //converts human readable time to unixTime
         toUnixTime: function(days, hours, minutes, seconds){
             return  days * 24 * 60 * 60 * 1000 +
-                hours * 60 * 60 * 1000+
-                minutes * 60 * 1000+
-                seconds;
+                hours * 60 * 60 * 1000 +
+                minutes * 60 * 1000 +
+                seconds * 1000;
         },
         setCurrency: function(currency){
             this.selectedCurrency = currency;
