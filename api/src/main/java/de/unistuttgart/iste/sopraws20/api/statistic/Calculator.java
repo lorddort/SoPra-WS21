@@ -94,12 +94,7 @@ public final class Calculator {
 		long start = 0;
 		long end = new Date().getTime() / 1000;
 		if (interval.equalsIgnoreCase("today")) {
-			Calendar day = Calendar.getInstance();
-			day.set(Calendar.MILLISECOND, 0);
-			day.set(Calendar.SECOND, 0);
-			day.set(Calendar.MINUTE, 0);
-			day.set(Calendar.HOUR_OF_DAY, 0);
-			Date startOfToday = day.getTime();
+			Date startOfToday = getStartOfToday();
 			// convert to unix
 			start = startOfToday.getTime() / 1000;
 
@@ -107,12 +102,7 @@ public final class Calculator {
 			start = end - 604800;
 
 		} else if (interval.equalsIgnoreCase("last_month")) {
-			Calendar day = Calendar.getInstance();
-			day.set(Calendar.MILLISECOND, 0);
-			day.set(Calendar.SECOND, 0);
-			day.set(Calendar.MINUTE, 0);
-			day.set(Calendar.HOUR_OF_DAY, 0);
-			day.set(Calendar.DAY_OF_MONTH, 1);
+			Calendar day = getStartOfMonth();
 			// use start of this month, instead of end of last
 			end = day.getTime().getTime() / 1000;
 			int month = day.get(Calendar.MONTH);
@@ -125,10 +115,31 @@ public final class Calculator {
 			Date startOfLastMonth = day.getTime();
 			// convert to unix
 			start = startOfLastMonth.getTime() / 1000;
+
 		} else if (interval.equalsIgnoreCase("year")) {
 			start = end - 31556926;
 		}
 		return cutDataByTime(start, end, data);
+	}
+
+	private static Calendar getStartOfMonth() {
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		day.set(Calendar.SECOND, 0);
+		day.set(Calendar.MINUTE, 0);
+		day.set(Calendar.HOUR_OF_DAY, 0);
+		day.set(Calendar.DAY_OF_MONTH, 1);
+		return day;
+	}
+
+	private static Date getStartOfToday() {
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		day.set(Calendar.SECOND, 0);
+		day.set(Calendar.MINUTE, 0);
+		day.set(Calendar.HOUR_OF_DAY, 0);
+		Date startOfToday = day.getTime();
+		return startOfToday;
 	}
 
 	/**
