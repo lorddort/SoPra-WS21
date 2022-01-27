@@ -91,7 +91,7 @@ public class CryptoCurrencyController {
 	 * @param timeframe must be: today, 24h, week, month, last_month, year
 	 * @return
 	 */
-	@GetMapping("cryptos/{id}/Volume/{timeframe}")
+	@GetMapping("cryptos/{id}/volume/{timeframe}")
 	public List<List<String>> getVolumeChartByTimeframe(@PathVariable("id") String id,
 			@PathVariable("timeframe") String timeframe) {
 		return CryptoCurrencyService.getVolumeChartByTimeframe(id, timeframe);
