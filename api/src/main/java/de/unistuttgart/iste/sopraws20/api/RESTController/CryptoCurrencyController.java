@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import de.unistuttgart.iste.sopraws20.api.services.CryptoCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.unistuttgart.iste.sopraws20.api.services.CryptoCurrencyService;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
 
@@ -36,7 +36,8 @@ public class CryptoCurrencyController {
 	}
 
 	/**
-	 * Controller to get a number of crypto ID and name in descending order from market cap
+	 * Controller to get a number of crypto ID and name in descending order from
+	 * market cap
 	 *
 	 * @param amount number of cryptos
 	 * @return crypto list
@@ -53,7 +54,7 @@ public class CryptoCurrencyController {
 	 * @param id crypto ID
 	 * @return crypto information
 	 */
-	//TODO is static ergo not yet in Service
+	// TODO is static ergo not yet in Service
 	@GetMapping("cryptos/{id}")
 	public static CryptoCurrency getCryptoCurrencyByName(@PathVariable String id) {
 		return CryptoCurrencyService.getCryptoCurrencyByName(id);
@@ -71,6 +72,45 @@ public class CryptoCurrencyController {
 	}
 
 	/**
+	 * Controller to get price chart in interval
+	 * 
+	 * @param id
+	 * @param timeframe must be: today, 24h, week, month, last_month, year
+	 * @return
+	 */
+	@GetMapping("cryptos/{id}/price/{timeframe}")
+	public List<List<String>> getPriceChartByTimeframe(@PathVariable("id") String id,
+			@PathVariable("timeframe") String timeframe) {
+		return CryptoCurrencyService.getPriceChartByTimeframe(id, timeframe);
+	}
+
+	/**
+	 * Controller to get volume chart in interval
+	 * 
+	 * @param id
+	 * @param timeframe must be: today, 24h, week, month, last_month, year
+	 * @return
+	 */
+	@GetMapping("cryptos/{id}/Volume/{timeframe}")
+	public List<List<String>> getVolumeChartByTimeframe(@PathVariable("id") String id,
+			@PathVariable("timeframe") String timeframe) {
+		return CryptoCurrencyService.getVolumeChartByTimeframe(id, timeframe);
+	}
+
+	/**
+	 * Controller to get mc chart in interval
+	 * 
+	 * @param id
+	 * @param timeframe must be: today, 24h, week, month, last_month, year
+	 * @return
+	 */
+	@GetMapping("cryptos/{id}/market_cap/{timeframe}")
+	public List<List<String>> getMarketCapChartByTimeframe(@PathVariable("id") String id,
+			@PathVariable("timeframe") String timeframe) {
+		return CryptoCurrencyService.getMarketCapChartByTimeframe(id, timeframe);
+	}
+
+	/**
 	 * Controller to get logo url for crypto
 	 *
 	 * @param id crypto ID
@@ -82,7 +122,8 @@ public class CryptoCurrencyController {
 	}
 
 	/**
-	 * Controller to adds cc with ID to preloading list and autofills information from coingecko
+	 * Controller to adds cc with ID to preloading list and autofills information
+	 * from coingecko
 	 *
 	 * @param id crypto ID
 	 * @return crypto information
@@ -96,7 +137,7 @@ public class CryptoCurrencyController {
 	/**
 	 * Controller to update logo url for crypto
 	 *
-	 * @param id crypto ID
+	 * @param id         crypto ID
 	 * @param newLogoUrl new logo url
 	 * @return
 	 */

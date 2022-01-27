@@ -92,19 +92,19 @@ public final class Calculator {
 	 */
 	public static List<List<String>> cutDataByIntervall(String interval, List<List<String>> data) {
 		long start = 0;
-		long end = new Date().getTime() / 1000;
+		long end = new Date().getTime();
 		if (interval.equalsIgnoreCase("today")) {
 			Date startOfToday = getStartOfToday();
 			// convert to unix
-			start = startOfToday.getTime() / 1000;
+			start = startOfToday.getTime();
 
 		} else if (interval.equalsIgnoreCase("week")) {
-			start = end - 604800;
+			start = start + end - 604800000;
 
 		} else if (interval.equalsIgnoreCase("last_month")) {
 			Calendar day = getStartOfMonth();
 			// use start of this month, instead of end of last
-			end = day.getTime().getTime() / 1000;
+			end = day.getTime().getTime();
 			int month = day.get(Calendar.MONTH);
 			if (month == 0) {
 				month = 11;
@@ -114,10 +114,10 @@ public final class Calculator {
 			day.set(Calendar.MONTH, month);
 			Date startOfLastMonth = day.getTime();
 			// convert to unix
-			start = startOfLastMonth.getTime() / 1000;
+			start = startOfLastMonth.getTime();
 
 		} else if (interval.equalsIgnoreCase("year")) {
-			start = end - 31556926;
+			start = end - Long.valueOf("31556926000");
 		}
 		return cutDataByTime(start, end, data);
 	}
