@@ -22,7 +22,10 @@ export default {
         this.loadData();
       },
       timeFrame: function(){
-        this.chartOptions.xaxis.range = this.chartOptions.xaxis.max - this.timeFrame.from;
+        this.chartOptions.xaxis = {
+          min: this.timeFrame.from,
+          max: this.timeFrame.to
+        }
         this.updateTimeFrameChartType();
         this.updateSeriesData();
       }
@@ -33,9 +36,7 @@ export default {
         graphName: 'Graph',
         chartOptions: {
           xaxis: {
-            type: "datetime",
-            range: this.toUnixTime(1, 0, 0, 0),
-            max: Date.now()
+            type: "datetime"
           },
           yaxis: {
             labels: {
