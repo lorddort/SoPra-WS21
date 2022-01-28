@@ -23,10 +23,15 @@
                 </b-container>
             </b-col>
             <b-col cols="8">
-                <GraphCard
+                <b-row v-for="row in graphCollection" id: row>
+                    <b-col v-for="graph in row" id:graph.id>
+                        <GraphCard :rawData="graph.rawData" :timeFrame="graph.timeFrame"/>
+                    </b-col>
+                </b-row>
+                <!--GraphCard
                     :rawData="chartData"
                     :timeFrame="timeFrame"
-                />
+                /-->
             </b-col>
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
@@ -38,30 +43,6 @@
                 <!--<b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>-->
             </b-dropdown>
         </b-modal>
-        <!--<b-modal id="customTimeFrameModal" title="Select Time Frame" @ok="lockInCustomTimeFrame">
-            <b-form inline>
-                <label>From</label>
-                <b-form-datepicker
-                    id="customTimeFrameDatePickerFrom" 
-                    v-model="selectTimeFrameFrom"
-                    style="min-width: 100%"
-                    class="my-2"
-                    :min="selectDateMin"
-                    :max="selectDateComputedMax"
-                    >
-                </b-form-datepicker>
-                <br><br>
-                <label>To</label>
-                <b-form-datepicker 
-                    id="customTimeFrameDatePickerTo"
-                    v-model="selectTimeFrameTo"
-                    style="min-width: 100%"
-                    class="my-2"
-                    :min="selectDateComputedMin"
-                    :max="selectDateMax">
-                </b-form-datepicker>
-            </b-form>
-        </b-modal>-->
     </div>
     
 </template>
@@ -71,15 +52,21 @@ import GraphCard from "@/components/GraphCard.vue";
 import Multiselect from "vue-multiselect"
 import config from "@/config";
 import axios from "axios";
+import Vue from "vue";
+
+//register graph card component
+Vue.component("graph-card", GraphCard);
 
 export default {
     name: "Graphs",
     components: {
-        GraphCard,
-        Multiselect
+        Multiselect,
+        GraphCard
     },
     data() {
         return {
+            activeGraph: 0,
+            graphCollection: [],
             currencyMap: [],
             rawData: [],
             selection: [],
@@ -210,9 +197,16 @@ export default {
         setCurrency: function(currency){
             this.selectedCurrency = currency;
         },
-        //calculate exchange course
-        calculateExchange: function(){
-            //TODO
+        updateGraphData: function(id) {
+            for (let i = 0; i < this.graphCollection.lenght; i++){
+                for (let j = 0; j < this.graphCollection[i].length; j++){
+                    if (this.graphCollection[i][j].id == id){
+                        
+
+                        return;
+                    }
+                }
+            }
         }
     },
     created: function(){
@@ -221,6 +215,12 @@ export default {
         this.loadCurrencyMap();
         this.multiselectMap.push({id:"bitcoin", name:"Bitcoin"});
         this.multiselectMap.push({id:"ethereum", name:"Ethereum"});
+        this.updateActiveGraphData();
+        this.graphCollection.push([{
+            id: 0,
+            chartData: this.chartData,
+            timeFrame: this.timeFrame
+        }]);
     }
 }
 

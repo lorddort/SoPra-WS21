@@ -1,7 +1,7 @@
 <template>
     <div class="graphCard">
       <h1>{{graphName}}</h1>
-        <apexcharts type="area" height="500" :options="chartOptions" :series="series"></apexcharts>
+        <apexcharts type="area" :options="chartOptions" :series="series"></apexcharts>
     </div>
 </template>
 
