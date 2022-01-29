@@ -102,20 +102,21 @@ public final class Calculator {
 			start = start + end - 604800000;
 
 		} else if (interval.equalsIgnoreCase("last_month")) {
-			Calendar day = getStartOfMonth();
+			Calendar startDay = getStartOfMonth();
+			Calendar endDay = getStartOfMonth();
 			// use start of this month, instead of end of last
-			end = day.getTime().getTime();
-			int month = day.get(Calendar.MONTH);
+			end = endDay.getTime().getTime();
+			int month = startDay.get(Calendar.MONTH);
 			if (month == 0) {
 				month = 11;
+				startDay.set(Calendar.YEAR, startDay.get(Calendar.YEAR) - 1);
 			} else {
 				month--;
 			}
-			day.set(Calendar.MONTH, month);
-			Date startOfLastMonth = day.getTime();
+			startDay.set(Calendar.MONTH, month);
+			Date startOfLastMonth = startDay.getTime();
 			// convert to unix
 			start = startOfLastMonth.getTime();
-
 		} else if (interval.equalsIgnoreCase("year")) {
 			start = end - Long.valueOf("31556926000");
 		}
