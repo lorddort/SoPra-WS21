@@ -55,7 +55,7 @@ public final class Calculator {
 	 * @return
 	 */
 	public static float cutInputCorrelationCoefficient(float xArray[], float yArray[]) {
-		int length = yArray.length;
+		int length = xArray.length;
 		if (xArray.length == yArray.length) {
 			return simpleCorrelationCoefficient(xArray, yArray);
 		} else if (xArray.length > yArray.length) {
