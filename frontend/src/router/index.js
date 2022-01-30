@@ -5,6 +5,7 @@ import Tables from "../views/Tables.vue";
 import GraphCard from "../components/GraphCard.vue";
 import Table from "../components/Table.vue";
 import Home from "../views/Home.vue";
+import HomeDetails from "../views/HomeDetails.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes = [
     path: "/graphs",
     name: "Graphs",
     component: Graphs
+  },
+  {
+    path: "/:id",
+    name: "HomeDetails",
+    component: HomeDetails
   }
 ];
 

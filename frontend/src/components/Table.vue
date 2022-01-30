@@ -115,55 +115,55 @@ export default {
                         from: -0.8,
                         to: -0.600001,
                         color: '#ab003d',
-                        name: '>= -0.8'
+                        name: '>= -0.8 (sehr hoch)'
                       },
                       {
                         from: -0.6,
                         to: -0.400001,
                         color: '#e52143',
-                        name: '>= -0.6'
+                        name: '>= -0.6 (hoch)'
                       },
                       {
                         from: -0.4,
                         to: -0.200001,
                         color: '#ff6223',
-                        name: '>= -0.4'
+                        name: '>= -0.4 (moderat)'
                       },
                       {
                         from: -0.2,
                         to: -0.000001,
                         color: '#ffad4a',
-                        name: '>= -0.2'
+                        name: '>= -0.2 (wenig)'
                       },
                       {
                         from: 0,
                         to: 0.199999,
                         color: '#ffe37c',
-                        name: '>= 0'
+                        name: '>= 0 (kaum)'
                       },
                       {
                         from: 0.2,
                         to: 0.399999,
                         color: '#d1f57e',
-                        name: '>= 0.2'
+                        name: '>= 0.2 (wenig)'
                       },
                       {
                         from: 0.4,
                         to: 0.599999,
                         color: '#95e15b',
-                        name: '>= 0.4'
+                        name: '>= 0.4 (moderat)'
                       },
                       {
                         from: 0.6,
                         to: 0.799999,
                         color: '#3dc55b',
-                        name: '>= 0.6'
+                        name: '>= 0.6 (hoch)'
                       },
                       {
                         from: 0.8,
                         to: 0.999999,
                         color: '#009f4b',
-                        name: '>= 0.8'
+                        name: '>= 0.8 (sehr hoch)'
                       },
                       {
                         from: 1,
@@ -172,6 +172,31 @@ export default {
                         name: '= 1'
                     }]
                   }
+                }
+              },
+              tooltip: {
+                enabled: true,
+                custom: function({seriesIndex, dataPointIndex, w}){
+                    var value = w.globals.initialSeries[seriesIndex].data[dataPointIndex]
+                    if(value.data.y >= -0.8){
+                      return "Beide Währung korreliert sehr hoch negativ miteinander"
+                    } else if(value.data.y >= -0.6){
+                      return "Beide Währung korreliert hoch negativ miteinander"
+                    } else if(value.data.y >= -0.4){
+                      return "Beide Währung korreliert moderat negativ miteinander"
+                    } else if(value.data.y >= -0.2){
+                      return "Beide Währung korreliert wenig negativ miteinander"
+                    } else if(value.data.y >= 0){
+                      return "Beide Währung korreliert kaum positiv miteinander"
+                    } else if(value.data.y >= 0.2){
+                      return "Beide Währung korreliert wenig positiv miteinander"
+                    } else if(value.data.y >= 0.4){
+                      return "Beide Währung korreliert moderat positiv miteinander"
+                    } else if(value.data.y >= 0.6){
+                      return "Beide Währung korreliert hoch positiv miteinander"
+                    } else if(value.data.y >= 0.8){
+                      return "Beide Währung korreliert sehr hoch positiv miteinander"
+                    }
                 }
               },
               legend: {
@@ -187,7 +212,7 @@ export default {
                 width: 1
               },
               title: {
-                text: 'Korrelation Table'
+                text: 'Correlation Table'
               },
           },
         }

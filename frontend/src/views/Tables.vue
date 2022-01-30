@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    postCCForCorrelation: function(array){
+    /*postCCForCorrelation: function(array){
         for(var i = 0; i < array.length; i++){
             axios.post(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
         }
@@ -116,7 +116,7 @@ export default {
             }
             this.postCCForCorrelation(this.cryptoCurrencies)
         })
-    },
+    },*/
     setTimeFrame: function(frame){
         switch (frame){
             case this.frames.today:
@@ -170,10 +170,20 @@ export default {
     },
     searchTag ({ name }) {
         return `${name}`
+    },
+    loadloadedCryptoCurrency: function(){
+        axios.get(`${config.apiBaseUrl}/cryptos/loaded`).then((response) => {
+            this.cryptoCurrencies = response.data;
+            if(this.cryptoCurrencies.length > 2){
+                for(var i = 0; i < 2; i++){
+                    this.taggedValue.push(this.cryptoCurrencies[i])
+                }
+            }
+        })
     }
   },
   created: function(){
-        this.loadCryptoCurrency();
+        this.loadloadedCryptoCurrency();
   }
 }
 
