@@ -6,6 +6,7 @@ import de.unistuttgart.iste.sopraws20.api.database.Importer;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
 import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 @Service
 public class CryptoCurrencyService {
+	@Autowired
 	private static Map<String, CryptoCurrency> cryptoCurrencies;
 	// list of name and ID of cc
 	private List<CryptoIdName> cryptoCurrencyNames;
