@@ -3,45 +3,44 @@
         <b-row>
             <b-col >
                 <b-container>
-                    <label class="typo__label">From</label>
-                    <b-form-datepicker v-model="dayOne" :max="maxDate" locale="en"></b-form-datepicker><br>
-                    <label class="typo__label">till</label>
-                    <b-form-datepicker v-model="dayTwo" :min="dayOne" :max="maxDate" locale="en"></b-form-datepicker><br>
+                    <label class="typo_label">Time Frame</label>
+                    <b-button 
+                        v-b-modal.timeFrameModal 
+                        style="min-width: 100%"
+                        variant="outline-dark">
+                        {{this.timeFrameString}}
+                    </b-button>
+                    <br><br>
                     <label class="typo__label">Cryptocurrencies</label>
-                    <multiselect    v-model="taggedValue"
+                    <multiselect    class="multiselect"
+                                    v-model="taggedValue"
                                     label="name" 
                                     track-by="name" 
                                     :options="cryptoCurrencies" 
                                     :multiple="true" 
                                     :taggable="false" 
                                     @tag="searchTag">
-                    </multiselect><br>
-                    <b-form-group   label="Currency"
-                                    v-slot="{ ariaDescribedby }">
-                        <b-form-radio-group id="btn-radios-2"
-                                            v-model="selectedCurrencies"
-                                            :options="currencies"
-                                            :aria-describedby="ariaDescribedby"
-                                            button-variant="outline-primary"
-                                            name="radio-btn-outline"
-                                            buttons>
-                        </b-form-radio-group>
-                    </b-form-group><br>
+                    </multiselect>
+                    <br><br>
                     <label for="sb-inline">Threshold</label>
-                    <b-row align-v="start">
-                        <b-col>
-                            <b-form-spinbutton id="sb-inline" v-model="threshold" placeholder="--" min="0" max="1" step="0.05" inline></b-form-spinbutton>
-                        </b-col>
-                        <b-col cols="8">
-                            <b-form-input v-model="threshold" placeholder="Enter threshold <= 1"></b-form-input>
-                        </b-col>
-                    </b-row>
+                    <br>
+                    <b-form-spinbutton id="sb-inline" style="min-width: 100%" v-model="threshold" placeholder="--" min="-1" max="1" step="0.05" inline>{{threshold}}</b-form-spinbutton>
+                    <b-button class="button button1" @click="startThreshold()">Apply Threshold</b-button>
+                    <b-button class="button button2" @click="resetThreshold()">Reset Threshold</b-button>
                 </b-container>
             </b-col>
             <b-col cols="9">
-                <Table :taggedValue="this.taggedValue" />
+                <Table :taggedValue="this.taggedValue" :threshold="this.threshold" :appliedThreshold="this.appliedThreshold"/>
             </b-col>
         </b-row>
+        <b-modal id="timeFrameModal" title="Select Timeframe">
+            <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100">
+                <b-dropdown-item @click="setTimeFrame(frames.day)">Last Day</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
+            </b-dropdown>
+        </b-modal>
     </div>
 </template>
 
@@ -58,9 +57,15 @@ export default {
         Multiselect,
     },
   data () {
-    const now = new Date()
-    const maxDate = new Date(now)
     return {
+        frames: {
+            day: 0,
+            week: 1,
+            month: 2,
+            year: 3,
+            custom: 4
+        },
+        timeFrameString: "Last Day",
         taggedValue: [/*{ id: "bitcoin", name: "Bitcoin"}...*/],
         cryptoCurrencies: [],
         selectedCurrencies: "EUR",
@@ -68,11 +73,8 @@ export default {
             { text: "Euro", value: "EUR" },
             { text: "US Dollar", value: "USD" }
         ],
-        dayOne: null,
-        dayTwo: null,
-        minDate: this.dayOne,
-        maxDate: maxDate,
-        threshold: null
+        threshold: 0,
+        appliedThreshold: false,
     }
   },
   methods: {
@@ -92,6 +94,55 @@ export default {
             this.postCCForCorrelation(this.cryptoCurrencies)
         })
     },
+    setTimeFrame: function(frame){
+        let newFrame = {
+            to: Math.floor(Date.now()),
+            from: 0,
+            frameType: 0
+        }
+        let now = newFrame.to;
+        switch (frame){
+            case this.frames.day:
+                newFrame.from = now - this.toUnixTime(1, 0, 0, 0);
+                newFrame.frameType = this.frames.day;
+                this.timeFrameString = "Last Day";
+                break;
+            case this.frames.week: 
+                newFrame.from = now - this.toUnixTime(7, 0, 0, 0);
+                newFrame.frameType = this.frames.week;
+                this.timeFrameString = "Last Week";
+                break;
+            case this.frames.month:
+                newFrame.from = now - this.toUnixTime(30, 0, 0, 0);
+                newFrame.frameType = this.frames.month;
+                this.timeFrameString = "Last Month";
+                break;
+            case this.frames.year:
+                newFrame.from = now - this.toUnixTime(360, 0, 0, 0);
+                newFrame.frameType = this.frames.year;
+                    this.timeFrameString = "Last Year";
+                break;
+        }
+        this.timeFrame = newFrame;
+    },
+    //converts human readable time to unixTime
+    toUnixTime: function(days, hours, minutes, seconds){
+        return  days * 24 * 60 * 60 * 1000 +
+            hours * 60 * 60 * 1000+
+            minutes * 60 * 1000+
+            seconds;
+    },
+    resetThreshold: function(){
+        if(this.appliedThreshold == true){
+            this.appliedThreshold = false;
+            this.threshold = 0;
+        }
+    },
+    startThreshold: function(){
+        if(this.appliedThreshold == false){
+            this.appliedThreshold = true;
+        }
+    },
     searchTag ({ name }) {
         return `${name}`
     }
@@ -103,4 +154,23 @@ export default {
 
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style scoped>
+.multiselect {
+    @import "vue-multiselect/dist/vue-multiselect.min.css"
+}
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.button1 {padding: 7px 20px; background-color: rgb(39, 138, 64);}
+.button2 {padding: 7px 20px; background-color: #ac2e2e;}
+
+
+</style>
