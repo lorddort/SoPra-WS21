@@ -5,5 +5,6 @@ module.exports = {
     port: 8000
   },
   // display eslint errors as warnings --> build does not fail on linting issues
-  lintOnSave: true
+  lintOnSave: true,
+  
 };

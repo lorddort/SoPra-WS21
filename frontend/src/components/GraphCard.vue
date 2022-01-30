@@ -1,7 +1,6 @@
 <template>
     <div class="graphCard">
-      <h1>{{graphName}}</h1>
-        <apexcharts type="area" height="500" :options="chartOptions" :series="series"></apexcharts>
+        <apexcharts type="area" :options="chartOptions" :series="series"></apexcharts>
     </div>
 </template>
 
@@ -14,7 +13,7 @@ export default {
         apexcharts: VueApexCharts,
     },
     props: {
-      rawData: Array,
+      rawData: [],
       timeFrame: {}
     },
     watch: {
@@ -22,8 +21,10 @@ export default {
         this.loadData();
       },
       timeFrame: function(){
-        this.chartOptions.xaxis.min = this.timeFrame.from;
-        this.chartOptions.xaxis.max = this.timeFrame.to; 
+        this.chartOptions.xaxis = {
+          min: this.timeFrame.from,
+          max: this.timeFrame.to
+        }
         this.updateTimeFrameChartType();
         this.updateSeriesData();
       }
@@ -34,9 +35,7 @@ export default {
         graphName: 'Graph',
         chartOptions: {
           xaxis: {
-            type: "datetime",
-            min: undefined,
-            max: undefined
+            type: "datetime"
           },
           yaxis: {
             labels: {
@@ -127,7 +126,7 @@ export default {
           case this.charts.dailyChart:
             return this.copyDateTable(rawDataObj.dailyChart.prices);
           default:
-            console.log("Surprise, code failed");
+            console.log("No valid time frame set!");
             break;
         }
       },
@@ -141,26 +140,13 @@ export default {
             this.loadedChartType = this.charts.hourlyChart;
             break;
           case this.frames.month:
-            this.loadedChartType = this.charts.dailyChart;
+            this.loadedChartType = this.charts.hourlyChart;
             break;
           case this.frames.year:
             this.loadedChartType = this.charts.dailyChart;
             break;
-          case this.frames.custom:
-            var currentDateUnix = Math.floor(Date.now());
-
-            if (this.timeFrame.from < (currentDateUnix - this.toUnixTime(0, 24, 0, 0))){
-              this.loadedChartType = this.charts.minutelyChart;
-            } else if (this.timeFrame.from < (currentDateUnix - this.toUnixTime(7, 0, 0, 0))){
-              this.loadedChartType = this.charts.hourlyChart;
-            } else if (this.timeFrame.from < (currentDateUnix - this.toUnixTime(31, 0, 0, 0))){
-              this.loadedChartType = this.charts.dailyChart;
-            }
-            this.chartOptions.xaxis.min = this.timeFrame.from;
-            this.chartOptions.xaxis.max = this.timeFrame.to;
-            break;
           default:
-            console.log("Code broke somehow");
+            console.log("No valid data time chart available!");
             break;
         }
       },
@@ -170,6 +156,9 @@ export default {
         let copyTo = [];
         for (let i in copyFrom){
           let tuple = copyFrom[i];
+          if (tuple[0] <= this.timeFrame.from){
+            continue;
+          }
           copyTo.push([parseFloat(tuple[0]), parseFloat(tuple[1])]);
         }
         return copyTo;
@@ -183,9 +172,10 @@ export default {
         }
     },
     mounted(){
-      this.loadedChartType = this.charts.minutelyChart;
       this.chartOptions.min = this.timeFrame.from;
       this.chartOptions.max = this.timeFrame.to;
+      this.updateTimeFrameChartType();
+      this.loadData();
     }
 }
 </script>
