@@ -1,25 +1,26 @@
 package de.unistuttgart.iste.sopraws20.api.services;
 
-import com.litesoftwares.coingecko.exception.CoinGeckoApiException;
-import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
-import de.unistuttgart.iste.sopraws20.api.database.Importer;
-import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
-import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.stereotype.Service;
+
+import com.litesoftwares.coingecko.exception.CoinGeckoApiException;
+import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
+
+import de.unistuttgart.iste.sopraws20.api.database.Importer;
+import de.unistuttgart.iste.sopraws20.api.values.CryptoCurrency;
+import de.unistuttgart.iste.sopraws20.api.values.CryptoIdName;
 
 /**
  * Class with Services for CryptoCurrency(cc)
  */
 @Service
 public class CryptoCurrencyService {
-	@Autowired
 	private static Map<String, CryptoCurrency> cryptoCurrencies;
 	// list of name and ID of cc
 	private List<CryptoIdName> cryptoCurrencyNames;
@@ -46,7 +47,7 @@ public class CryptoCurrencyService {
 	 *
 	 * @return crypto list
 	 */
-	public List<CryptoIdName> getCryptoCurrencyNames(){
+	public List<CryptoIdName> getCryptoCurrencyNames() {
 		cryptoCurrencyNames = Importer.getCryptoCurrencyNamesAndIds();
 		return cryptoCurrencyNames;
 	}
@@ -79,6 +80,39 @@ public class CryptoCurrencyService {
 	 */
 	public List<CryptoIdName> getLoadedCryptoCurrencies() {
 		return loadedIdAndNames;
+	}
+
+	/**
+	 * Get mc chart
+	 * 
+	 * @param id       of cc
+	 * @param interval to choose from today, 24h, week, month, last_month and year
+	 * @return chosen chart in given timeframe
+	 */
+	public static List<List<String>> getMarketCapChartByTimeframe(String id, String interval) {
+		return getCryptoCurrencyByName(id).getMarketCapChartByTimeframe(interval);
+	}
+
+	/**
+	 * Get price chart
+	 * 
+	 * @param id       of cc
+	 * @param interval to choose from today, 24h, week, month, last_month and year
+	 * @return chosen chart in given timeframe
+	 */
+	public static List<List<String>> getPriceChartByTimeframe(String id, String interval) {
+		return getCryptoCurrencyByName(id).getPriceChartByTimeframe(interval);
+	}
+
+	/**
+	 * Get volume chart
+	 * 
+	 * @param id       of cc
+	 * @param interval to choose from today, 24h, week, month, last_month and year
+	 * @return chosen chart in given timeframe
+	 */
+	public static List<List<String>> getVolumeChartByTimeframe(String id, String interval) {
+		return getCryptoCurrencyByName(id).getVolumeChartByTimeframe(interval);
 	}
 
 	/**
@@ -116,7 +150,7 @@ public class CryptoCurrencyService {
 	/**
 	 * Update logo url for crypto
 	 *
-	 * @param id crypto ID
+	 * @param id         crypto ID
 	 * @param newLogoUrl new logo url
 	 * @return
 	 */
@@ -126,4 +160,3 @@ public class CryptoCurrencyService {
 		return newLogoUrl;
 	}
 }
-

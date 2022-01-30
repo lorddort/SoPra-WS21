@@ -1,5 +1,8 @@
 package de.unistuttgart.iste.sopraws20.api.statistic;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public final class Calculator {
@@ -44,7 +47,8 @@ public final class Calculator {
 	}
 
 	/**
-	 * Cut longer array off before computing correlation coefficient. If spacing or starting off data is different use different method.
+	 * Cut longer array off before computing correlation coefficient. If spacing or
+	 * starting off data is different use different method.
 	 *
 	 * @param xArray
 	 * @param yArray
@@ -78,5 +82,82 @@ public final class Calculator {
 			coinArray[i] = Float.parseFloat((coinList.get(i).get(1)));
 		}
 		return coinArray;
+	}
+
+	/**
+	 * returns selected intervall of data
+	 * 
+	 * @param data
+	 * @param interval today, week, last_month, year
+	 */
+	public static List<List<String>> cutDataByIntervall(String interval, List<List<String>> data) {
+		long start = 0;
+		long end = new Date().getTime();
+		if (interval.equalsIgnoreCase("today")) {
+			Date startOfToday = getStartOfToday();
+			// convert to unix
+			start = startOfToday.getTime();
+
+		} else if (interval.equalsIgnoreCase("week")) {
+			start = start + end - 604800000;
+
+		} else if (interval.equalsIgnoreCase("last_month")) {
+			Calendar startDay = getStartOfMonth();
+			Calendar endDay = getStartOfMonth();
+			// use start of this month, instead of end of last
+			end = endDay.getTime().getTime();
+			int month = startDay.get(Calendar.MONTH);
+			if (month == 0) {
+				month = 11;
+				startDay.set(Calendar.YEAR, startDay.get(Calendar.YEAR) - 1);
+			} else {
+				month--;
+			}
+			startDay.set(Calendar.MONTH, month);
+			Date startOfLastMonth = startDay.getTime();
+			// convert to unix
+			start = startOfLastMonth.getTime();
+		} else if (interval.equalsIgnoreCase("year")) {
+			start = end - Long.valueOf("31556926000");
+		}
+		return cutDataByTime(start, end, data);
+	}
+
+	private static Calendar getStartOfMonth() {
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		day.set(Calendar.SECOND, 0);
+		day.set(Calendar.MINUTE, 0);
+		day.set(Calendar.HOUR_OF_DAY, 0);
+		day.set(Calendar.DAY_OF_MONTH, 1);
+		return day;
+	}
+
+	private static Date getStartOfToday() {
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.MILLISECOND, 0);
+		day.set(Calendar.SECOND, 0);
+		day.set(Calendar.MINUTE, 0);
+		day.set(Calendar.HOUR_OF_DAY, 0);
+		Date startOfToday = day.getTime();
+		return startOfToday;
+	}
+
+	/**
+	 * Returns selected time frame of data
+	 * 
+	 * @param startTime in Unix
+	 * @param endTime   in Unix
+	 * @param data      input
+	 * @return all data points from startTime to endTime
+	 */
+	public static List<List<String>> cutDataByTime(long startTime, long endTime, List<List<String>> data) {
+		ArrayList<List<String>> cutList = new ArrayList<List<String>>();
+		for (List<String> dataPoint : data) {
+			if (Long.parseLong(dataPoint.get(0)) > startTime && Long.parseLong(dataPoint.get(0)) < endTime) {
+				cutList.add(dataPoint);
+			}
+		}
+		return cutList;
 	}
 }
