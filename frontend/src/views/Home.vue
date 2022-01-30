@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Kryptowährungen vorabladen</h1>
+    <h1>Preloading Crypto Assets</h1>
     <br>
     <b-button class="button button1" v-b-modal.listModal>Add Crypto Assets</b-button>
     <button class="btn btn-primary" type="button" v-show="loading" disabled>
@@ -11,7 +11,7 @@
     <div>
       <b-row>
         <b-card-group class="col-md-2" deck v-for="cryptoCurrency in loadedCryptoCurrencies" v-bind:key="cryptoCurrency.id">
-          <b-card :title="cryptoCurrency.name" :img-src="cryptoCurrency.logo" img-alt="Image" img-top><b-button class="button button2">Details</b-button></b-card>
+          <b-card :title="cryptoCurrency.name" :img-src="cryptoCurrency.logo" img-alt="Image" img-top><router-link class="button button2" v-bind:to="'/'+cryptoCurrency.id">Details</router-link></b-card>
         </b-card-group>
       </b-row>
     </div>
