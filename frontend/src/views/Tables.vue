@@ -116,7 +116,7 @@ export default {
             }
             this.postCCForCorrelation(this.cryptoCurrencies)
         })
-    },
+    },*/
     setTimeFrame: function(frame){
         switch (frame){
             case this.frames.today:
