@@ -22,6 +22,13 @@
                                     @tag="searchTag">
                     </multiselect>
                     <br><br>
+                    <b-button 
+                        v-b-modal.typeModal 
+                        style="min-width: 100%"
+                        variant="outline-dark">
+                        {{this.typeString}}
+                    </b-button>
+                    <br><br>
                     <label for="sb-inline">Threshold</label>
                     <br>
                     <b-form-spinbutton id="sb-inline" style="min-width: 100%" v-model="threshold" placeholder="--" min="-1" max="1" step="0.05" inline>{{threshold}}</b-form-spinbutton>
@@ -30,15 +37,23 @@
                 </b-container>
             </b-col>
             <b-col cols="9">
-                <Table :taggedValue="this.taggedValue" :threshold="this.threshold" :appliedThreshold="this.appliedThreshold"/>
+                <Table :taggedValue="this.taggedValue" :threshold="this.threshold" :appliedThreshold="this.appliedThreshold" :selectedTime="this.selectedTime" :selectedType="this.selectedType" />
             </b-col>
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
             <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100">
-                <b-dropdown-item @click="setTimeFrame(frames.day)">Last Day</b-dropdown-item>
-                <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
-                <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
-                <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.today)">Today</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.day)">24h</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.week)">Week</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.month)">Month</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.lastMonth)">Last Month</b-dropdown-item>
+            </b-dropdown>
+        </b-modal>
+        <b-modal id="typeModal" title="Select Type">
+            <b-dropdown id="type" :text="this.typeString" style="min-width: 100%" menu-class="w-100">
+                <b-dropdown-item @click="setType(types.correlation)">Correlation</b-dropdown-item>
+                <b-dropdown-item @click="setType(types.marketcap)">Marketcap</b-dropdown-item>
+                <b-dropdown-item @click="setType(types.volume)">Volume</b-dropdown-item>
             </b-dropdown>
         </b-modal>
     </div>
@@ -58,14 +73,22 @@ export default {
     },
   data () {
     return {
-        frames: {
-            day: 0,
-            week: 1,
-            month: 2,
-            year: 3,
-            custom: 4
+        selectedTime: "today",
+        selectedType: "correlation",
+        types: {
+            marketcap: 0,
+            volume: 1,
+            correlation: 2
         },
-        timeFrameString: "Last Day",
+        typeString: "Correlation",
+        frames: {
+            today: 0,
+            day: 1,
+            week: 2,
+            month: 3,
+            lastMonth: 4,
+        },
+        timeFrameString: "Today",
         taggedValue: [/*{ id: "bitcoin", name: "Bitcoin"}...*/],
         cryptoCurrencies: [],
         selectedCurrencies: "EUR",
@@ -95,42 +118,44 @@ export default {
         })
     },
     setTimeFrame: function(frame){
-        let newFrame = {
-            to: Math.floor(Date.now()),
-            from: 0,
-            frameType: 0
-        }
-        let now = newFrame.to;
         switch (frame){
-            case this.frames.day:
-                newFrame.from = now - this.toUnixTime(1, 0, 0, 0);
-                newFrame.frameType = this.frames.day;
-                this.timeFrameString = "Last Day";
+            case this.frames.today:
+                this.selectedTime = "today"
+                this.timeFrameString = "Today"
                 break;
-            case this.frames.week: 
-                newFrame.from = now - this.toUnixTime(7, 0, 0, 0);
-                newFrame.frameType = this.frames.week;
-                this.timeFrameString = "Last Week";
+            case this.frames.day: 
+                this.selectedTime = "24h"
+                this.timeFrameString = "24h"
+                break;
+            case this.frames.week:
+                this.selectedTime = "week"
+                this.timeFrameString = "Week"
                 break;
             case this.frames.month:
-                newFrame.from = now - this.toUnixTime(30, 0, 0, 0);
-                newFrame.frameType = this.frames.month;
-                this.timeFrameString = "Last Month";
+                this.selectedTime = "month"
+                this.timeFrameString = "Month"
                 break;
-            case this.frames.year:
-                newFrame.from = now - this.toUnixTime(360, 0, 0, 0);
-                newFrame.frameType = this.frames.year;
-                    this.timeFrameString = "Last Year";
+            case this.frames.lastMonth:
+                this.selectedTime = "last_month"
+                this.timeFrameString = "Last Month"
                 break;
         }
-        this.timeFrame = newFrame;
     },
-    //converts human readable time to unixTime
-    toUnixTime: function(days, hours, minutes, seconds){
-        return  days * 24 * 60 * 60 * 1000 +
-            hours * 60 * 60 * 1000+
-            minutes * 60 * 1000+
-            seconds;
+    setType: function(type){
+        switch (type){
+            case this.types.marketcap:
+                this.selectedType = "marketcap"
+                this.typeString = "Marketcap"
+                break;
+            case this.types.volume:
+                this.selectedType = "volume"
+                this.typeString = "Volume"
+                break;
+            case this.types.other:
+                this.selectedType = "correlation"
+                this.typeString = "Correlation"
+                break;
+        }
     },
     resetThreshold: function(){
         if(this.appliedThreshold == true){

@@ -17,7 +17,7 @@ export default {
     components: {
         apexcharts: VueApexCharts
     },
-    props: { taggedValue: Array, threshold: Number, appliedThreshold: Boolean},
+    props: { taggedValue: Array, threshold: Number, appliedThreshold: Boolean, selectedTime: String, selectedType: String},
     data: function() {
         return{
           thresholdLegend: [],
@@ -196,14 +196,20 @@ export default {
       taggedValue: function(){
         this.updateMap();
       },
+      selectedType: function(){
+        this.updateMap();
+      },
+      selectedTime: function(){
+        this.updateMap();
+      },
       threshold: function(){
         this.getThreshold();
       }
     },
     methods: {
-        loadCorrelation(type, id1, id2){
-            const params = new URLSearchParams([['type', type], ['id1', id1], ['id2', id2]])
-            return axios.get(`${config.apiBaseUrl}/calculator/crypto/corr/year`, { params }).then(response => {
+        loadCorrelation(type, id1, id2, selectedTime){
+            const params = new URLSearchParams([["type", type], ['id1', id1], ['id2', id2]])
+            return axios.get(`${config.apiBaseUrl}/calculator/crypto/corr/${selectedTime}`, { params }).then(response => {
               return response.data
             })
         },
@@ -212,7 +218,7 @@ export default {
           for(var i = 0; i < this.taggedValue.length; i++){
             var dataArray = [];
             for(let j = 0; j < this.taggedValue.length; j++){
-              this.correlation = await this.loadCorrelation("price", this.taggedValue[i].id, this.taggedValue[j].id)
+              this.correlation = await this.loadCorrelation(this.selectedType, this.taggedValue[i].id, this.taggedValue[j].id, this.selectedTime)
               dataArray.push({
                 x: this.taggedValue[j].name,
                 y: this.correlation.correlationCoefficient
