@@ -51,7 +51,7 @@
         </b-modal>
         <b-modal id="typeModal" title="Select Type">
             <b-dropdown id="type" :text="this.typeString" style="min-width: 100%" menu-class="w-100">
-                <b-dropdown-item @click="setType(types.correlation)">Correlation</b-dropdown-item>
+                <b-dropdown-item @click="setType(types.price)">Price</b-dropdown-item>
                 <b-dropdown-item @click="setType(types.marketcap)">Marketcap</b-dropdown-item>
                 <b-dropdown-item @click="setType(types.volume)">Volume</b-dropdown-item>
             </b-dropdown>
@@ -74,13 +74,13 @@ export default {
   data () {
     return {
         selectedTime: "today",
-        selectedType: "correlation",
+        selectedType: "price",
         types: {
             marketcap: 0,
             volume: 1,
             correlation: 2
         },
-        typeString: "Correlation",
+        typeString: "Price",
         frames: {
             today: 0,
             day: 1,
@@ -151,9 +151,9 @@ export default {
                 this.selectedType = "volume"
                 this.typeString = "Volume"
                 break;
-            case this.types.other:
-                this.selectedType = "correlation"
-                this.typeString = "Correlation"
+            case this.types.price:
+                this.selectedType = "price"
+                this.typeString = "Price"
                 break;
         }
     },
