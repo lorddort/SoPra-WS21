@@ -33,18 +33,25 @@
             </b-col>
             <b-col cols="8">
                 <b-row v-for="line in graphCollection">
-                    <b-card-group deck style="min-width: 100%">
-                        <b-card v-for="graph in line" class="my-3">
-                            <b-button
-                                class="sm"
-                                variant="danger"
-                                :disabled="disableDeleteGraph"
-                                @click="deleteGraph(graph.id)">
-                                Delete Graph
-                            </b-button>
-                            <GraphCard :rawData="graph.chartData" :timeFrame="graph.timeFrame"/>
-                        </b-card>
-                    </b-card-group>
+                <b-card-group deck style="min-width: 100%">
+                    <b-card v-for="graph in line" class="my-3" :border-variant="isActiveGraph(graph)">
+                        <h3>{{title(graph)}}</h3>
+                        <b-button
+                            class="sm"
+                            variant="danger"
+                            :disabled="disableDeleteGraph"
+                            @click="deleteGraph(graph.id)">
+                            Delete Graph
+                        </b-button>
+                        <b-button
+                            class="sm float-right"
+                            variant="success"
+                            @click="setActive(graph.id)">
+                            Change Settings
+                        </b-button>
+                        <GraphCard :rawData="graph.chartData" :timeFrame="graph.timeFrame"/>
+                    </b-card>
+                </b-card-group>
                 </b-row>
             </b-col>
         </b-row>
@@ -117,6 +124,26 @@ export default {
         }
     },
     computed: {
+        isActiveGraph: function(){
+            return (graph) => {
+                if (graph.id == this.activeGraph){
+                    return "gray";
+                } else {
+                    return "light";
+                }
+            }
+        },
+        title: function(){
+            return (graph) => {
+                if (graph.chartData.length > 1){
+                    return graph.chartData[0].name + "...";
+                } else if (graph.chartData.length == 1) {
+                    return graph.chartData[0].name;
+                } else {
+                    return ">.<";
+                }
+            }
+        },
         disableMoreGraphs: function() {
             if (this.graphCollection.length == 2){
                 if (this.graphCollection[0].length == 2 && this.graphCollection[1].length == 2){
@@ -156,16 +183,6 @@ export default {
         }
     },
     methods: {
-        lockInCustomTimeFrame: function(){
-            let newFrame = {
-                to: 0,
-                from: 0,
-                frameType: this.frames.custom
-            };
-            newFrame.to = Math.floor(this.selectDateTo);
-            newFrame.to = Math.floor(this.selectDateFrom);
-            this.timeFrame = newFrame;
-        },
         loadCurrencyMap: function(){
             axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
                 this.currencyMap = response.data;
@@ -306,6 +323,9 @@ export default {
                     return key;
                 }
             }
+        },
+        setActive: function(id) {
+            this.activeGraph = id;
         }
     },
     created: function(){

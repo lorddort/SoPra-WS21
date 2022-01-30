@@ -172,9 +172,10 @@ export default {
         }
     },
     mounted(){
-      this.loadedChartType = this.charts.minutelyChart;
       this.chartOptions.min = this.timeFrame.from;
       this.chartOptions.max = this.timeFrame.to;
+      this.updateTimeFrameChartType();
+      this.loadData();
     }
 }
 </script>
