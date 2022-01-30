@@ -20,18 +20,32 @@
                         label="name"
                         track-by="name">
                     </multiselect>
+                    <br>
+                    <br>
+                    <b-button 
+                        style="min-width:100%"
+                        variant="outline-dark"
+                        @click="addGraph()"
+                        :disabled="disableMoreGraphs">
+                        Add Graph
+                    </b-button>
                 </b-container>
             </b-col>
             <b-col cols="8">
-                <b-row v-for="row in graphCollection" id: row>
-                    <b-col v-for="graph in row" id:graph.id>
-                        <GraphCard :rawData="graph.rawData" :timeFrame="graph.timeFrame"/>
-                    </b-col>
+                <b-row v-for="line in graphCollection">
+                    <b-card-group deck style="min-width: 100%">
+                        <b-card v-for="graph in line" class="my-3">
+                            <b-button
+                                class="sm"
+                                variant="danger"
+                                :disabled="disableDeleteGraph"
+                                @click="deleteGraph(graph.id)">
+                                Delete Graph
+                            </b-button>
+                            <GraphCard :rawData="graph.chartData" :timeFrame="graph.timeFrame"/>
+                        </b-card>
+                    </b-card-group>
                 </b-row>
-                <!--GraphCard
-                    :rawData="chartData"
-                    :timeFrame="timeFrame"
-                /-->
             </b-col>
         </b-row>
         <b-modal id="timeFrameModal" title="Select Timeframe">
@@ -40,7 +54,6 @@
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Last Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Last Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.year)">Last Year</b-dropdown-item>
-                <!--<b-dropdown-item v-b-modal.customTimeFrameModal>Custom</b-dropdown-item>-->
             </b-dropdown>
         </b-modal>
     </div>
@@ -65,6 +78,12 @@ export default {
     },
     data() {
         return {
+            usedGraphIds: new Map([
+                [0, false],
+                [1, false],
+                [2, false],
+                [3, false]
+            ]),
             activeGraph: 0,
             graphCollection: [],
             currencyMap: [],
@@ -94,7 +113,23 @@ export default {
             currency: {
                 EUR: "EUR",
                 USD: "USD"
-            },
+            }
+        }
+    },
+    computed: {
+        disableMoreGraphs: function() {
+            if (this.graphCollection.length == 2){
+                if (this.graphCollection[0].length == 2 && this.graphCollection[1].length == 2){
+                    return true;
+                }
+            }
+            return false;
+        },
+        disableDeleteGraph: function() {
+            if (this.graphCollection.length == 1 && this.graphCollection[0].length == 1){
+                return true;
+            }
+            return false;
         }
     },
     watch: {
@@ -142,6 +177,7 @@ export default {
             await axios.post(`${config.apiBaseUrl}/cryptos/${id}`).then((response) => {
                 this.chartData.push(response.data);
             });
+            this.updateGraphData(this.activeGraph);
         },
         removeRawData: function(id){
             let index;
@@ -151,6 +187,7 @@ export default {
                 }
             }
             this.chartData.splice(index, 1);
+            this.updateGraphData(this.activeGraph);
         },
         setTimeFrame: function(frame){
             let newFrame = {
@@ -186,6 +223,7 @@ export default {
                     break;
             }
             this.timeFrame = newFrame;
+            this.updateGraphData(this.activeGraph);
         },
         //converts human readable time to unixTime
         toUnixTime: function(days, hours, minutes, seconds){
@@ -198,13 +236,74 @@ export default {
             this.selectedCurrency = currency;
         },
         updateGraphData: function(id) {
-            for (let i = 0; i < this.graphCollection.lenght; i++){
-                for (let j = 0; j < this.graphCollection[i].length; j++){
+            for (let i = 0; i < this.graphCollection.length; i++){
+                for(let j = 0; j < this.graphCollection[i].length; j++){
                     if (this.graphCollection[i][j].id == id){
-                        
-
+                        this.graphCollection[i][j].chartData = JSON.parse(JSON.stringify(this.chartData));
+                        this.graphCollection[i][j].timeFrame = JSON.parse(JSON.stringify(this.timeFrame));
                         return;
                     }
+                }
+            }
+        },
+        addGraph: function(){
+            //update activeGraph value
+            this.activeGraph = this.getNextGraphId();
+            this.usedGraphIds.set(this.activeGraph, true);
+            //create graph object
+            const newGraph = {
+                id: this.activeGraph,
+                chartData: JSON.parse(JSON.stringify(this.chartData)),
+                timeFrame: JSON.parse(JSON.stringify(this.timeFrame))
+            }
+            //queue old graphs and push new graph in first position
+            let graphQueue = this.getGraphQueue();
+            graphQueue.unshift(newGraph);
+            this.graphCollection = JSON.parse(JSON.stringify(this.getGraphViewLayout(graphQueue)));
+        },
+        deleteGraph: function(id){
+            this.usedGraphIds.set(id, false);
+            let graphQueue = this.getGraphQueue();
+            for (let i = 0; i < graphQueue.length; i++){
+                if (graphQueue[i].id == id){
+                    graphQueue.splice(i, 1);
+                }
+            }
+            this.activeGraph = graphQueue[0].id;
+            this.graphCollection = this.getGraphViewLayout(graphQueue);
+        },
+        getGraphQueue: function(){
+            let graphQueue = [];
+            for (let i = 0; i < this.graphCollection.length; i++){
+                for (let j = 0; j < this.graphCollection[i].length; j++){
+                    graphQueue.push(this.graphCollection[i][j]);
+                }
+            }
+            return graphQueue;
+        },
+        getGraphViewLayout: function(graphQueue){
+            let newGraphCollection = [];
+            switch (graphQueue.length){
+                case 1: newGraphCollection.push([graphQueue[0]]);
+                    break;
+                case 2: newGraphCollection.push([graphQueue[0]]);
+                    newGraphCollection.push([graphQueue[1]]);
+                    break;
+                case 3: newGraphCollection.push([graphQueue[0]]);
+                    newGraphCollection.push([graphQueue[1], graphQueue[2]]);
+                    break;
+                case 4: newGraphCollection.push([graphQueue[0], graphQueue[1]]);
+                    newGraphCollection.push([graphQueue[2], graphQueue[3]]);
+                    break;
+                default:
+                    break;
+            }
+            return newGraphCollection;
+        },
+        getNextGraphId: function() {
+            for (const [key, value] of this.usedGraphIds){
+                if (!value){
+                    return key;
                 }
             }
         }
@@ -215,12 +314,12 @@ export default {
         this.loadCurrencyMap();
         this.multiselectMap.push({id:"bitcoin", name:"Bitcoin"});
         this.multiselectMap.push({id:"ethereum", name:"Ethereum"});
-        this.updateActiveGraphData();
         this.graphCollection.push([{
             id: 0,
-            chartData: this.chartData,
-            timeFrame: this.timeFrame
+            chartData: JSON.parse(JSON.stringify(this.chartData)),
+            timeFrame: JSON.parse(JSON.stringify(this.timeFrame))
         }]);
+        this.usedGraphIds.set(0, true);
     }
 }
 

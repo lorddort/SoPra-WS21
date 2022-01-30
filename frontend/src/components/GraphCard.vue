@@ -1,6 +1,5 @@
 <template>
     <div class="graphCard">
-      <h1>{{graphName}}</h1>
         <apexcharts type="area" :options="chartOptions" :series="series"></apexcharts>
     </div>
 </template>
@@ -14,7 +13,7 @@ export default {
         apexcharts: VueApexCharts,
     },
     props: {
-      rawData: Array,
+      rawData: [],
       timeFrame: {}
     },
     watch: {
