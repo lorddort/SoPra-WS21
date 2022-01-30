@@ -6,12 +6,5 @@ module.exports = {
   },
   // display eslint errors as warnings --> build does not fail on linting issues
   lintOnSave: true,
-  //sass for styling
-  css: {
-    loaderOptions: {
-      sass: {
-        additionalData: `@import "@/styles/_variables.scss";`
-      }
-    }
-  }
+  
 };
