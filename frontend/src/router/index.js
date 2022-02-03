@@ -17,7 +17,7 @@ const routes = [
     component: Home
   },
   {
-    path: "/tables",
+    path: "/correlation",
     name: "Tables",
     component: Tables
   },

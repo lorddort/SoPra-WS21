@@ -173,10 +173,10 @@ export default {
                     }]
                   }
                 }
-              },
+              },/*
               tooltip: {
                 enabled: true,
-                custom: function({seriesIndex, dataPointIndex, w}){
+                y: function({seriesIndex, dataPointIndex, w}){
                     var value = w.globals.initialSeries[seriesIndex].data[dataPointIndex]
                     if(value.data.y >= -0.8){
                       return "Beide Währung korreliert sehr hoch negativ miteinander"
@@ -198,11 +198,8 @@ export default {
                       return "Beide Währung korreliert sehr hoch positiv miteinander"
                     }
                 }
-              },
+              },*/
               legend: {
-                onItemHover: {
-                  highlightDataSeries: true
-                },
                 position: 'bottom',
               },
               dataLabels: {
@@ -227,7 +224,7 @@ export default {
       selectedTime: function(){
         this.updateMap();
       },
-      threshold: function(){
+      appliedThreshold: function(){
         this.getThreshold();
       }
     },
@@ -261,15 +258,24 @@ export default {
           }
           this.series = series;
         },
-        getThreshold: function(){
+        getThreshold(){
           if(this.appliedThreshold == true){
             var legendLength = this.chartOptions.plotOptions.heatmap.colorScale.ranges.length;
             for(let i = 0; i < legendLength; i++){
-              this.chartOptions.plotOptions.heatmap.colorScale.ranges.pop();
+              this.chartOptions.plotOptions.heatmap.colorScale.ranges.pop(i);
             }
-            console.log(this.chartOptions.plotOptions.heatmap.colorScale.ranges)
-            this.chartOptions.plotOptions.heatmap.colorScale.ranges.push({ from: -1, to: this.threshold-0.000001, color: "#ffffff", name: ">= 1"})
-            this.chartOptions.plotOptions.heatmap.colorScale.ranges.push({ from: this.threshold, to: 1, color: "#0000ff", name: ">= " + this.threshold})
+            this.chartOptions.plotOptions.heatmap.colorScale.ranges.push({ from: -1, to: this.threshold-0.000001, color: "#ffffff", name: "   "})
+            this.chartOptions.plotOptions.heatmap.colorScale.ranges.push({ from: this.threshold, to: 1, color: "#00ff00", name: ">= " + this.threshold})
+            this.updateMap();
+          } else if(this.appliedThreshold == false){
+            var legendLength2 = this.chartOptions.plotOptions.heatmap.colorScale.ranges.length;
+            for(let i = 0; i < legendLength2; i++){
+              this.chartOptions.plotOptions.heatmap.colorScale.ranges.pop(i);
+            }
+            for(let i = 0; i < this.defaultLegend.length; i++){
+              this.chartOptions.plotOptions.heatmap.colorScale.ranges.push(this.defaultLegend[i])
+            }
+            this.updateMap();
           }
         }
     }
