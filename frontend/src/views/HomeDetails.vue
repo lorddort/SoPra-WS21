@@ -1,5 +1,6 @@
 <template>
     <div class="details">
+        <br>
         <router-link to="/">Back</router-link>
         <b-media>
             <template #aside>
@@ -45,7 +46,7 @@ export default {
 
 <style scoped>
 .details{
-    width: 1500px;
+    width: 1750px;
     margin: auto;
 }
 </style>

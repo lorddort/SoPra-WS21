@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout">
     <h1>Preloading Top 10 Crypto Assets</h1>
     <br>
     <b-button class="button button1" v-b-modal.listModal>Add Crypto Assets</b-button>
@@ -145,5 +145,10 @@ export default {
 
 .buttons{
   margin: 2px 1px;
+}
+
+.layout{
+  width: 1750px;
+  margin: auto;
 }
 </style>

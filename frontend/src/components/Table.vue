@@ -173,32 +173,34 @@ export default {
                     }]
                   }
                 }
-              },/*
+              },
               tooltip: {
                 enabled: true,
-                y: function({seriesIndex, dataPointIndex, w}){
-                    var value = w.globals.initialSeries[seriesIndex].data[dataPointIndex]
-                    if(value.data.y >= -0.8){
-                      return "Beide Währung korreliert sehr hoch negativ miteinander"
-                    } else if(value.data.y >= -0.6){
-                      return "Beide Währung korreliert hoch negativ miteinander"
-                    } else if(value.data.y >= -0.4){
-                      return "Beide Währung korreliert moderat negativ miteinander"
-                    } else if(value.data.y >= -0.2){
-                      return "Beide Währung korreliert wenig negativ miteinander"
-                    } else if(value.data.y >= 0){
-                      return "Beide Währung korreliert kaum positiv miteinander"
-                    } else if(value.data.y >= 0.2){
-                      return "Beide Währung korreliert wenig positiv miteinander"
-                    } else if(value.data.y >= 0.4){
-                      return "Beide Währung korreliert moderat positiv miteinander"
-                    } else if(value.data.y >= 0.6){
-                      return "Beide Währung korreliert hoch positiv miteinander"
-                    } else if(value.data.y >= 0.8){
-                      return "Beide Währung korreliert sehr hoch positiv miteinander"
+                custom: function({seriesIndex, dataPointIndex, series}){
+                    var value = series[seriesIndex][dataPointIndex]
+                    if(value == 1){
+                      return null
+                    } else if(value >= 0.8){
+                      return "Beide Währung korreliert sehr gut miteinander"
+                    } else if(value >= 0.6){
+                      return "Beide Währung korreliert gut miteinander"
+                    } else if(value >= 0.4){
+                      return "Beide Währung korreliert moderat miteinander"
+                    } else if(value >= 0.2){
+                      return "Beide Währung korreliert wenig miteinander"
+                    } else if(value >= 0){
+                      return "Beide Währung korreliert kaum miteinander"
+                    } else if(value >= -0.2){
+                      return "Beide Währung korreliert nicht gut miteinander"
+                    } else if(value >= -0.4){
+                      return "Beide Währung korreliert nicht gut miteinander"
+                    } else if(value >= -0.6){
+                      return "Beide Währung korreliert gar nicht gut miteinander"
+                    } else if(value >= -0.8){
+                      return "Beide Währung korreliert gar nicht gut miteinander"
                     }
                 }
-              },*/
+              },
               legend: {
                 position: 'bottom',
               },
