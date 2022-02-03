@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="details">
         <router-link to="/">Back</router-link>
         <b-media>
             <template #aside>
@@ -9,7 +9,7 @@
             </b-jumbotron>
         </b-media>
         <h1>Description</h1>
-        <p>{{ crypto.description }}</p>
+        <p><span v-html="crypto.description"></span></p>
     </div>
 </template>
 
@@ -43,5 +43,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.details{
+    width: 1500px;
+    margin: auto;
+}
 </style>
