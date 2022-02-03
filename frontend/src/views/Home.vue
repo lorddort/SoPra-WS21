@@ -19,8 +19,8 @@
     <div class="list">
       <b-modal id="listModal" title="Select Assets">
         <b-list-group class="list-group" v-if="listHasData">
-          <b-list-group-item v-for="cryptoCurrency in cryptoCurrencies" v-bind:key="cryptoCurrency.id">
-            {{cryptoCurrency.name}}
+          <b-list-group-item v-for="crypto in allCryptos" v-bind:key="crypto.id">
+            {{crypto.name}}
             <b-button class="buttonlist" variant="primary" right><b-icon class="buttons" icon="clipboard-plus"></b-icon></b-button>
           </b-list-group-item>
         </b-list-group>
@@ -42,7 +42,8 @@ export default {
       loading: true,
       listHasData: false,
       cryptoCurrencies: [],
-      loadedCryptoCurrencies: []
+      loadedCryptoCurrencies: [],
+      allCryptos: []
     }
   },
   methods: {
@@ -63,10 +64,15 @@ export default {
     loadCryptoCurrency(){
       axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
         this.cryptoCurrencies = response.data;
+        this.postCCForCorrelation(this.cryptoCurrencies)
+      })
+    },
+    loadAllCrypto(){
+      axios.get(`${config.apiBaseUrl}/cryptos/list`).then((response) => {
+        this.allCryptos = response.data;
         if(this.cryptoCurrencies.length != 0){
           this.listHasData = true;
         }
-        this.postCCForCorrelation(this.cryptoCurrencies)
       })
     },
     getLogo: function(id){
@@ -76,7 +82,8 @@ export default {
     }
   },
   created: function(){
-        this.loadCryptoCurrency();
+    this.loadAllCrypto();
+    this.loadCryptoCurrency();
   }
 }
 </script>
