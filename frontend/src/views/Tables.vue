@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Calculate Correlation</h1>
         <b-row>
             <b-col >
                 <b-container>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Preloading Crypto Assets</h1>
+    <h1>Preloading Top 10 Crypto Assets</h1>
     <br>
     <b-button class="button button1" v-b-modal.listModal>Add Crypto Assets</b-button>
     <button class="btn btn-primary" type="button" v-show="loading" disabled>
@@ -19,8 +19,8 @@
     <div class="list">
       <b-modal id="listModal" title="Select Assets">
         <b-list-group class="list-group" v-if="listHasData">
-          <b-list-group-item v-for="cryptoCurrency in cryptoCurrencies" v-bind:key="cryptoCurrency.id">
-            {{cryptoCurrency.name}}
+          <b-list-group-item v-for="crypto in allCryptos" v-bind:key="crypto.id">
+            {{crypto.name}}
             <b-button class="buttonlist" variant="primary" right><b-icon class="buttons" icon="clipboard-plus"></b-icon></b-button>
           </b-list-group-item>
         </b-list-group>
@@ -41,12 +41,28 @@ export default {
     return {
       loading: true,
       listHasData: false,
+      hasCreateCC: false,
       cryptoCurrencies: [],
-      loadedCryptoCurrencies: []
+      loadedCryptoCurrencies: [],
+      allCryptos: []
     }
   },
   methods: {
-    async postCCForCorrelation(array){
+    createCC(){
+      axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
+        this.cryptoCurrencies = response.data;
+        this.addCC(this.cryptoCurrencies);
+      })
+    },
+    getAllCC(){
+      axios.get(`${config.apiBaseUrl}/cryptos/list`).then((response) => {
+        this.allCryptos = response.data;
+        if(this.allCryptos.length != 0){
+          this.listHasData = true;
+        }
+      })
+    },
+    async addCC(array){
         for(var i = 0; i < array.length; i++){
             await axios.post(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
             this.loadedCryptoCurrencies.push({
@@ -55,28 +71,38 @@ export default {
               logo: await this.getLogo(array[i].id)
             })
         }
-        console.log(this.loadedCryptoCurrencies.length)
         if(this.loadedCryptoCurrencies.length==10){
           this.loading=false;
         }
-    },
-    loadCryptoCurrency(){
-      axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
-        this.cryptoCurrencies = response.data;
-        if(this.cryptoCurrencies.length != 0){
-          this.listHasData = true;
-        }
-        this.postCCForCorrelation(this.cryptoCurrencies)
-      })
     },
     getLogo: function(id){
       return axios.get(`${config.apiBaseUrl}/cryptos/${id}/logourl`).then((response) => {
         return response.data
       })
-    }
+    }/*,
+    loadCC(){
+      axios.get(`${config.apiBaseUrl}/cryptos/loaded`).then((response) => {
+        this.cryptoCurrencies = response.data;
+        this.addCC(this.cryptoCurrencies);
+        if(response.data.length != 0){
+          this.hasCreateCC = false;
+        }
+      })
+    },
+    async getCC(array){
+        for(var i = 0; i < array.length; i++){
+            await axios.get(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
+            this.loadedCryptoCurrencies.push({
+              id: this.cryptoCurrencies[i].id,
+              name: this.cryptoCurrencies[i].name,
+              logo: await this.getLogo(array[i].id)
+            })
+        }
+    }*/
   },
   created: function(){
-        this.loadCryptoCurrency();
+    this.getAllCC();
+    this.createCC();
   }
 }
 </script>

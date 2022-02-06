@@ -7,7 +7,7 @@
       <b-navbar-nav class="bar" align="center">
         <b-nav-item to="/">Home</b-nav-item>
         <b-nav-item to="/graphs">Graphs</b-nav-item>
-        <b-nav-item to="/tables">Tables</b-nav-item>
+        <b-nav-item to="/correlation">Correlation</b-nav-item>
       </b-navbar-nav>
     </b-navbar>
 
