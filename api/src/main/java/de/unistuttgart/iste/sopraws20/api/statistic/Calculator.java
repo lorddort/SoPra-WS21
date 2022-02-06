@@ -20,11 +20,11 @@ public final class Calculator {
 		}
 
 		int length = xArray.length;
-		float sum_X = 0;
-		float sum_Y = 0;
-		float sum_XY = 0;
-		float squareSum_X = 0;
-		float squareSum_Y = 0;
+		double sum_X = 0;
+		double sum_Y = 0;
+		double sum_XY = 0;
+		double squareSum_X = 0;
+		double squareSum_Y = 0;
 
 		for (int i = 0; i < length; i++) {
 			// sum of elements of array X.
@@ -42,8 +42,8 @@ public final class Calculator {
 		}
 
 		// use formula for calculating correlation coefficient.
-		return (float) (length * sum_XY - sum_X * sum_Y)
-				/ (float) (Math.sqrt((length * squareSum_X - sum_X * sum_X) * (length * squareSum_Y - sum_Y * sum_Y)));
+		return (float) ((double) (length * sum_XY - sum_X * sum_Y) / (double) (Math
+				.sqrt((length * squareSum_X - sum_X * sum_X) * (length * squareSum_Y - sum_Y * sum_Y))));
 	}
 
 	/**
