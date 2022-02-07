@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="layout">
         <h1>Calculate Correlation</h1>
         <b-row>
             <b-col >
@@ -41,7 +41,7 @@
                 <Table :taggedValue="this.taggedValue" :threshold="this.threshold" :appliedThreshold="this.appliedThreshold" :selectedTime="this.selectedTime" :selectedType="this.selectedType" />
             </b-col>
         </b-row>
-        <b-modal id="timeFrameModal" title="Select Timeframe">
+        <b-modal id="timeFrameModal" title="Select Timeframe" hide-footer>
             <b-dropdown id="timeFrame" :text="this.timeFrameString" style="min-width: 100%" menu-class="w-100">
                 <b-dropdown-item @click="setTimeFrame(frames.today)">Today</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.day)">24h</b-dropdown-item>
@@ -50,7 +50,7 @@
                 <b-dropdown-item @click="setTimeFrame(frames.lastMonth)">Last Month</b-dropdown-item>
             </b-dropdown>
         </b-modal>
-        <b-modal id="typeModal" title="Select Type">
+        <b-modal id="typeModal" title="Select Type" hide-footer>
             <b-dropdown id="type" :text="this.typeString" style="min-width: 100%" menu-class="w-100">
                 <b-dropdown-item @click="setType(types.price)">Price</b-dropdown-item>
                 <b-dropdown-item @click="setType(types.marketcap)">Marketcap</b-dropdown-item>
@@ -208,5 +208,8 @@ export default {
 .button1 {padding: 7px 20px; background-color: rgb(39, 138, 64);}
 .button2 {padding: 7px 20px; background-color: #ac2e2e;}
 
-
+.layout{
+    width: 1750px;
+    margin: auto;
+}
 </style>
