@@ -181,23 +181,25 @@ export default {
                     if(value == 1){
                       return null
                     } else if(value >= 0.8){
-                      return "Beide Währung korreliert sehr gut miteinander"
+                      return "Both currencies correlating massively positive"
                     } else if(value >= 0.6){
-                      return "Beide Währung korreliert gut miteinander"
+                      return "Both currencies correlating highly positive"
                     } else if(value >= 0.4){
-                      return "Beide Währung korreliert moderat miteinander"
+                      return "Both currencies correlating positive"
                     } else if(value >= 0.2){
-                      return "Beide Währung korreliert wenig miteinander"
+                      return "Both currencies correlating slightly positive"
                     } else if(value >= 0){
-                      return "Beide Währung korreliert kaum miteinander"
+                      return "Both currencies correlating positive"
                     } else if(value >= -0.2){
-                      return "Beide Währung korreliert nicht gut miteinander"
+                      return "Both currencies correlating slightly negative"
                     } else if(value >= -0.4){
-                      return "Beide Währung korreliert nicht gut miteinander"
+                      return "Both currencies correlating a bit negative"
                     } else if(value >= -0.6){
-                      return "Beide Währung korreliert gar nicht gut miteinander"
+                      return "Both currencies correlating negative"
                     } else if(value >= -0.8){
-                      return "Beide Währung korreliert gar nicht gut miteinander"
+                      return "Both currencies correlating highly negative"
+                    } else if(value > -1) {
+                      return "Both currencies correlating massively negative"
                     }
                 }
               },

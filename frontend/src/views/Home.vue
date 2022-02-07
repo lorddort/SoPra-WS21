@@ -21,7 +21,7 @@
         <b-list-group class="list-group" v-if="listHasData">
           <b-list-group-item v-for="crypto in allCryptos" v-bind:key="crypto.id">
             {{crypto.name}}
-            <b-button class="buttonlist" variant="primary" right><b-icon class="buttons" icon="clipboard-plus"></b-icon></b-button>
+            <b-button class="buttonlist" right disabled><b-icon class="buttons" icon="clipboard-plus"></b-icon></b-button>
           </b-list-group-item>
         </b-list-group>
         <b-list-group class="text-center" v-else>
@@ -55,7 +55,7 @@ export default {
       })
     },
     getAllCC(){
-      axios.get(`${config.apiBaseUrl}/cryptos/list`).then((response) => {
+      axios.get(`${config.apiBaseUrl}/cryptos/list/${100}`).then((response) => {
         this.allCryptos = response.data;
         if(this.allCryptos.length != 0){
           this.listHasData = true;
@@ -127,6 +127,7 @@ export default {
   display: flex;
   justify-content: right;
   margin: 0 auto;
+  color: #353636;
 }
 
 .list-group{
