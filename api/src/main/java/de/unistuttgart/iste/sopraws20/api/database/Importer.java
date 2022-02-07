@@ -28,6 +28,7 @@ public final class Importer {
 	//make client to communicate to coingecko
 	static CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
 	static List<CryptoIdName> coinNames = new LinkedList<CryptoIdName>();
+	static List<CryptoIdName> allCoinNames = new LinkedList<CryptoIdName>();
 
 	/**
 	 * Gets coinNames or loads all crypto Names and IDs if empty
