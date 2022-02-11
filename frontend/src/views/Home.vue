@@ -3,6 +3,7 @@
     <h1>Preloading Top 10 Crypto Assets</h1>
     <br>
     <b-button class="button button1" v-b-modal.listModal>Add Crypto Assets</b-button>
+    <!--<b-button class="button button2" @click="createCC()">Add Top 10 Assets</b-button>-->
     <button class="btn btn-primary" type="button" v-show="loading" disabled>
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Loading...
@@ -48,12 +49,14 @@ export default {
     }
   },
   methods: {
+    //holt die top 10 währungen
     createCC(){
       axios.get(`${config.apiBaseUrl}/cryptos/list/${10}`).then((response) => {
         this.cryptoCurrencies = response.data;
         this.addCC(this.cryptoCurrencies);
       })
     },
+    //holt die top 100 währungen
     getAllCC(){
       axios.get(`${config.apiBaseUrl}/cryptos/list/${100}`).then((response) => {
         this.allCryptos = response.data;
@@ -62,6 +65,7 @@ export default {
         }
       })
     },
+    //fügt es der crypto/loaded list hinzu und der list loadedCryptoCurrencies
     async addCC(array){
         for(var i = 0; i < array.length; i++){
             await axios.post(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
@@ -74,21 +78,26 @@ export default {
         if(this.loadedCryptoCurrencies.length==10){
           this.loading=false;
         }
+
     },
+    //holt sich das Logo einer Währung
     getLogo: function(id){
       return axios.get(`${config.apiBaseUrl}/cryptos/${id}/logourl`).then((response) => {
         return response.data
       })
-    }/*,
+    },
+    /*
+    //holt Währungen von cryptos/loaded
     loadCC(){
       axios.get(`${config.apiBaseUrl}/cryptos/loaded`).then((response) => {
         this.cryptoCurrencies = response.data;
-        this.addCC(this.cryptoCurrencies);
+        this.getCC(this.cryptoCurrencies);
         if(response.data.length != 0){
           this.hasCreateCC = false;
         }
       })
     },
+    //holt sich die geladene währungen und fügt sie der list loadedCryptoCurrencies
     async getCC(array){
         for(var i = 0; i < array.length; i++){
             await axios.get(`${config.apiBaseUrl}/cryptos/${array[i].id}`)
@@ -103,6 +112,7 @@ export default {
   created: function(){
     this.getAllCC();
     this.createCC();
+    //this.loadCC();
   }
 }
 </script>

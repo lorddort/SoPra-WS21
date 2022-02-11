@@ -2,7 +2,7 @@
     <div class="layout">
         <h1>Calculate Correlation</h1>
         <b-row>
-            <b-col >
+            <b-col>
                 <b-container>
                     <label class="typo_label">Time Frame</label>
                     <b-button 
@@ -48,6 +48,7 @@
                 <b-dropdown-item @click="setTimeFrame(frames.week)">Week</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.month)">Month</b-dropdown-item>
                 <b-dropdown-item @click="setTimeFrame(frames.lastMonth)">Last Month</b-dropdown-item>
+                <b-dropdown-item @click="setTimeFrame(frames.year)">Year</b-dropdown-item>
             </b-dropdown>
         </b-modal>
         <b-modal id="typeModal" title="Select Type" hide-footer>
@@ -88,6 +89,7 @@ export default {
             week: 2,
             month: 3,
             lastMonth: 4,
+            year: 5,
         },
         timeFrameString: "Today",
         taggedValue: [/*{ id: "bitcoin", name: "Bitcoin"}...*/],
@@ -139,6 +141,10 @@ export default {
             case this.frames.lastMonth:
                 this.selectedTime = "last_month"
                 this.timeFrameString = "Last Month"
+                break;
+            case this.frames.year:
+                this.selectedTime = "year"
+                this.timeFrameString = "Year"
                 break;
         }
     },
